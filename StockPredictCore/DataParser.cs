@@ -9,15 +9,15 @@ namespace StockPredictCore
 {
     public class DataParser
     {
-        public List<StockData> GrabData(string filepath)
+        public static StockData GrabData(string filepath)
         {
-            List<StockData> result = new List<StockData>();
+            StockData result = new StockData();
 
             string[] lines = System.IO.File.ReadAllLines(filepath);
 
             for (int i = 1; i < lines.Length; i++)
             {
-                result.Add((StockData)lines[i]);
+                
             }
              
             return result;

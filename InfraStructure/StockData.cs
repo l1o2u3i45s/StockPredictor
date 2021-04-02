@@ -8,17 +8,16 @@ namespace InfraStructure
 {
     public class StockData
     {
-        public StockData(string sData)
-        {
+      
+        public DateTime[] Date { get; set; }
+        public double[] OpenPrice { get; set; }
+        public double[] ClosePrice { get; set; }
+        public double[] HightestPrice { get; set; }
+        public double[] LowestPrice { get; set; }
+        public double[] Volumn { get; set; }
 
-        }
-        public DateTime Date { get; set; }
-        public double OpenPrice { get; set; }
-        public double ClosePrice { get; set; }
-        public double HightestPrice { get; set; }
-        public double LowestPrice { get; set; }
-        public double Volumn { get; set; }
-
-        public static explicit operator StockData(string sData) => new StockData(sData);
+        public double[] RSV { get; set; }
+        public double[] KValue { get; set; }
+        public double[] DValue { get; set; }
     }
 }
