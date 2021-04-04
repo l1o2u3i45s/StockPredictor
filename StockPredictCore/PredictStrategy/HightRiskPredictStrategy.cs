@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.PredictStrategy
 {
-    public class HightRiskPredictStrategy : IPredictStrategy
+    public class HightRiskPredictStrategy : IPredictStrategy //算反轉趨勢用的
     {
         public override int[] FindBuyTime(StockData data)
         {
