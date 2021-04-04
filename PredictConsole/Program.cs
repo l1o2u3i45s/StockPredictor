@@ -13,17 +13,25 @@ namespace PredictConsole
     {
         static void Main(string[] args)
         {
-            StockData data = DataParser.GrabData(@"E:\\StockData\\2610.TW");
-            PreProcessor preProcessor = new PreProcessor();
-            preProcessor.Execute(data);
-            HightRiskPredictStrategy strategy = new HightRiskPredictStrategy();
-            var result = strategy.FindBuyTime(data);
-            for(int i = 0;i < result.Length; i++)
+        
+
+            while (true)
             {
-                int idx = result[i];
-                Console.WriteLine("時間: " + data.Date[idx]);
+                Console.WriteLine("plz input code");
+                var code = Console.ReadLine();
+                StockData data = DataParser.GrabData($@"E:\\StockData\\{code}.TW");
+                PreProcessor preProcessor = new PreProcessor();
+                preProcessor.Execute(data);
+                HightRiskPredictStrategy strategy = new HightRiskPredictStrategy();
+                var result = strategy.FindBuyTime(data);
+                for (int i = 0; i < result.Length; i++)
+                {
+                    int idx = result[i];
+                    Console.WriteLine("時間: " + data.Date[idx]);
+                }
+               
             }
-            Console.ReadLine();
+            
         }
     }
 }
