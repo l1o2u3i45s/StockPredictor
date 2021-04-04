@@ -9,8 +9,13 @@ namespace StockPredictCore
 {
     public class PreProcessor
     {
+        public void Execute(StockData data)
+        {
+            CaculateRSVandKD(data);
+            CaculateMA(data);
+        }
 
-        public void CaculateRSVandKD(StockData data)
+        void CaculateRSVandKD(StockData data)
         {
             int dataCount = data.Date.Count();
 
@@ -21,12 +26,12 @@ namespace StockPredictCore
             {
                 double lowerPriceIn9 = 100000;
                 double higherPriceIn9 = 0;
-                for (int j = i -8; j <= i; j++)
+                for (int j = i - 8; j <= i; j++)
                 {
                     if (lowerPriceIn9 > data.LowestPrice[j])
                         lowerPriceIn9 = data.LowestPrice[j];
 
-                    if(higherPriceIn9 < data.HightestPrice[j])
+                    if (higherPriceIn9 < data.HightestPrice[j])
                         higherPriceIn9 = data.HightestPrice[j];
                 }
 
@@ -35,5 +40,35 @@ namespace StockPredictCore
                 data.DValue[i] = data.DValue[i - 1] * 2 / 3 + data.KValue[i] / 3;
             }
         }
+
+        void CaculateMA(StockData data)
+        {
+            int dataCount = data.Date.Count();
+            Queue<double> queue5 = new Queue<double>();
+            Queue<double> queue20 = new Queue<double>();
+            for (int i = 0; i < dataCount; i++)
+            {
+                if (queue20.Count < 20)
+                    queue20.Enqueue(data.ClosePrice[i]);
+
+                if (queue5.Count < 5)
+                    queue5.Enqueue(data.ClosePrice[i]);
+
+                if (queue20.Count == 20)
+                {
+                    var avg20 = queue20.Average();
+                    data.MA20[i] = avg20;
+                    queue20.Dequeue();
+                }
+                
+                if (queue5.Count == 5)
+                {
+                    var avg5 = queue5.Average();
+                    data.MA5[i] = avg5;
+                    queue5.Dequeue();
+                }
+            }
+        }
+        
     }
 }

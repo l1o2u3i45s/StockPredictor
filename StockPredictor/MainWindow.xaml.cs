@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InfraStructure;
+using StockPredictCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,11 @@ namespace StockPredictor
         public MainWindow()
         {
             InitializeComponent();
+
+
+          
+
+
         }
     }
 }

@@ -19,5 +19,8 @@ namespace InfraStructure
         public double[] RSV { get; set; }
         public double[] KValue { get; set; }
         public double[] DValue { get; set; }
+
+        public double[] MA20 { get; set; }
+        public double[] MA5 { get; set; }
     }
 }
