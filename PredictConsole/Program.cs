@@ -13,7 +13,7 @@ namespace PredictConsole
     {
         static void Main(string[] args)
         {
-            StockData data = DataParser.GrabData(@"E:\\StockData\\3653.TW");
+            StockData data = DataParser.GrabData(@"E:\\StockData\\2610.TW");
             PreProcessor preProcessor = new PreProcessor();
             preProcessor.Execute(data);
             HightRiskPredictStrategy strategy = new HightRiskPredictStrategy();
