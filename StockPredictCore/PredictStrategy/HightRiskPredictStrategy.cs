@@ -20,7 +20,7 @@ namespace StockPredictCore.PredictStrategy
                 { 
                     if (下影線超過燭身的N倍(i,data,ratio))
                     {
-                        if(上影線小於燭身(i,data)  && 是否MA5減收盤價大於一個燭身(i,data))
+                        if(上影線小於燭身(i,data) ) // && 是否MA5減收盤價大於一個燭身(i,data))
                         {
                             if(是否低於20日均線(i,data) && 是否低於5日均線(i,data))
                                 result.Add(i);
