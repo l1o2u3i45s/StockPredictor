@@ -16,7 +16,7 @@ namespace StockPredictCore.PredictStrategy
 
             for(int i = 0;i < data.Date.Length; i++)
             { 
-                if( 是否上漲(i,data) && 是否下跌(i -1,data) && 是否下跌(i - 2, data) )//&& 是否下跌(i - 3, data))
+                if( 是否上漲(i,data) && 是否下跌(i -1,data) && 是否下跌(i - 2, data)  && 是否下跌(i - 3, data))
                 { 
                     if (下影線超過燭身的N倍(i,data,ratio))
                     {

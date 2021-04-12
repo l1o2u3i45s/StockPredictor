@@ -28,6 +28,8 @@ namespace StockPredictCore
             for (int i = 1; i < lines.Length; i++)
             {
                 string[] data = lines[i].Split(',');
+                if (data.Count(_ => string.IsNullOrEmpty(_)) > 0)
+                    continue;
 
                 result.Date[i] = Convert.ToDateTime(data[0]);
                 result.OpenPrice[i] = Convert.ToDouble(data[1]);
