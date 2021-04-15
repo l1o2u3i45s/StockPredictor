@@ -16,11 +16,11 @@ namespace StockPredictCore.PredictStrategy
 
             for(int i = 0;i < data.Date.Length; i++)
             { 
-                if( 是否上漲(i,data) && 是否下跌(i -1,data) && 是否下跌(i - 2, data)  && 是否下跌(i - 3, data))
+                if( 是否上漲(i,data) && 是否下跌(i -1,data)  && 是否下跌(i - 2, data)  && 是否下跌(i - 3, data))
                 { 
                     if (下影線超過燭身的N倍(i,data,ratio))
                     {
-                        if(上影線小於燭身(i,data) ) // && 是否MA5減收盤價大於一個燭身(i,data))
+                        if(上影線小於燭身(i,data)  && 是否MA5減收盤價大於一個燭身(i,data))
                         {
                             if(是否低於20日均線(i,data) && 是否低於5日均線(i,data))
                                 result.Add(i);

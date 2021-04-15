@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataParser.cs" />
+    <Compile Include="MathTool.cs" />
+    <Compile Include="PredictStrategy\BollingerBandsStrategy.cs" />
     <Compile Include="PredictStrategy\HightRiskPredictStrategy.cs" />
     <Compile Include="PredictStrategy\IPredictStrategy.cs" />
     <Compile Include="PreProcessor.cs" />
