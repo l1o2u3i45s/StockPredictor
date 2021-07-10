@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataParser.cs" />
+    <Compile Include="Filter\FilterService.cs" />
     <Compile Include="Filter\IFilter.cs" />
     <Compile Include="Filter\Ma20_Ma5_Filter.cs" />
     <Compile Include="MathTool.cs" />
