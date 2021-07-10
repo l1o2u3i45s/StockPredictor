@@ -8,8 +8,9 @@ namespace InfraStructure
 {
     public class StockData
     {
-        public StockData(int size)
+        public StockData(int size,string id)
         {
+            ID = id;
             Date = new DateTime[size];
             OpenPrice = new double[size];
             ClosePrice = new double[size];
@@ -24,6 +25,7 @@ namespace InfraStructure
             IsFilter = new bool[size];
         }
 
+        public string ID { get; set; }
 
         public DateTime[] Date { get; set; }
         public double[] OpenPrice { get; set; }
@@ -45,8 +47,9 @@ namespace InfraStructure
     public class StockInfo
     {
 
-        public StockInfo(StockData data,int index)
+        public StockInfo(StockData data,int index,string id)
         {
+            ID = id;
             Date = data.Date[index];
             OpenPrice = data.OpenPrice[index];
             ClosePrice = data.ClosePrice[index];
@@ -61,6 +64,8 @@ namespace InfraStructure
             MA20 = data.MA20[index];
             MA5 = data.MA5[index];
         }
+
+        public string ID { get; set; }
 
         public DateTime Date { get; set; }
         public double OpenPrice { get; set; }

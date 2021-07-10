@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ namespace StockPredictCore
         public static StockData GrabData(string filepath)
         {
             string[] lines = System.IO.File.ReadAllLines(filepath);
-            StockData result = new StockData(lines.Length);
-             
+            StockData result = new StockData(lines.Length, Path.GetFileNameWithoutExtension(filepath)); 
+
             for (int i = 1; i < lines.Length; i++)
             {
                 string[] data = lines[i].Split(',');

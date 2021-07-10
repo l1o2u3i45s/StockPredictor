@@ -87,7 +87,7 @@ namespace StockPredictor.ViewModel
                 for (int i = 0; i < stockData.Date.Length; i++)
                 {
                     if (stockData.IsFilter[i] && stockData.Date[i] >= StartTime && stockData.Date[i] <= EndTime)
-                        stockInfoList.Add(new StockInfo(stockData, i));
+                        stockInfoList.Add(new StockInfo(stockData, i, stockData.ID));
                 }
             });
 
