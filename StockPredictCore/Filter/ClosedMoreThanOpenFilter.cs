@@ -7,13 +7,10 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-
-    //Ma5 > Ma10 > Ma20
-    public class Ma20_Ma5_Filter : IFilter
+    public class ClosedMoreThanOpenFilter: IFilter
     {
-        public Ma20_Ma5_Filter(List<StockData> _stockDataList) : base(_stockDataList)
+        public ClosedMoreThanOpenFilter(List<StockData> _stockDataList) : base(_stockDataList)
         {
-
         }
 
         public override void Execute()
@@ -24,13 +21,13 @@ namespace StockPredictCore.Filter
 
                 for (int j = 0; j < currentData.Date.Length; j++)
                 {
-                    if(currentData.IsFilter[j])
+                    if (currentData.IsFilter[j])
                         continue;
 
-                    if ( (currentData.MA5[j] <= currentData.MA20[j]*0.995) || (currentData.MA5[j] >= currentData.MA20[j] * 1.005))
+                    if (currentData.OpenPrice[j] > currentData.ClosePrice[j])
                         currentData.IsFilter[j] = true;
                 }
-               
+
             }
         }
     }

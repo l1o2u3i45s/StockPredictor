@@ -7,13 +7,10 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-
-    //Ma5 > Ma10 > Ma20
-    public class Ma20_Ma5_Filter : IFilter
+  public  class VolumnThresholdFilter : IFilter
     {
-        public Ma20_Ma5_Filter(List<StockData> _stockDataList) : base(_stockDataList)
+        public VolumnThresholdFilter(List<StockData> _stockDataList) : base(_stockDataList)
         {
-
         }
 
         public override void Execute()
@@ -22,15 +19,14 @@ namespace StockPredictCore.Filter
             {
                 var currentData = stockDataList[i];
 
-                for (int j = 0; j < currentData.Date.Length; j++)
+                for (int j = 1; j < currentData.Date.Length; j++)
                 {
-                    if(currentData.IsFilter[j])
+                    if (currentData.IsFilter[j])
                         continue;
-
-                    if ( (currentData.MA5[j] <= currentData.MA20[j]*0.995) || (currentData.MA5[j] >= currentData.MA20[j] * 1.005))
+                     
+                    if (currentData.Volumn[j] <= 3000*1000)
                         currentData.IsFilter[j] = true;
-                }
-               
+                } 
             }
         }
     }

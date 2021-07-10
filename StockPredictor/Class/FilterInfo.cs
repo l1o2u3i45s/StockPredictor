@@ -30,7 +30,11 @@ namespace StockPredictor.Class
         [Description("MA5跟MA20重疊")]
         Ma20_Ma5_Filter,
         [Description("交易量爆增")]
-        VolumnIncreaseMore
+        VolumnIncreaseMore,
+        [Description("交易量超過3000")]
+        VolumnThresholdFilter,
+        [Description("股票收紅")]
+        ClosedMoreThanOpen,
     }
 
 
