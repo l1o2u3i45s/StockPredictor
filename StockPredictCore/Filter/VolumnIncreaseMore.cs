@@ -23,6 +23,8 @@ namespace StockPredictCore.Filter
                 {
                     if (currentData.IsFilter[j])
                         continue;
+                    if ( currentData.Date[j].AddDays(-1) != currentData.Date[j-1])
+                        currentData.IsFilter[j] = true;
 
                     if (currentData.Volumn[j] <= currentData.Volumn[j-1] * 2)
                         currentData.IsFilter[j] = true;
