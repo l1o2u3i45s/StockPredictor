@@ -1,6 +1,5 @@
 ﻿using InfraStructure;
-using StockPredictCore;
-using StockPredictCore.PredictStrategy;
+using StockPredictCore; 
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,20 +23,7 @@ namespace PredictConsole
                 StockData data = DataParser.GrabData(stockpath);
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
-                 
-                IPredictStrategy strategy = new BollingerBandsStrategy();
-                var result = strategy.FindBuyTime(data);
-                 
-                for (int i = 0; i < result.Length; i++)
-                {
-                    int idx = result[i];
-                    if (data.Date[idx] >= DateTime.Today.AddDays(0))
-                    {
-                        Console.WriteLine(stockpath);
-                        Console.WriteLine("時間: " + data.Date[idx]);
-                    }
                    
-                }
             }
 
             Console.WriteLine("Done");

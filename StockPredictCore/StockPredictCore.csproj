@@ -42,10 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataParser.cs" />
+    <Compile Include="Filter\IFilter.cs" />
+    <Compile Include="Filter\Ma20_Ma5_Filter.cs" />
     <Compile Include="MathTool.cs" />
-    <Compile Include="PredictStrategy\BollingerBandsStrategy.cs" />
-    <Compile Include="PredictStrategy\HightRiskPredictStrategy.cs" />
-    <Compile Include="PredictStrategy\IPredictStrategy.cs" />
     <Compile Include="PreProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,5 +54,6 @@
       <Name>InfraStructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
