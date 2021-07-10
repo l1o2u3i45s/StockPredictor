@@ -24,9 +24,11 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Orientation="Horizontal" Margin="10">
-                            <DatePicker FontSize="18" VerticalAlignment="Center" Text="{Binding StartTime}"></DatePicker>
-                            <TextBlock FontSize="18" Margin="5,0,0,0" VerticalAlignment="Center" Text="~"></TextBlock>
-                            <DatePicker FontSize="18" VerticalAlignment="Center" Text="{Binding EndTime}"></DatePicker>
+                            <DatePicker FontSize="18" VerticalAlignment="Center"  DisplayDate="{Binding StartTime}"
+                                        SelectedDate="{Binding StartTime, Mode=TwoWay}"/>
+                            <TextBlock FontSize="18" Margin="5,0,0,0" VerticalAlignment="Center" Text="~"/>
+                            <DatePicker FontSize="18" VerticalAlignment="Center"  DisplayDate="{Binding EndTime}"
+                                        SelectedDate="{Binding EndTime, Mode=TwoWay}"/>
                         </StackPanel>
 
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding FilterInfoCollection}">

@@ -11,20 +11,9 @@ namespace StockPredictCore
     {
         public static StockData GrabData(string filepath)
         {
-            StockData result = new StockData();
-
             string[] lines = System.IO.File.ReadAllLines(filepath);
-            result.Date = new DateTime[lines.Length];
-            result.OpenPrice = new double[lines.Length];
-            result.ClosePrice = new double[lines.Length];
-            result.HightestPrice = new double[lines.Length];
-            result.LowestPrice = new double[lines.Length];
-            result.Volumn = new double[lines.Length];
-            result.KValue = new double[lines.Length];
-            result.DValue = new double[lines.Length];
-            result.MA20 = new double[lines.Length];
-            result.MA5 = new double[lines.Length];
-            result.RSV = new double[lines.Length];
+            StockData result = new StockData(lines.Length);
+             
             for (int i = 1; i < lines.Length; i++)
             {
                 string[] data = lines[i].Split(',');

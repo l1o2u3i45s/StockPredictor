@@ -28,7 +28,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = true;
+        private bool isDesign = false;
         const string fileFolder = @"E:\\StockData";
         private List<StockData> stockDataList = new List<StockData>();
 
@@ -78,6 +78,20 @@ namespace StockPredictor.ViewModel
                 service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, stockDataList));
             }
             service.Execute();
+
+            List<StockInfo> stockInfoList = new List<StockInfo>();
+
+
+            Parallel.ForEach(stockDataList, stockData =>
+            {
+                for (int i = 0; i < stockData.Date.Length; i++)
+                {
+                    if (stockData.IsFilter[i] && stockData.Date[i] >= StartTime && stockData.Date[i] <= EndTime)
+                        stockInfoList.Add(new StockInfo(stockData, i));
+                }
+            });
+
+
         }
 
         private void PreProcessData(string[] stockFiles)
