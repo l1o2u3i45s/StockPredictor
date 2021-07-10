@@ -29,6 +29,8 @@ namespace StockPredictCore
                 result.Volumn[i] = Convert.ToDouble(data[5]);
                 result.KValue[i] = 0;
                 result.DValue[i] = 0;
+
+                result.MA60[i] = 0;
                 result.MA20[i] = 0;
                 result.MA5[i] = 0;
             }

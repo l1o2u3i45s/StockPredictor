@@ -29,12 +29,18 @@ namespace StockPredictor.Class
     {
         [Description("MA5跟MA20重疊")]
         Ma20_Ma5_Filter,
+        [Description("MA5跟MA60重疊")]
+        Ma60_Ma5_Filter,
+        [Description("MA5向上強烈")]
+        Ma5Increase,
         [Description("交易量爆增")]
         VolumnIncreaseMore,
         [Description("交易量超過3000")]
         VolumnThresholdFilter,
         [Description("股票收紅")]
         ClosedMoreThanOpen,
+        [Description("收盤低於前高")]
+        LowThanLastHighestPrice,
     }
 
 

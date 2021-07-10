@@ -45,7 +45,10 @@
     <Compile Include="Filter\ClosedMoreThanOpenFilter.cs" />
     <Compile Include="Filter\FilterService.cs" />
     <Compile Include="Filter\IFilter.cs" />
-    <Compile Include="Filter\Ma20_Ma5_Filter.cs" />
+    <Compile Include="Filter\Ma20Ma5Filter.cs" />
+    <Compile Include="Filter\Ma5IncreaseFilter.cs" />
+    <Compile Include="Filter\Ma60Ma5Filter.cs" />
+    <Compile Include="Filter\OverLastHighestPriceFilter.cs" />
     <Compile Include="Filter\VolumnIncreaseMore.cs" />
     <Compile Include="Filter\VolumnThresholdFilter.cs" />
     <Compile Include="MathTool.cs" />

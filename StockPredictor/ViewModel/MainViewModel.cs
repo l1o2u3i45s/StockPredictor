@@ -56,6 +56,14 @@ namespace StockPredictor.ViewModel
             set { Set(() => FilterInfoCollection, ref filterInfoCollection, value); }
         }
 
+        private ObservableCollection<StockInfo> stockInfoCollection = new ObservableCollection<StockInfo>();
+
+        public ObservableCollection<StockInfo> StockInfoCollection
+        {
+            get => stockInfoCollection;
+            set { Set(() => StockInfoCollection, ref stockInfoCollection, value); }
+        }
+
         public RelayCommand AnalysisCommand { get; set; }
 
         public MainViewModel()
@@ -72,6 +80,7 @@ namespace StockPredictor.ViewModel
 
         private void AnalysisAction()
         {
+            ResetData(stockDataList);
             FilterService service = new FilterService();
             foreach (var selectedFilter in FilterInfoCollection.Where(_ => _.IsSelected))
             { 
@@ -91,7 +100,9 @@ namespace StockPredictor.ViewModel
                 }
             });
 
+            var a = stockInfoList.Where(_ => _ is null).ToList();
 
+            StockInfoCollection = new ObservableCollection<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }
 
         private void PreProcessData(string[] stockFiles)
@@ -114,6 +125,17 @@ namespace StockPredictor.ViewModel
                 FilterInfoCollection.Add(fileInfo);
             }
             
+        }
+
+        private void ResetData(List<StockData>  stockDataList)
+        {
+            Parallel.ForEach(stockDataList, stockData =>
+            {
+                for (int i = 0; i < stockData.Date.Length; i++)
+                {
+                    stockData.IsFilter[i] = false;
+                }
+            });
         }
     }
 
