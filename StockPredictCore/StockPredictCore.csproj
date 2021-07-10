@@ -45,6 +45,7 @@
     <Compile Include="Filter\FilterService.cs" />
     <Compile Include="Filter\IFilter.cs" />
     <Compile Include="Filter\Ma20_Ma5_Filter.cs" />
+    <Compile Include="Filter\VolumnIncreaseMore.cs" />
     <Compile Include="MathTool.cs" />
     <Compile Include="PreProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

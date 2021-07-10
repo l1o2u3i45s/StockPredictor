@@ -28,7 +28,9 @@ namespace StockPredictor.Class
     public enum FilterType
     {
         [Description("MA5跟MA20重疊")]
-        Ma20_Ma5_Filter
+        Ma20_Ma5_Filter,
+        [Description("交易量爆增")]
+        VolumnIncreaseMore
     }
 
 

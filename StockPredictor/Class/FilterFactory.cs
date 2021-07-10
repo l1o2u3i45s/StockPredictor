@@ -16,6 +16,8 @@ namespace StockPredictor.Class
             {
                 case FilterType.Ma20_Ma5_Filter:
                     return new Ma20_Ma5_Filter(datas);
+                case FilterType.VolumnIncreaseMore:
+                    return new VolumnIncreaseMore(datas);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_type), _type, null);
             } 
