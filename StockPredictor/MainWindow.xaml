@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
-        Title="MainWindow" Height="800" Width="1200">
+        Title="MainWindow" Height="800" Width="1600">
     <Grid>
         <TabControl>
             <TabItem Header="股票篩選" >
@@ -52,35 +52,102 @@
 
                         <Button Grid.Row="2" Margin="10" Content="Analysis" Command="{Binding AnalysisCommand}"></Button>
                     </Grid>
+                    
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <ItemsControl ItemsSource="{Binding StockInfoCollection}">
+                            <ItemsControl.Template>
+                                <ControlTemplate TargetType="ItemsControl">
+                                    <GroupBox Header="資料回測" Margin="10">
+                                        <ScrollViewer>
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </GroupBox>
+                                </ControlTemplate>
+                            </ItemsControl.Template>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid   Margin="10,5,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
 
-                    <ItemsControl Grid.Column="1" ItemsSource="{Binding StockInfoCollection}">
-                        <ItemsControl.Template>
-                            <ControlTemplate TargetType="ItemsControl">
-                                <GroupBox Header="資料回測" Margin="10">
-                                    <ScrollViewer>
-                                        <ItemsPresenter/>
-                                    </ScrollViewer> 
-                                </GroupBox>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock >
+                                                <Run Text="股票代碼:"></Run>
+                                                <Run Text="{Binding ID}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <TextBlock >
+                                                <Run Text=" 名稱:"></Run>
+                                                <Run Text="{Binding Name}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                <TextBlock >
+                                                <Run Text=" 日期:"></Run>
+                                                <Run Text="{Binding Date,StringFormat='{}{0:yyyy-MM-dd}'}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                                <TextBlock >
+                                                <Run Text=" 該日價:"></Run>
+                                                <Run Text="{Binding ClosePrice}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="4" Orientation="Horizontal">
+                                                <TextBlock >
+                                                <Run Text="現價:"></Run>
+                                                <Run Text="{Binding CurrentClosePrice}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="5" Orientation="Horizontal">
+                                                <TextBlock >
+                                                <Run Text="價差:"></Run>
+                                                <Run Text="{Binding CloseDiffValue,Mode=OneWay}"/>
+                                                </TextBlock>
+                                            </StackPanel>
 
-                                        <TextBlock >
-                                            <Run Text="股票代碼:"></Run>
-                                            <Run Text="{Binding ID}"/>
-                                            <Run Text=" 名稱:"></Run>
-                                            <Run Text="{Binding Name}"/>
-                                            <Run Text=" 符合日期:"></Run>
-                                            <Run Text="{Binding Date,StringFormat='{}{0:yyyy-MM-dd}'}"/>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                                            <StackPanel Grid.Column="6" Orientation="Horizontal">
+                                                <TextBlock >
+                                                    <Run Text="成長率:"></Run>
+                                                    <Run Text="{Binding GrowRatio,Mode=OneWay}"/>
+                                                    <Run Text="%"></Run>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            
+
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <StackPanel  Grid.Row="1" Orientation="Horizontal"   Margin="10">
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="買入金額:" FontSize="20"/>
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.TotalPrice}" FontSize="20"/>
+
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="          價差:" FontSize="20"/>
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.DiffPrice }" FontSize="20"/>
+
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="          成長率:" FontSize="20"/>
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.GrowRatio  }" FontSize="20"/>
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="%" FontSize="20"/>
+                        </StackPanel>
+                        
+                    </Grid>
+                  
                 </Grid>
             </TabItem>
             <TabItem Header="個股分析">

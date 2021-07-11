@@ -56,8 +56,8 @@ namespace InfraStructure
 
             Date = data.Date[index];
             OpenPrice = data.OpenPrice[index];
-            ClosePrice = data.ClosePrice[index];
-            HightestPrice = data.HightestPrice[index];
+            ClosePrice = Math.Round(data.ClosePrice[index],2);
+            HightestPrice = Math.Round(data.HightestPrice[index],2);
             LowestPrice = data.LowestPrice[index];
             Volumn = data.Volumn[index];
 
@@ -68,6 +68,7 @@ namespace InfraStructure
             MA60 = data.MA60[index];
             MA20 = data.MA20[index];
             MA5 = data.MA5[index];
+
         }
 
         public string ID { get; set; }
@@ -87,5 +88,15 @@ namespace InfraStructure
         public double MA60 { get; set; }
         public double MA20 { get; set; }
         public double MA5 { get; set; }
+
+        public double CurrentClosePrice { get; set; }
+        public double CloseDiffValue
+        {
+            get => Math.Round(CurrentClosePrice - ClosePrice,5); 
+        }
+        public double GrowRatio
+        { 
+            get => Math.Round( ((CurrentClosePrice / ClosePrice) -1) * 100, 1);
+        }
     }
 }

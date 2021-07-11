@@ -48,6 +48,23 @@ namespace StockPredictor.ViewModel
             set { Set(() => EndTime, ref endTime, value); }
         }
 
+        
+        private SumResult totalSumResult = new SumResult();
+
+        public SumResult TotalSumResult
+        {
+            get => totalSumResult;
+            set { Set(() => TotalSumResult, ref totalSumResult, value); }
+        }
+
+        private double totalDiffValue ;
+
+        public double TotalDiffValue
+        {
+            get => totalDiffValue;
+            set { Set(() => TotalDiffValue, ref totalDiffValue, value); }
+        }
+
         private ObservableCollection<FilterInfo> filterInfoCollection = new ObservableCollection<FilterInfo>();
 
         public ObservableCollection<FilterInfo> FilterInfoCollection
@@ -102,11 +119,23 @@ namespace StockPredictor.ViewModel
             {
                 for (int i = 0; i < stockData.Date.Length; i++)
                 {
-                    if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime && stockData.Date[i] <= EndTime)
-                        stockInfoList.Add(new StockInfo(stockData, i, stockData.ID,stockInfoDictionary[stockData.ID]));
+                    if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime &&
+                        stockData.Date[i] <= EndTime)
+                    {
+                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1],2);
+
+                        var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
+                        info.CurrentClosePrice = lastestClosePrice;
+
+                        stockInfoList.Add(info);
+                    }
+                      
                 }
             }
-
+            
+            TotalSumResult.TotalPrice = Math.Round(stockInfoList.Sum(_ => _.ClosePrice), 2);
+            TotalSumResult.DiffPrice = Math.Round(stockInfoList.Sum(_ => _.CloseDiffValue), 2);
+            TotalSumResult.GrowRatio = Math.Round((  (TotalSumResult.TotalPrice + TotalSumResult.DiffPrice) / TotalSumResult.TotalPrice   - 1) * 100,2);
             StockInfoCollection = new ObservableCollection<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }
 
@@ -163,6 +192,30 @@ namespace StockPredictor.ViewModel
                     string companyName = values[3].Replace('"',' ').Trim();
                     stockInfoDictionary.Add( code, companyName);
                 }
+            }
+        }
+
+        public class SumResult:ObservableObject
+        {
+            private double totalPrice;
+            public double TotalPrice
+            {
+                get => totalPrice;
+                set { Set(() => TotalPrice, ref totalPrice, value); }
+            }
+          
+            private double diffPrice;
+            public double DiffPrice
+            {
+                get => diffPrice;
+                set { Set(() => DiffPrice, ref diffPrice, value); }
+            }
+
+            private double growRatio;
+            public double GrowRatio
+            {
+                get => growRatio;
+                set { Set(() => GrowRatio, ref growRatio, value); }
             }
         }
     }
