@@ -31,7 +31,7 @@ namespace StockPredictor.ViewModel
         private bool isDesign = false;
         const string fileFolder = @"E:\\StockData";
         private List<StockData> stockDataList = new List<StockData>();
-
+        private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
         public DateTime StartTime
@@ -68,7 +68,7 @@ namespace StockPredictor.ViewModel
 
         public MainViewModel()
         {
-
+            InitStockInfo();
             InitFilterList();
             AnalysisCommand = new RelayCommand(AnalysisAction);
             if (isDesign == false)
@@ -90,17 +90,22 @@ namespace StockPredictor.ViewModel
 
             List<StockInfo> stockInfoList = new List<StockInfo>();
 
-
-            Parallel.ForEach(stockDataList, stockData =>
+            //Parallel.ForEach(stockDataList, stockData =>
+            //{
+            //    for (int i = 0; i < stockData.Date.Length; i++)
+            //    {
+            //        if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime && stockData.Date[i] <= EndTime)
+            //            stockInfoList.Add(new StockInfo(stockData, i, stockData.ID));
+            //    }
+            //});
+            foreach (var stockData in stockDataList)
             {
                 for (int i = 0; i < stockData.Date.Length; i++)
                 {
                     if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime && stockData.Date[i] <= EndTime)
-                        stockInfoList.Add(new StockInfo(stockData, i, stockData.ID));
+                        stockInfoList.Add(new StockInfo(stockData, i, stockData.ID,stockInfoDictionary[stockData.ID]));
                 }
-            });
-
-            var a = stockInfoList.Where(_ => _ is null).ToList();
+            }
 
             StockInfoCollection = new ObservableCollection<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }
@@ -136,6 +141,29 @@ namespace StockPredictor.ViewModel
                     stockData.IsFilter[i] = false;
                 }
             });
+        }
+
+        private void InitStockInfo()
+        {
+            using (var reader = new StreamReader(@"stockInfo.csv"))
+            {
+                bool isTitle = true;
+                while (!reader.EndOfStream)
+                { 
+                    if (isTitle)
+                    {
+                        reader.ReadLine();
+                        isTitle = false;
+                    }
+
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    string code = values[1].ToString().Replace('"',' ').Trim(); 
+                    string companyName = values[3].Replace('"',' ').Trim();
+                    stockInfoDictionary.Add( code, companyName);
+                }
+            }
         }
     }
 

@@ -30,7 +30,9 @@ namespace StockPredictor.Class
         [Description("MA5跟MA20重疊")]
         Ma20_Ma5_Filter,
         [Description("MA5跟MA60重疊")]
-        Ma60_Ma5_Filter,
+        Ma60_Ma5_Filter, 
+        [Description("MA5小於MA20跟MA60且MA5 Tan = 0")]
+        MA5low20low60AndTanis0,
         [Description("MA5向上強烈")]
         Ma5Increase,
         [Description("交易量爆增")]

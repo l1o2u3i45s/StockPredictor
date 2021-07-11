@@ -18,6 +18,8 @@ namespace StockPredictor.Class
                     return new Ma20Ma5Filter(datas);
                 case FilterType.Ma60_Ma5_Filter:
                     return new Ma60Ma5Filter(datas);
+                case FilterType.MA5low20low60AndTanis0:
+                    return new MA5low20low60AndTanis0(datas);
                 case FilterType.Ma5Increase:
                     return new Ma5IncreaseFilter(datas);
                 case FilterType.VolumnIncreaseMore:

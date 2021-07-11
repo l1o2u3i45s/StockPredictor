@@ -71,6 +71,8 @@
                                         <TextBlock >
                                             <Run Text="股票代碼:"></Run>
                                             <Run Text="{Binding ID}"/>
+                                            <Run Text=" 名稱:"></Run>
+                                            <Run Text="{Binding Name}"/>
                                             <Run Text=" 符合日期:"></Run>
                                             <Run Text="{Binding Date,StringFormat='{}{0:yyyy-MM-dd}'}"/>
                                         </TextBlock>

@@ -7,9 +7,9 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-    public class VolumnIncreaseMore : IFilter
+    public class MA5low20low60AndTanis0: IFilter
     {
-        public VolumnIncreaseMore(List<StockData> _stockDataList) : base(_stockDataList)
+        public MA5low20low60AndTanis0(List<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 
@@ -17,25 +17,17 @@ namespace StockPredictCore.Filter
         {
             for (int i = 0; i < stockDataList.Count; i++)
             {
-                var currentData = stockDataList[i];
+                var currentData = stockDataList[i]; 
 
                 for (int j = 1; j < currentData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
                         continue;
 
-
-                    if (currentData.Date[j] == new DateTime() || currentData.Date[j - 1] == new DateTime())
-                    {
+                    if (currentData.MA5[j] > currentData.MA20[j] || currentData.MA5[j] > currentData.MA60[j])
                         currentData.IsFilter[j] = true;
-                        continue;
-                    }
-                        
 
-                    if (currentData.Date[j].AddDays(-1) != currentData.Date[j - 1])
-                            currentData.IsFilter[j] = true;
-                    
-                    if (currentData.Volumn[j] <= currentData.Volumn[j-1] * 5)
+                    if (currentData.MA5[j - 1] - currentData.MA5[j]   < currentData.MA5[j-1] * 0.01)
                         currentData.IsFilter[j] = true;
                 }
 

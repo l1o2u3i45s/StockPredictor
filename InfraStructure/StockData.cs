@@ -49,9 +49,11 @@ namespace InfraStructure
     public class StockInfo
     {
 
-        public StockInfo(StockData data,int index,string id)
+        public StockInfo(StockData data,int index,string id,string name)
         {
             ID = id;
+            Name = name;
+
             Date = data.Date[index];
             OpenPrice = data.OpenPrice[index];
             ClosePrice = data.ClosePrice[index];
@@ -69,6 +71,7 @@ namespace InfraStructure
         }
 
         public string ID { get; set; }
+        public string Name { get; set; }
 
         public DateTime Date { get; set; }
         public double OpenPrice { get; set; }
