@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -105,34 +106,27 @@ namespace StockPredictor.ViewModel
             }
             service.Execute();
 
-            List<StockInfo> stockInfoList = new List<StockInfo>();
+            ConcurrentBag<StockInfo> stockInfoList = new ConcurrentBag<StockInfo>();
 
-            //Parallel.ForEach(stockDataList, stockData =>
-            //{
-            //    for (int i = 0; i < stockData.Date.Length; i++)
-            //    {
-            //        if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime && stockData.Date[i] <= EndTime)
-            //            stockInfoList.Add(new StockInfo(stockData, i, stockData.ID));
-            //    }
-            //});
-            foreach (var stockData in stockDataList)
+            Parallel.ForEach(stockDataList, stockData =>
             {
                 for (int i = 0; i < stockData.Date.Length; i++)
                 {
+
                     if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime &&
                         stockData.Date[i] <= EndTime)
                     {
-                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1],2);
+                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
 
                         var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
                         info.CurrentClosePrice = lastestClosePrice;
 
                         stockInfoList.Add(info);
                     }
-                      
                 }
-            }
-            
+            });
+
+
             TotalSumResult.TotalPrice = Math.Round(stockInfoList.Sum(_ => _.ClosePrice), 2);
             TotalSumResult.DiffPrice = Math.Round(stockInfoList.Sum(_ => _.CloseDiffValue), 2);
             TotalSumResult.GrowRatio = Math.Round((  (TotalSumResult.TotalPrice + TotalSumResult.DiffPrice) / TotalSumResult.TotalPrice   - 1) * 100,2);
