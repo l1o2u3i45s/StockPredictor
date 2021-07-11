@@ -144,6 +144,15 @@
                             <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="          成長率:" FontSize="20"/>
                             <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.GrowRatio  }" FontSize="20"/>
                             <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="%" FontSize="20"/>
+
+
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="          獲利張數:" FontSize="20"/>
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.WinAmount }" FontSize="20"/>
+
+
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="          虧損張數:" FontSize="20"/>
+                            <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.LoseAmount }" FontSize="20"/>
+                            
                         </StackPanel>
                         
                     </Grid>

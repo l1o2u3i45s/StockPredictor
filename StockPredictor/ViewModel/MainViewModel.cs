@@ -130,6 +130,8 @@ namespace StockPredictor.ViewModel
             TotalSumResult.TotalPrice = Math.Round(stockInfoList.Sum(_ => _.ClosePrice), 2);
             TotalSumResult.DiffPrice = Math.Round(stockInfoList.Sum(_ => _.CloseDiffValue), 2);
             TotalSumResult.GrowRatio = Math.Round((  (TotalSumResult.TotalPrice + TotalSumResult.DiffPrice) / TotalSumResult.TotalPrice   - 1) * 100,2);
+            TotalSumResult.WinAmount = stockInfoList.Count(_ => _.CloseDiffValue > 0);
+            TotalSumResult.LoseAmount = stockInfoList.Count(_ => _.CloseDiffValue <= 0);
             StockInfoCollection = new ObservableCollection<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }
 
@@ -210,6 +212,20 @@ namespace StockPredictor.ViewModel
             {
                 get => growRatio;
                 set { Set(() => GrowRatio, ref growRatio, value); }
+            }
+
+            private int winAmount;
+            public int WinAmount
+            {
+                get => winAmount;
+                set { Set(() => WinAmount, ref winAmount, value); }
+            }
+
+            private int loseAmount;
+            public int LoseAmount
+            {
+                get => loseAmount;
+                set { Set(() => LoseAmount, ref loseAmount, value); }
             }
         }
     }
