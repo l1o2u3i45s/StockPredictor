@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter
 {
     public class OverLastHighestPriceFilter: IFilter
     {
-        public OverLastHighestPriceFilter(List<StockData> _stockDataList) : base(_stockDataList)
+        public OverLastHighestPriceFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 

@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter
 {
     public class ClosedMoreThanOpenFilter: IFilter
     {
-        public ClosedMoreThanOpenFilter(List<StockData> _stockDataList) : base(_stockDataList)
+        public ClosedMoreThanOpenFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 

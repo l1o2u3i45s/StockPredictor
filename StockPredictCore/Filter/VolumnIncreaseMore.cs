@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter
 {
     public class VolumnIncreaseMore : IFilter
     {
-        public VolumnIncreaseMore(List<StockData> _stockDataList) : base(_stockDataList)
+        public VolumnIncreaseMore(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 

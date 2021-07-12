@@ -5,29 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
 
-namespace StockPredictCore.Filter
+namespace StockPredictCore.Filter.AverageLine
 {
-    public class Ma5IncreaseFilter : IFilter
+    public class Ma5LMa20Filter:IFilter
     {
-        public Ma5IncreaseFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
+        public Ma5LMa20Filter(List<StockData> _stockDataList,double[] _param) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
         {
+            double ratio = parameter[0];
+
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];
 
-                for (int j = 2; j < currentData.Date.Length; j++)
+                for (int j = 0; j < currentData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
                         continue;
 
-                    if ( currentData.MA5[j - 2] > currentData.MA5[j-1] || currentData.MA5[j - 1] > currentData.MA5[j])
+                    if (currentData.MA5[j] > currentData.MA20[j] - currentData.MA20[j] * ratio)
                         currentData.IsFilter[j] = true;
                 }
-
             }
         }
     }

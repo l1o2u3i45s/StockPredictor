@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataParser.cs" />
+    <Compile Include="Filter\AverageLine\Ma5LMa20Filter.cs" />
+    <Compile Include="Filter\AverageLine\Ma5LMa60Filter.cs" />
     <Compile Include="Filter\ClosedMoreThanOpenFilter.cs" />
     <Compile Include="Filter\FilterService.cs" />
     <Compile Include="Filter\IFilter.cs" />

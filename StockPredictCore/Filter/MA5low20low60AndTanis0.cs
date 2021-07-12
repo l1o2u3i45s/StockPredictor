@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter
 {
     public class MA5low20low60AndTanis0: IFilter
     {
-        public MA5low20low60AndTanis0(List<StockData> _stockDataList) : base(_stockDataList)
+        public MA5low20low60AndTanis0(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 
@@ -27,7 +27,7 @@ namespace StockPredictCore.Filter
                     if (currentData.MA5[j] > currentData.MA20[j] || currentData.MA5[j] > currentData.MA60[j])
                         currentData.IsFilter[j] = true;
 
-                    if (currentData.MA5[j - 1] - currentData.MA5[j]   < currentData.MA5[j-1] * 0.03)
+                    if (currentData.MA5[j - 1] - currentData.MA5[j]   < currentData.MA5[j-1] * 0.02)
                         currentData.IsFilter[j] = true;
                 }
 

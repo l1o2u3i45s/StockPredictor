@@ -32,7 +32,7 @@ namespace StockPredictor.ViewModel
     {
         private bool isDesign = false;
         const string fileFolder = @"E:\\StockData";
-        private List<StockData> stockDataList = new List<StockData>();
+        private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
@@ -158,7 +158,7 @@ namespace StockPredictor.ViewModel
             
         }
 
-        private void ResetData(List<StockData>  stockDataList)
+        private void ResetData(IEnumerable<StockData>  stockDataList)
         {
             Parallel.ForEach(stockDataList, stockData =>
             {

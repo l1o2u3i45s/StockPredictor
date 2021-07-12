@@ -11,7 +11,7 @@ namespace StockPredictCore.Filter
     //Ma5 > Ma10 > Ma20
     public class Ma20Ma5Filter : IFilter
     {
-        public Ma20Ma5Filter(List<StockData> _stockDataList) : base(_stockDataList)
+        public Ma20Ma5Filter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
 
         }

@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter
 {
   public  class VolumnThresholdFilter : IFilter
     {
-        public VolumnThresholdFilter(List<StockData> _stockDataList) : base(_stockDataList)
+        public VolumnThresholdFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 
