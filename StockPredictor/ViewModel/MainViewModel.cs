@@ -74,9 +74,9 @@ namespace StockPredictor.ViewModel
             set { Set(() => FilterInfoCollection, ref filterInfoCollection, value); }
         }
 
-        private ObservableCollection<StockInfo> stockInfoCollection = new ObservableCollection<StockInfo>();
+        private List<StockInfo> stockInfoCollection = new List<StockInfo>();
 
-        public ObservableCollection<StockInfo> StockInfoCollection
+        public List<StockInfo> StockInfoCollection
         {
             get => stockInfoCollection;
             set { Set(() => StockInfoCollection, ref stockInfoCollection, value); }
@@ -107,7 +107,7 @@ namespace StockPredictor.ViewModel
             service.Execute();
 
             ConcurrentBag<StockInfo> stockInfoList = new ConcurrentBag<StockInfo>();
-
+             
             Parallel.ForEach(stockDataList, stockData =>
             {
                 for (int i = 0; i < stockData.Date.Length; i++)
@@ -118,7 +118,11 @@ namespace StockPredictor.ViewModel
                     {
                         double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
 
-                        var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
+                        string copName = stockInfoDictionary.ContainsKey(stockData.ID)
+                            ? stockInfoDictionary[stockData.ID]
+                            : "µL¦WºÙ";
+
+                        var info = new StockInfo(stockData, i, stockData.ID, copName);
                         info.CurrentClosePrice = lastestClosePrice;
 
                         stockInfoList.Add(info);
@@ -132,7 +136,7 @@ namespace StockPredictor.ViewModel
             TotalSumResult.GrowRatio = Math.Round((  (TotalSumResult.TotalPrice + TotalSumResult.DiffPrice) / TotalSumResult.TotalPrice   - 1) * 100,2);
             TotalSumResult.WinAmount = stockInfoList.Count(_ => _.CloseDiffValue > 0);
             TotalSumResult.LoseAmount = stockInfoList.Count(_ => _.CloseDiffValue <= 0);
-            StockInfoCollection = new ObservableCollection<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
+            StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }
 
         private void PreProcessData(string[] stockFiles)
