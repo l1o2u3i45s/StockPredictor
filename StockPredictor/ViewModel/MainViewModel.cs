@@ -119,11 +119,10 @@ namespace StockPredictor.ViewModel
                     {
                         double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
 
-                        string copName = stockInfoDictionary.ContainsKey(stockData.ID)
-                            ? stockInfoDictionary[stockData.ID]
-                            : "µL¦WºÙ";
-
-                        var info = new StockInfo(stockData, i, stockData.ID, copName);
+                        if(stockInfoDictionary.ContainsKey(stockData.ID) == false)
+                            continue;
+                          
+                        var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
                         info.CurrentClosePrice = lastestClosePrice;
 
                         stockInfoList.Add(info);

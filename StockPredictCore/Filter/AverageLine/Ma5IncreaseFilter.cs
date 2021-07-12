@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
+using StockPredictCore.Filter;
 
-namespace StockPredictCore.Filter.AverageLine
+namespace StockPredictCore.AverageLine
 {
-    public class Ma5LMa20Filter:IFilter
+    public class Ma5IncreaseFilter : IFilter
     {
-        public Ma5LMa20Filter(List<StockData> _stockDataList,double[] _param) : base(_stockDataList, _param)
+        public Ma5IncreaseFilter(IEnumerable<StockData> _stockDataList, double[] _param) : base(_stockDataList, _param)
         {
         }
 
@@ -21,12 +22,12 @@ namespace StockPredictCore.Filter.AverageLine
             {
                 var currentData = stockDataList[i];
 
-                for (int j = 0; j < currentData.Date.Length; j++)
+                for (int j = 2; j < currentData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
                         continue;
 
-                    bool isCorrespond = currentData.MA5[j] < currentData.MA20[j] - currentData.MA20[j] * ratio;
+                    bool isCorrespond = currentData.MA5[j] > currentData.MA5[j-1]  && currentData.MA5[j-1] > currentData.MA5[j - 2];
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;

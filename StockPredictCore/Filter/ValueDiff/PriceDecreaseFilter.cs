@@ -5,16 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
 
-namespace StockPredictCore.Filter
+namespace StockPredictCore.Filter.ValueDiff
 {
-  public  class VolumnThresholdFilter : IFilter
+   public class PriceDecreaseFilter:IFilter
     {
-        public VolumnThresholdFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
+        public PriceDecreaseFilter(IEnumerable<StockData> _stockDataList, double[] _param ) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
         {
+            double ratio = parameter[0]/100;
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];
@@ -23,10 +24,13 @@ namespace StockPredictCore.Filter
                 {
                     if (currentData.IsFilter[j])
                         continue;
-                     
-                    if (currentData.Volumn[j] <= 3000*1000)
+
+                    bool isCorrespond = currentData.ClosePrice[j] <= currentData.ClosePrice[j-1] * (1 - ratio);
+
+                    if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
-                } 
+                }
+
             }
         }
     }

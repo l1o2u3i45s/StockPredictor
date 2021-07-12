@@ -27,7 +27,7 @@ namespace StockPredictCore.Filter
                     if (currentData.MA5[j] > currentData.MA20[j] || currentData.MA5[j] > currentData.MA60[j])
                         currentData.IsFilter[j] = true;
 
-                    if (currentData.MA5[j - 1] - currentData.MA5[j]   < currentData.MA5[j-1] * 0.02)
+                    if (currentData.MA5[j - 1] - currentData.MA5[j]   < currentData.MA5[j-1] * 0.04)
                         currentData.IsFilter[j] = true;
                 }
 

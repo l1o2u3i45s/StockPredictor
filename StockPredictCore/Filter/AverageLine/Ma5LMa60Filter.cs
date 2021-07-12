@@ -27,7 +27,9 @@ namespace StockPredictCore.Filter.AverageLine
                     if (currentData.IsFilter[j])
                         continue;
 
-                    if ( currentData.MA5[j] > currentData.MA60[j] - currentData.MA60[j] * ratio)
+                    bool isCorrespond = currentData.MA5[j] < currentData.MA60[j] - currentData.MA60[j] * ratio;
+
+                    if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
                 } 
             }

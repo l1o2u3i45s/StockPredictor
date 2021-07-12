@@ -4,27 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
+using StockPredictCore.Filter;
 
-namespace StockPredictCore.Filter
+namespace StockPredictCore.ValueDiff
 {
-    public class ClosedMoreThanOpenFilter: IFilter
+    public class PriceIncreaseFilter: IFilter
     {
-        public ClosedMoreThanOpenFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
+        public PriceIncreaseFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
         {
         }
 
         public override void Execute()
         {
+            double ratio = parameter[0] / 100;
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];
 
-                for (int j = 0; j < currentData.Date.Length; j++)
+                for (int j = 1; j < currentData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
                         continue;
 
-                    if (currentData.OpenPrice[j] > currentData.ClosePrice[j])
+                    bool isCorrespond = currentData.ClosePrice[j] >= currentData.ClosePrice[j - 1] * (1 + ratio);
+
+                    if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
                 }
 
