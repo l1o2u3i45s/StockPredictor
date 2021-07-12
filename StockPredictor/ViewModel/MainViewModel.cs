@@ -12,6 +12,7 @@ using InfraStructure;
 using StockPredictCore;
 using StockPredictCore.Filter;
 using StockPredictor.Class;
+using StockPredictor.Class.SumResult;
 
 namespace StockPredictor.ViewModel
 {
@@ -129,13 +130,9 @@ namespace StockPredictor.ViewModel
                     }
                 }
             });
+             
+            TotalSumResult = SumResultService.Create(stockInfoList);
 
-
-            TotalSumResult.TotalPrice = Math.Round(stockInfoList.Sum(_ => _.ClosePrice), 2);
-            TotalSumResult.DiffPrice = Math.Round(stockInfoList.Sum(_ => _.CloseDiffValue), 2);
-            TotalSumResult.GrowRatio = Math.Round((  (TotalSumResult.TotalPrice + TotalSumResult.DiffPrice) / TotalSumResult.TotalPrice   - 1) * 100,2);
-            TotalSumResult.WinAmount = stockInfoList.Count(_ => _.CloseDiffValue > 0);
-            TotalSumResult.LoseAmount = stockInfoList.Count(_ => _.CloseDiffValue <= 0);
             StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }
 
@@ -195,43 +192,7 @@ namespace StockPredictor.ViewModel
             }
         }
 
-        public class SumResult:ObservableObject
-        {
-            private double totalPrice;
-            public double TotalPrice
-            {
-                get => totalPrice;
-                set { Set(() => TotalPrice, ref totalPrice, value); }
-            }
-          
-            private double diffPrice;
-            public double DiffPrice
-            {
-                get => diffPrice;
-                set { Set(() => DiffPrice, ref diffPrice, value); }
-            }
-
-            private double growRatio;
-            public double GrowRatio
-            {
-                get => growRatio;
-                set { Set(() => GrowRatio, ref growRatio, value); }
-            }
-
-            private int winAmount;
-            public int WinAmount
-            {
-                get => winAmount;
-                set { Set(() => WinAmount, ref winAmount, value); }
-            }
-
-            private int loseAmount;
-            public int LoseAmount
-            {
-                get => loseAmount;
-                set { Set(() => LoseAmount, ref loseAmount, value); }
-            }
-        }
+        
     }
 
    

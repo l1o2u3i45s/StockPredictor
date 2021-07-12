@@ -81,6 +81,8 @@
     </ApplicationDefinition>
     <Compile Include="Class\FilterFactory.cs" />
     <Compile Include="Class\FilterInfo.cs" />
+    <Compile Include="Class\SumResult\SumResult.cs" />
+    <Compile Include="Class\SumResult\SumResultService.cs" />
     <Compile Include="Class\XilianTool.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -160,5 +162,6 @@
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
