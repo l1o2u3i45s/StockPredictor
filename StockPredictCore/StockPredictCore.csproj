@@ -44,14 +44,14 @@
     <Compile Include="DataParser.cs" />
     <Compile Include="Filter\AverageLine\Ma5LMa20Filter.cs" />
     <Compile Include="Filter\AverageLine\Ma5LMa60Filter.cs" />
-    <Compile Include="Filter\ValueDiff\PriceDecreaseFilter.cs" />
-    <Compile Include="Filter\ValueDiff\PriceIncreaseFilter.cs" />
+    <Compile Include="Filter\Value\PriceDecreaseFilter.cs" />
+    <Compile Include="Filter\Value\PriceIncreaseFilter.cs" />
     <Compile Include="Filter\FilterService.cs" />
     <Compile Include="Filter\IFilter.cs" />
     <Compile Include="Filter\AverageLine\Ma5IncreaseFilter.cs" />
     <Compile Include="Filter\MA5low20low60AndTanis0.cs" />
     <Compile Include="Filter\OverLastHighestPriceFilter.cs" />
-    <Compile Include="Filter\Volumn\VolumnIncreaseMore.cs" />
+    <Compile Include="Filter\Volumn\VolumnIncreaseFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnLessThanFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnMoreThanFilter.cs" />
     <Compile Include="MathTool.cs" />

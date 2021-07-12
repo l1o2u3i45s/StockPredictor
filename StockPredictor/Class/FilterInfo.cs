@@ -14,36 +14,57 @@ namespace StockPredictor.Class
         {
             IsSelected = false;
         }
-        public FilterType Type { get; set; }
+      
 
-        public string Name
+        public string TypeName
         {
             get => Type.GetDescriptionText();
         }
+
+          
+
+        public FilterType Type { get; set; }
 
         public bool IsSelected { get; set; }
     }
 
 
-    public enum FilterType
+    public enum FilterCategory
     {
-        [Description("MA5跟MA20重疊")]
-        Ma20_Ma5_Filter,
-        [Description("MA5跟MA60重疊")]
-        Ma60_Ma5_Filter, 
-        [Description("MA5小於MA20跟MA60且MA5 Tan = 0")]
-        MA5low20low60AndTanis0,
-        [Description("MA5向上強烈")]
-        Ma5Increase,
-        [Description("交易量爆增")]
-        VolumnIncreaseMore,
-        [Description("交易量超過3000")]
-        VolumnThresholdFilter,
-        [Description("股票收紅")]
-        ClosedMoreThanOpen,
-        [Description("收盤低於前高")]
-        LowThanLastHighestPrice,
+        [Description("均線")]
+        AverageLine,
+        [Description("股價")]
+        Value, 
+        [Description("成交量")]
+        Volumn,
+       
     }
 
+    public enum FilterType
+    {
+        [Description("Ma5上升")]
+        Ma5IncreaseFilter,
+        [Description("Ma5小於Ma20幾%")]
+        Ma5LMa20Filter,
+        [Description("Ma5小於Ma60幾%")]
+        Ma5LMa60Filter,
+
+
+
+        [Description("股價跌幾%")]
+        PriceDecreaseFilter,
+        [Description("股價漲幾%")]
+        PriceIncreaseFilter,
+
+
+
+        [Description("成交量大於幾張")]
+        VolumnMoreThanFilter,
+        [Description("成交量小於幾張")]
+        VolumnLessThanFilter,
+        [Description("成交量比昨日增加幾倍")]
+        VolumnIncreaseFilter
+
+    }
 
 }

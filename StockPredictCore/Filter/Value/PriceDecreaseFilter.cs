@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
-using StockPredictCore.Filter;
 
-namespace StockPredictCore.ValueDiff
+namespace StockPredictCore.Filter.ValueDiff
 {
-    public class PriceIncreaseFilter: IFilter
+   public class PriceDecreaseFilter:IFilter
     {
-        public PriceIncreaseFilter(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
+        public PriceDecreaseFilter(IEnumerable<StockData> _stockDataList, double[] _param ) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
         {
-            double ratio = parameter[0] / 100;
+            double ratio = parameter[0]/100;
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];
@@ -25,8 +24,9 @@ namespace StockPredictCore.ValueDiff
                 {
                     if (currentData.IsFilter[j])
                         continue;
+                     
 
-                    bool isCorrespond = currentData.ClosePrice[j] >= currentData.ClosePrice[j - 1] * (1 + ratio);
+                    bool isCorrespond = currentData.ClosePrice[j] <= currentData.ClosePrice[j-1] * (1 - ratio);
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;

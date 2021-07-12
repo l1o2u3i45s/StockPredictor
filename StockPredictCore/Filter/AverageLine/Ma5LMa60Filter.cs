@@ -10,7 +10,7 @@ namespace StockPredictCore.Filter.AverageLine
     //Ma5小於MA60的幾倍
     public class Ma5LMa60Filter:IFilter
     {
-        public Ma5LMa60Filter(List<StockData> _stockDataList,double[] param) : base(_stockDataList, param)
+        public Ma5LMa60Filter(IEnumerable<StockData> _stockDataList,double[] param) : base(_stockDataList, param)
         {
         }
 

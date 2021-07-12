@@ -10,13 +10,12 @@ namespace StockPredictCore.AverageLine
 {
     public class Ma5IncreaseFilter : IFilter
     {
-        public Ma5IncreaseFilter(IEnumerable<StockData> _stockDataList, double[] _param) : base(_stockDataList, _param)
+        public Ma5IncreaseFilter(IEnumerable<StockData> _stockDataList, double[] _param = null) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
-        {
-            double ratio = parameter[0];
+        { 
 
             for (int i = 0; i < stockDataList.Count; i++)
             {

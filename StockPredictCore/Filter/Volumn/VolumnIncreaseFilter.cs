@@ -7,39 +7,42 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-    public class VolumnIncreaseMore : IFilter
+    public class VolumnIncreaseFilter : IFilter
     {
-        public VolumnIncreaseMore(IEnumerable<StockData> _stockDataList) : base(_stockDataList)
+        public VolumnIncreaseFilter(IEnumerable<StockData> _stockDataList,double[] _param) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
         {
+            double ratio = parameter[0];
+
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];
 
-                for (int j = 1; j < currentData.Date.Length; j++)
+                for (int j = 2; j < currentData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
                         continue;
-
 
                     if (currentData.Date[j] == new DateTime() || currentData.Date[j - 1] == new DateTime())
                     {
                         currentData.IsFilter[j] = true;
                         continue;
                     }
-                        
 
                     if (currentData.Date[j].AddDays(-1) != currentData.Date[j - 1])
-                            currentData.IsFilter[j] = true;
-                    
-                    if (currentData.Volumn[j] <= currentData.Volumn[j-1] * 5)
+                        currentData.IsFilter[j] = true;
+
+                    bool isCorrespond = currentData.Volumn[j] > currentData.Volumn[j - 1] * ratio;
+
+                    if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
                 }
 
             }
+        
         }
     }
 }
