@@ -124,8 +124,9 @@ namespace StockPredictor.ViewModel
                           
                         var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
                         info.CurrentClosePrice = lastestClosePrice;
-
-                        stockInfoList.Add(info);
+                         
+                        if(stockInfoList.Count(_ => _.Name == info.Name) == 0)
+                             stockInfoList.Add(info);
                     }
                 }
             });
