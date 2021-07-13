@@ -10,13 +10,13 @@ namespace StockPredictCore.ValueDiff
 {
     public class PriceIncreaseFilter: IFilter
     {
-        public PriceIncreaseFilter(IEnumerable<StockData> _stockDataList,double[] _param) : base(_stockDataList, _param)
+        public PriceIncreaseFilter(IEnumerable<StockData> _stockDataList,double _param) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
         {
-            double ratio = parameter[0] / 100;
+            double ratio = parameter / 100;
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];

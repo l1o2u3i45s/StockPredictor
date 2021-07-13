@@ -15,29 +15,31 @@ namespace StockPredictor.Class
 {
     public static class FilterFactory
     {
-        public static IFilter CreatFilterByFilterType(FilterType _type,IEnumerable<StockData> datas,double[] param)
+        public static IFilter CreatFilterByFilterType(FilterInfo filterInfo, IEnumerable<StockData> datas)
         {
-            switch (_type)
+            switch (filterInfo.Type)
             {
                 case FilterType.Ma5IncreaseFilter:
-                   return new Ma5IncreaseFilter(datas, param); 
+                   return new Ma5IncreaseFilter(datas, filterInfo.Param);
+                case FilterType.Ma5DecreaseFilter:
+                    return new Ma5DecreaseFilter(datas, filterInfo.Param);
                 case FilterType.Ma5LMa20Filter:
-                    return new Ma5LMa20Filter(datas, param); 
+                    return new Ma5LMa20Filter(datas, filterInfo.Param); 
                 case FilterType.Ma5LMa60Filter:
-                    return new Ma5LMa60Filter(datas, param); 
+                    return new Ma5LMa60Filter(datas, filterInfo.Param); 
                 case FilterType.PriceDecreaseFilter:
-                    return new PriceDecreaseFilter(datas, param); 
+                    return new PriceDecreaseFilter(datas, filterInfo.Param); 
                 case FilterType.PriceIncreaseFilter:
-                    return new PriceIncreaseFilter(datas, param); 
+                    return new PriceIncreaseFilter(datas, filterInfo.Param); 
                 case FilterType.VolumnMoreThanFilter:
-                    return new VolumnMoreThanFilter(datas, param);  
+                    return new VolumnMoreThanFilter(datas, filterInfo.Param);  
                 case FilterType.VolumnLessThanFilter:
-                    return new VolumnLessThanFilter(datas, param); 
+                    return new VolumnLessThanFilter(datas, filterInfo.Param); 
                 case FilterType.VolumnIncreaseFilter:
-                    return new VolumnIncreaseFilter(datas, param);
+                    return new VolumnIncreaseFilter(datas, filterInfo.Param);
                    
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(_type), _type, null);
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

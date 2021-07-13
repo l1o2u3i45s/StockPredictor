@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter
 {
     public abstract class IFilter
     {
-        public IFilter(IEnumerable<StockData> _stockDataList, double[] _param = null)
+        public IFilter(IEnumerable<StockData> _stockDataList, double _param )
         {
             stockDataList = _stockDataList.ToList();
             parameter = _param;
@@ -18,6 +18,6 @@ namespace StockPredictCore.Filter
         public abstract void Execute();
          
         protected List<StockData> stockDataList;
-        protected double[] parameter;
+        protected double parameter;
     }
 }

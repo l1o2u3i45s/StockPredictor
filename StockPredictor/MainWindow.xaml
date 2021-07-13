@@ -42,8 +42,9 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <StackPanel Margin="10,5,0,0"> 
-                                                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}"></CheckBox>
+                                        <StackPanel Margin="10,5,0,0" Orientation="Horizontal">
+                                            <CheckBox Content="{Binding TypeName}" IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBox Width="60" IsEnabled="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Param,UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>

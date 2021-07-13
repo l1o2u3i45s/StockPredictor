@@ -5,10 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace StockPredictor.Class
 {
-    public class FilterInfo
+    public class FilterInfo:ObservableObject
     {
         public FilterInfo()
         {
@@ -20,12 +21,25 @@ namespace StockPredictor.Class
         {
             get => Type.GetDescriptionText();
         }
-
-          
-
+         
         public FilterType Type { get; set; }
 
-        public bool IsSelected { get; set; }
+        private bool isSelected;
+
+        public bool IsSelected
+        {
+            get => isSelected;
+            set { Set(() => IsSelected, ref isSelected, value); }
+        }
+     
+
+        private double param;
+
+        public double Param
+        {
+            get => param;
+            set { Set(() => Param, ref param, value); }
+        }
     }
 
 
@@ -42,8 +56,10 @@ namespace StockPredictor.Class
 
     public enum FilterType
     {
-        [Description("Ma5上升")]
+        [Description("Ma5比昨天漲了幾%")]
         Ma5IncreaseFilter,
+        [Description("Ma5比昨天跌了幾%")]
+        Ma5DecreaseFilter,
         [Description("Ma5小於Ma20幾%")]
         Ma5LMa20Filter,
         [Description("Ma5小於Ma60幾%")]

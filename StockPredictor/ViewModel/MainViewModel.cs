@@ -103,7 +103,7 @@ namespace StockPredictor.ViewModel
             FilterService service = new FilterService();
             foreach (var selectedFilter in FilterInfoCollection.Where(_ => _.IsSelected))
             { 
-                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, stockDataList));
+                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter, stockDataList));
             }
             service.Execute();
 

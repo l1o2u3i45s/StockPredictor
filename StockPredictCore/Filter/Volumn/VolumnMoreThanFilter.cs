@@ -9,13 +9,13 @@ namespace StockPredictCore.Filter.Volumn
 {
     public class VolumnMoreThanFilter: IFilter
     {
-        public VolumnMoreThanFilter(IEnumerable<StockData> _stockDataList, double[] _param ) : base(_stockDataList, _param)
+        public VolumnMoreThanFilter(IEnumerable<StockData> _stockDataList, double _param ) : base(_stockDataList, _param)
         {
         }
 
         public override void Execute()
         {
-            double target = parameter[0];
+            double target = parameter;
 
             for (int i = 0; i < stockDataList.Count; i++)
             {
