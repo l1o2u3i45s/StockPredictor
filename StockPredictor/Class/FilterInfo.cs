@@ -67,9 +67,9 @@ namespace StockPredictor.Class
 
 
 
-        [Description("股價跌幾%")]
+        [Description("股價跌幾%以上")]
         PriceDecreaseFilter,
-        [Description("股價漲幾%")]
+        [Description("股價漲幾%以上")]
         PriceIncreaseFilter,
 
 
