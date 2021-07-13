@@ -56,13 +56,13 @@ namespace StockPredictor.Class
 
     public enum FilterType
     {
-        [Description("Ma5比昨天漲了幾%")]
+        [Description("Ma5比昨天漲了幾%內")]
         Ma5IncreaseFilter,
-        [Description("Ma5比昨天跌了幾%")]
+        [Description("Ma5比昨天跌了幾%內")]
         Ma5DecreaseFilter,
-        [Description("Ma5小於Ma20幾%")]
+        [Description("Ma5小於Ma20幾%以上")]
         Ma5LMa20Filter,
-        [Description("Ma5小於Ma60幾%")]
+        [Description("Ma5小於Ma60幾%以上")]
         Ma5LMa60Filter,
 
 
