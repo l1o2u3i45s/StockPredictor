@@ -26,7 +26,7 @@ namespace StockPredictCore.Filter.Volumn
                     if (currentData.IsFilter[j])
                         continue;
 
-                    bool isCorrespond = currentData.Volumn[j] <= target;
+                    bool isCorrespond = currentData.Volumn[j] <= target/1000;
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
