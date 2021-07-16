@@ -140,7 +140,7 @@ namespace StockPredictor.ViewModel
         {
             Parallel.ForEach(stockFiles, _ =>
             {
-                StockData data = DataParser.GrabData(_);
+                StockData data = DataParser.ConvertData(_);
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                 stockDataList.Add(data);
@@ -190,6 +190,8 @@ namespace StockPredictor.ViewModel
                     stockInfoDictionary.Add( code, companyName);
                 }
             }
+
+            DataParser.GetFinancialReport("FinanicalReport");
         }
 
         

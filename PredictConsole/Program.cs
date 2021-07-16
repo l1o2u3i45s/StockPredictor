@@ -20,7 +20,7 @@ namespace PredictConsole
            
             foreach (var stockpath in stockFiles)
             { 
-                StockData data = DataParser.GrabData(stockpath);
+                StockData data = DataParser.ConvertData(stockpath);
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                    
