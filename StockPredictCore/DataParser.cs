@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -26,16 +27,22 @@ namespace StockPredictCore
             foreach(var stockCode in stockCodeList)
             {
                 string idpath = Path.Combine(stockRawDataPath, $"{stockCode}.txt");
-                DateTime timeDateTime = startDate;
-                StreamWriter sw = new StreamWriter(idpath);
+                DateTime timeDateTime = new DateTime(startDate.Year, startDate.Month,1);
+                string history = "";
+                if (File.Exists(idpath))
+                    deleteStockRawDataAfterTheDate(idpath,timeDateTime);
+                 
+               
+                 
                 while (timeDateTime <= DateTime.Today)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(5000);
                     string url = $"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date={timeDateTime.ToString("yyyyMMdd")}&stockNo={stockCode}"; //20210601
 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = WebRequestMethods.Http.Get;
                     request.ContentType = "application/json";
+                    StreamWriter sw = new StreamWriter(idpath,true);
                     using (var response = (HttpWebResponse)request.GetResponse())
                     {
                         if (response.StatusCode == HttpStatusCode.OK)
@@ -45,15 +52,24 @@ namespace StockPredictCore
                             {
                                 dynamic dynamicData = JsonConvert.DeserializeObject(reader.ReadToEnd());
 
-                                if (dynamicData.stat.ToString() == "很抱歉，沒有符合條件的資料!")
+                                if (((string)dynamicData.stat.ToString()).Contains("沒有符合條件的資料") || ((string)dynamicData.stat.ToString()).Contains("請重新查詢") )
                                     continue;
-
-                                string dataList = dynamicData.data.ToString();
+                                
+                                string dataList = "";
+                                try
+                                {
+                                  dataList = dynamicData.data.ToString();
+                                }
+                                catch(Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                               
                                 string[] splitArray = dataList.Split(new string[] { "]," }, StringSplitOptions.RemoveEmptyEntries);
 
                                 foreach (string data in splitArray)
                                 {
-                                    string temp = data.Replace("[", "");
+                                    string temp = data.Replace("[", "").Replace("]","");
                                     string[] infoList = temp.Split(',');
 
                                     string resultLine = "";
@@ -65,14 +81,17 @@ namespace StockPredictCore
 
                                         if (i < infoList.Length - 1)
                                             resultLine += ",";
-                                    }
+                                    } 
                                     sw.WriteLine(resultLine);
                                 } 
                             }
                         }
                     }
+                    sw.Close();
+                    timeDateTime = timeDateTime.AddMonths(1);
+
                 }
-                sw.Close(); 
+              
             }
                
         }
@@ -157,6 +176,39 @@ namespace StockPredictCore
             public double PriceDiff { get; set; }
             public double TradeCount { get; set; }
             // "日期","成交股數","成交金額","開盤價","最高價","最低價","收盤價","漲跌價差","成交筆數"
+        }
+
+        private static void deleteStockRawDataAfterTheDate(string fileName,DateTime date)
+        {
+
+            List<string> record = new List<string>();
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string line;
+               
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] splitInfo = line.Split(',');
+
+                    string[] sDate = splitInfo[0].Replace(@"""","").Split('/');
+                    DateTime ssDate = new DateTime( Convert.ToInt32(sDate[0])+1911, Convert.ToInt32(sDate[1]), Convert.ToInt32(sDate[2]));
+                    
+
+                    if (ssDate >= date)
+                        break;
+
+                    record.Add(line); 
+                }
+            }
+            File.Delete(fileName);
+
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                foreach(string info in record)
+                {
+                    sw.WriteLine(info);
+                } 
+            }
         }
     }
 }

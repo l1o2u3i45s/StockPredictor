@@ -180,7 +180,7 @@ namespace StockPredictor.ViewModel
                 }
             }
              
-            DataParser.CrawData(StartTime, stockCodeList);
+            DataParser.CrawData(new DateTime(2018,1,1), stockCodeList);
 
 
             using (var reader = new StreamReader(@"stockInfo.csv"))
