@@ -171,6 +171,18 @@ namespace StockPredictor.ViewModel
 
         private void InitStockInfo()
         {
+            List<string> stockCodeList = new List<string>();
+            using (var reader = new StreamReader(@"StockInfofile\\stockIDList.txt"))
+            { 
+                while (!reader.EndOfStream)
+                {
+                    stockCodeList.Add(reader.ReadLine()); 
+                }
+            }
+             
+            DataParser.CrawData(StartTime, stockCodeList);
+
+
             using (var reader = new StreamReader(@"stockInfo.csv"))
             {
                 bool isTitle = true;
