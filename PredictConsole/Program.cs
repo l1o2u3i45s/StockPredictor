@@ -14,17 +14,21 @@ namespace PredictConsole
        
         static void Main(string[] args)
         {
-            string fileFolder = @"E:\\StockData";
-            var stockFiles = Directory.GetFiles(fileFolder);
+            List<string> stockCodeList = new List<string>();
+            using (var reader = new StreamReader(@"StockInfofile\\stockIDList.txt"))
+            {
+                while (!reader.EndOfStream)
+                {
+                    stockCodeList.Add(reader.ReadLine());
+                }
+            }
+
+            Task.Run(() => {
+                DataParser.CrawData(new DateTime(2018, 1, 1), stockCodeList);
+            });
+           
 
            
-            foreach (var stockpath in stockFiles)
-            { 
-                StockData data = DataParser.ConvertData(stockpath);
-                PreProcessor preProcessor = new PreProcessor();
-                preProcessor.Execute(data);
-                   
-            }
 
             Console.WriteLine("Done");
             Console.ReadLine();
