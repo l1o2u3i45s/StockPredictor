@@ -16,90 +16,35 @@ namespace StockPredictCore
 {
     public class DataParser
     {
+       
 
-        public static void CrawData(DateTime startDate,List<string> stockCodeList)
+        public static void CrawData(DateTime startDate, List<string> stockCodeList)
         {
+            string token = "60f390f6c33936.94175919";
             string stockRawDataPath = "StockRawData";
-            if(Directory.Exists(stockRawDataPath) == false)
+            if (Directory.Exists(stockRawDataPath) == false)
                 Directory.CreateDirectory(stockRawDataPath);
 
-             
-            foreach(var stockCode in stockCodeList)
+
+            foreach (var stockCode in stockCodeList)
             {
                 string idpath = Path.Combine(stockRawDataPath, $"{stockCode}.txt");
-                DateTime timeDateTime = new DateTime(startDate.Year, startDate.Month,1);
-                string history = "";
-                if (File.Exists(idpath))
-                    deleteStockRawDataAfterTheDate(idpath,timeDateTime);
-                 
-               
-                 
-                while (timeDateTime <= DateTime.Today)
-                {
-                    Thread.Sleep(5000);
-                    string url = $"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date={timeDateTime.ToString("yyyyMMdd")}&stockNo={stockCode}"; //20210601
-
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Method = WebRequestMethods.Http.Get;
-                    request.ContentType = "application/json";
-                    StreamWriter sw = new StreamWriter(idpath,true);
-                    using (var response = (HttpWebResponse)request.GetResponse())
-                    {
-                        if (response.StatusCode == HttpStatusCode.OK)
-                        {
-                            using (var stream = response.GetResponseStream())
-                            using (var reader = new StreamReader(stream))
-                            {
-                                dynamic dynamicData = JsonConvert.DeserializeObject(reader.ReadToEnd());
-
-                                if (((string)dynamicData.stat.ToString()).Contains("沒有符合條件的資料") || ((string)dynamicData.stat.ToString()).Contains("請重新查詢") )
-                                    continue;
-                                
-                                string dataList = "";
-                                try
-                                {
-                                  dataList = dynamicData.data.ToString();
-                                }
-                                catch(Exception ex)
-                                {
-                                    Console.WriteLine(ex.Message);
-                                }
-                               
-                                string[] splitArray = dataList.Split(new string[] { "]," }, StringSplitOptions.RemoveEmptyEntries);
-
-                                foreach (string data in splitArray)
-                                {
-                                    string temp = data.Replace("[", "").Replace("]","");
-                                    string[] infoList = temp.Split(',');
-
-                                    string resultLine = "";
-                                    for(int i =0;i < infoList.Length; i++)
-                                    {
-                                        string infoData = infoList[i].Replace(",", "");
-                                        infoData = infoData.Trim();
-                                        resultLine += infoData;
-
-                                        if (i < infoList.Length - 1)
-                                            resultLine += ",";
-                                    } 
-                                    sw.WriteLine(resultLine);
-                                } 
-                            }
-                        }
-                    }
-                    sw.Close();
-                    timeDateTime = timeDateTime.AddMonths(1);
-
+                DateTime timeDateTime = new DateTime(startDate.Year, startDate.Month, 1);
+                string sTime = timeDateTime.ToString("yyyy-MM-dd");
+                string eTime = DateTime.Today.ToString("yyyy-MM-dd");
+                string url = $@"https://eodhistoricaldata.com/api/eod/{stockCode}.TW?from={sTime}&to={eTime}&period=d&api_token={token}";
+                using(var client = new WebClient())
+{
+                   client.DownloadFile(url, idpath);
                 }
-              
             }
-               
+
         }
 
         public static StockData ConvertData(string filepath)
         {
             string[] lines = System.IO.File.ReadAllLines(filepath);
-            StockData result = new StockData(lines.Length, Path.GetFileNameWithoutExtension(filepath)); 
+            StockData result = new StockData(lines.Length, Path.GetFileNameWithoutExtension(filepath));
 
             for (int i = 1; i < lines.Length; i++)
             {
@@ -145,7 +90,7 @@ namespace StockPredictCore
                 DataSet dataSet = excelReader.AsDataSet();
                 //...
                 //4. DataSet - Create column names from first row
-               // excelReader.IsFirstRowAsColumnNames = true;
+                // excelReader.IsFirstRowAsColumnNames = true;
                 //DataSet result = excelReader.AsDataSet();
 
                 //5. Data Reader methods
@@ -178,37 +123,6 @@ namespace StockPredictCore
             // "日期","成交股數","成交金額","開盤價","最高價","最低價","收盤價","漲跌價差","成交筆數"
         }
 
-        private static void deleteStockRawDataAfterTheDate(string fileName,DateTime date)
-        {
-
-            List<string> record = new List<string>();
-            using (StreamReader sr = new StreamReader(fileName))
-            {
-                string line;
-               
-                while ((line = sr.ReadLine()) != null)
-                {
-                    string[] splitInfo = line.Split(',');
-
-                    string[] sDate = splitInfo[0].Replace(@"""","").Split('/');
-                    DateTime ssDate = new DateTime( Convert.ToInt32(sDate[0])+1911, Convert.ToInt32(sDate[1]), Convert.ToInt32(sDate[2]));
-                    
-
-                    if (ssDate >= date)
-                        break;
-
-                    record.Add(line); 
-                }
-            }
-            File.Delete(fileName);
-
-            using (StreamWriter sw = new StreamWriter(fileName))
-            {
-                foreach(string info in record)
-                {
-                    sw.WriteLine(info);
-                } 
-            }
-        }
+      
     }
 }
