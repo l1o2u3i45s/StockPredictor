@@ -26,14 +26,7 @@ namespace StockPredictor.Class
             get => filterInfoList;
             set { Set(() => FilterInfoList, ref filterInfoList, value); }
         }
-
-        private bool isSelected;
-        public bool IsSelected
-        {
-            get => isSelected;
-            set { Set(() => IsSelected, ref isSelected, value); }
-        }
-
+        
         public AlgoStrategy()
         {
             foreach (FilterType type in Enum.GetValues(typeof(FilterType)))

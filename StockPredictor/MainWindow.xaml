@@ -35,24 +35,9 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <ItemsControl Grid.Column="0" ItemsSource="{Binding AlgoStrategyCollection,UpdateSourceTrigger=PropertyChanged}">
-                                <ItemsControl.Template>
-                                    <ControlTemplate TargetType="ItemsControl">
-                                        <GroupBox Header="演算法策略" Margin="10">
-                                            <ItemsPresenter/>
-                                        </GroupBox>
-                                    </ControlTemplate>
-                                </ItemsControl.Template>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <StackPanel Margin="10,5,0,0" Orientation="Horizontal">
-                                                <RadioButton GroupName="Strategy" IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}" Content="{Binding Name}"></RadioButton>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <ListBox  Margin="5" Grid.Column="0" SelectedItem="{Binding SeletedAlgoStratrgy,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AlgoStrategyCollection,UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name">
+                               
+                            </ListBox>
                             <ItemsControl Grid.Column="1" ItemsSource="{Binding SeletedAlgoStratrgy.FilterInfoList,UpdateSourceTrigger=PropertyChanged}">
                                 <ItemsControl.Template>
                                     <ControlTemplate TargetType="ItemsControl">
@@ -64,7 +49,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <StackPanel Margin="10,5,0,0" Orientation="Horizontal">
+                                            <StackPanel Margin="50,5,0,0" Orientation="Horizontal">
                                                 <CheckBox Content="{Binding TypeName}" IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
                                                 <TextBox Width="60" IsEnabled="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Param,UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                             </StackPanel>

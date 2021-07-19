@@ -30,7 +30,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = true;
+        private bool isDesign = false;
         const string fileFolder = @"E:\\StockData";
         private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
@@ -66,15 +66,7 @@ namespace StockPredictor.ViewModel
             get => totalDiffValue;
             set { Set(() => TotalDiffValue, ref totalDiffValue, value); }
         }
-
-        private ObservableCollection<FilterInfo> filterInfoCollection = new ObservableCollection<FilterInfo>();
-
-        public ObservableCollection<FilterInfo> FilterInfoCollection
-        {
-            get => filterInfoCollection;
-            set { Set(() => FilterInfoCollection, ref filterInfoCollection, value); }
-        }
-
+         
         private List<StockInfo> stockInfoCollection = new List<StockInfo>();
 
         public List<StockInfo> StockInfoCollection
@@ -104,14 +96,14 @@ namespace StockPredictor.ViewModel
 
         public MainViewModel()
         {
-            InitStockInfo();
-            InitFilterList();
+            InitStockInfo(); 
             AnalysisCommand = new RelayCommand(AnalysisAction);
             if (isDesign == false)
             {
                 PreProcessData(Directory.GetFiles(fileFolder));
             }
               
+            AlgoStrategyCollection.Add(new AlgoStrategy());
             AlgoStrategyCollection.Add(new AlgoStrategy());
             SeletedAlgoStratrgy = algoStrategyCollection[0];
         }
@@ -120,7 +112,7 @@ namespace StockPredictor.ViewModel
         {
             ResetData(stockDataList);
             FilterService service = new FilterService();
-            foreach (var selectedFilter in FilterInfoCollection.Where(_ => _.IsSelected))
+            foreach (var selectedFilter in SeletedAlgoStratrgy.FilterInfoList.Where(_ => _.IsSelected))
             { 
                 service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type,selectedFilter.Param, stockDataList));
             }
@@ -166,13 +158,7 @@ namespace StockPredictor.ViewModel
             });
         }
 
-        private void InitFilterList()
-        {
-            foreach (FilterType type in Enum.GetValues(typeof(FilterType)))
-            { 
-                FilterInfoCollection.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type));
-            } 
-        }
+       
 
         private void ResetData(IEnumerable<StockData>  stockDataList)
         {
