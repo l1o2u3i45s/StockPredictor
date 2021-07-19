@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using StockPredictCore.Filter;
+using StockPredictor.Class.FilterInfo;
 
 namespace StockPredictor.Class
 {
@@ -25,9 +27,19 @@ namespace StockPredictor.Class
             set { Set(() => FilterInfoList, ref filterInfoList, value); }
         }
 
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get => isSelected;
+            set { Set(() => IsSelected, ref isSelected, value); }
+        }
+
         public AlgoStrategy()
         {
-
+            foreach (FilterType type in Enum.GetValues(typeof(FilterType)))
+            {
+                FilterInfoList.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type));
+            }
         }
     }
 }

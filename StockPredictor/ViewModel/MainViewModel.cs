@@ -30,7 +30,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = false;
+        private bool isDesign = true;
         const string fileFolder = @"E:\\StockData";
         private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
@@ -83,6 +83,23 @@ namespace StockPredictor.ViewModel
             set { Set(() => StockInfoCollection, ref stockInfoCollection, value); }
         }
 
+        private ObservableCollection<AlgoStrategy> algoStrategyCollection = new ObservableCollection<AlgoStrategy>();
+
+        public ObservableCollection<AlgoStrategy> AlgoStrategyCollection
+        {
+            get => algoStrategyCollection;
+            set { Set(() => AlgoStrategyCollection, ref algoStrategyCollection, value); }
+        }
+
+        private AlgoStrategy seletedAlgoStratrgy;
+
+        public AlgoStrategy SeletedAlgoStratrgy
+        {
+            get => seletedAlgoStratrgy;
+            set { Set(() => SeletedAlgoStratrgy, ref seletedAlgoStratrgy, value); }
+        }
+         
+
         public RelayCommand AnalysisCommand { get; set; }
 
         public MainViewModel()
@@ -94,7 +111,9 @@ namespace StockPredictor.ViewModel
             {
                 PreProcessData(Directory.GetFiles(fileFolder));
             }
-                
+              
+            AlgoStrategyCollection.Add(new AlgoStrategy());
+            SeletedAlgoStratrgy = algoStrategyCollection[0];
         }
 
         private void AnalysisAction()
