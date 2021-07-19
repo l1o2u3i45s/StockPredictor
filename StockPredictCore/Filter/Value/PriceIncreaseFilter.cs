@@ -10,6 +10,15 @@ namespace StockPredictCore.ValueDiff
 {
     public class PriceIncreaseFilter: IFilter
     {
+        public PriceIncreaseFilter()
+        {
+            parameter = 2;
+        }
+
+        public PriceIncreaseFilter(double initParam) : base(initParam)
+        {
+
+        }
         public PriceIncreaseFilter(IEnumerable<StockData> _stockDataList,double _param) : base(_stockDataList, _param)
         {
         }

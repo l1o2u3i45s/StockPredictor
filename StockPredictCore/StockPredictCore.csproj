@@ -57,8 +57,12 @@
   <ItemGroup>
     <Compile Include="DataParser.cs" />
     <Compile Include="Filter\AverageLine\Ma5DecreaseFilter.cs" />
+    <Compile Include="Filter\AverageLine\Ma5HMa20Filter.cs" />
+    <Compile Include="Filter\AverageLine\Ma5HMa60Filter.cs" />
     <Compile Include="Filter\AverageLine\Ma5LMa20Filter.cs" />
     <Compile Include="Filter\AverageLine\Ma5LMa60Filter.cs" />
+    <Compile Include="Filter\FilterEnum.cs" />
+    <Compile Include="Filter\FilterFactory.cs" />
     <Compile Include="Filter\Value\PriceDecreaseFilter.cs" />
     <Compile Include="Filter\Value\PriceIncreaseFilter.cs" />
     <Compile Include="Filter\FilterService.cs" />

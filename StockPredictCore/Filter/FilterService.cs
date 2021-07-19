@@ -23,5 +23,8 @@ namespace StockPredictCore.Filter
                filter.Execute();
            }
        }
+
+       
+
    }
 }

@@ -9,7 +9,17 @@ namespace StockPredictCore.Filter
 {
     public class VolumnIncreaseFilter : IFilter
     {
-        public VolumnIncreaseFilter(IEnumerable<StockData> _stockDataList,double _param) : base(_stockDataList, _param)
+        public VolumnIncreaseFilter()
+        {
+            parameter = 2;
+        }
+
+        public VolumnIncreaseFilter(double initParam) : base(initParam)
+        {
+
+        }
+
+        public VolumnIncreaseFilter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
         {
         }
 
@@ -35,14 +45,14 @@ namespace StockPredictCore.Filter
                     if (currentData.Date[j].AddDays(-1) != currentData.Date[j - 1])
                         currentData.IsFilter[j] = true;
 
-                    bool isCorrespond = currentData.Volumn[j] > currentData.Volumn[j - 1] * ratio;
+                    bool isCorrespond = currentData.Volumn[j] > currentData.Volumn[j - 1] * (1 + ratio);
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
                 }
 
             }
-        
+
         }
     }
 }

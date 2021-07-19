@@ -9,6 +9,15 @@ namespace StockPredictCore.Filter.AverageLine
 {
     public class Ma5LMa20Filter:IFilter
     {
+        public Ma5LMa20Filter()
+        {
+            parameter = 1;
+        }
+
+        public Ma5LMa20Filter(double initParam) : base(initParam)
+        {
+
+        }
         public Ma5LMa20Filter(IEnumerable<StockData> _stockDataList,double _param) : base(_stockDataList, _param)
         {
         }

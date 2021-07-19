@@ -9,6 +9,16 @@ namespace StockPredictCore.Filter.Volumn
 {
     public class VolumnMoreThanFilter: IFilter
     {
+        public VolumnMoreThanFilter()
+        {
+            parameter = 3000;
+        }
+
+        public VolumnMoreThanFilter(double initParam) : base(initParam)
+        {
+
+        }
+
         public VolumnMoreThanFilter(IEnumerable<StockData> _stockDataList, double _param ) : base(_stockDataList, _param)
         {
         }

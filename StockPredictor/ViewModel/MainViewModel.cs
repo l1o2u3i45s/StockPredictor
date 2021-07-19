@@ -5,13 +5,13 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using InfraStructure;
 using StockPredictCore;
 using StockPredictCore.Filter;
 using StockPredictor.Class;
+using StockPredictor.Class.FilterInfo;
 using StockPredictor.Class.SumResult;
 
 namespace StockPredictor.ViewModel
@@ -103,7 +103,7 @@ namespace StockPredictor.ViewModel
             FilterService service = new FilterService();
             foreach (var selectedFilter in FilterInfoCollection.Where(_ => _.IsSelected))
             { 
-                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter, stockDataList));
+                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type,selectedFilter.Param, stockDataList));
             }
             service.Execute();
 
@@ -150,12 +150,9 @@ namespace StockPredictor.ViewModel
         private void InitFilterList()
         {
             foreach (FilterType type in Enum.GetValues(typeof(FilterType)))
-            {
-                FilterInfo fileInfo = new FilterInfo();
-                fileInfo.Type = type;
-                FilterInfoCollection.Add(fileInfo);
-            }
-            
+            { 
+                FilterInfoCollection.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type));
+            } 
         }
 
         private void ResetData(IEnumerable<StockData>  stockDataList)

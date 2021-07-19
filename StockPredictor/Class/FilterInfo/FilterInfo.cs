@@ -6,8 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using StockPredictCore.Filter;
 
-namespace StockPredictor.Class
+namespace StockPredictor.Class.FilterInfo
 {
     public class FilterInfo:ObservableObject
     {
@@ -53,34 +54,6 @@ namespace StockPredictor.Class
         Volumn,
        
     }
-
-    public enum FilterType
-    {
-        [Description("Ma5比昨天漲了幾%內")]
-        Ma5IncreaseFilter,
-        [Description("Ma5比昨天跌了幾%內")]
-        Ma5DecreaseFilter,
-        [Description("Ma5小於Ma20幾%以上")]
-        Ma5LMa20Filter,
-        [Description("Ma5小於Ma60幾%以上")]
-        Ma5LMa60Filter,
-
-
-
-        [Description("股價跌幾%以上")]
-        PriceDecreaseFilter,
-        [Description("股價漲幾%以上")]
-        PriceIncreaseFilter,
-
-
-
-        [Description("成交量大於幾張")]
-        VolumnMoreThanFilter,
-        [Description("成交量小於幾張")]
-        VolumnLessThanFilter,
-        [Description("成交量比昨日增加幾倍")]
-        VolumnIncreaseFilter
-
-    }
+    
 
 }

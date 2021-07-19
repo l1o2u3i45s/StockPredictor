@@ -9,8 +9,19 @@ namespace StockPredictCore.Filter.AverageLine
 {
     public class Ma5DecreaseFilter : IFilter
     {
+        public Ma5DecreaseFilter()
+        {
+            parameter = 1;
+        }
+
+        public Ma5DecreaseFilter(double initParam) : base(initParam)
+        {
+
+        }
+
         public Ma5DecreaseFilter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
         {
+
         }
 
         public override void Execute()

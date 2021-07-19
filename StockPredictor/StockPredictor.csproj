@@ -79,8 +79,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Class\FilterFactory.cs" />
-    <Compile Include="Class\FilterInfo.cs" />
+    <Compile Include="Class\AlgoStrategy.cs" />
+    <Compile Include="Class\FilterInfo\FilterInfo.cs" />
+    <Compile Include="Class\FilterInfo\FilterInfoFactory.cs" />
     <Compile Include="Class\SumResult\SumResult.cs" />
     <Compile Include="Class\SumResult\SumResultService.cs" />
     <Compile Include="Class\XilianTool.cs" />

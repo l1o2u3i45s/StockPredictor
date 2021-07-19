@@ -9,6 +9,16 @@ namespace StockPredictCore.Filter.ValueDiff
 {
    public class PriceDecreaseFilter:IFilter
     {
+        public PriceDecreaseFilter()
+        {
+            parameter = 2;
+        }
+
+        public PriceDecreaseFilter(double initParam) : base(initParam)
+        {
+
+        }
+
         public PriceDecreaseFilter(IEnumerable<StockData> _stockDataList, double _param ) : base(_stockDataList, _param)
         {
         }
