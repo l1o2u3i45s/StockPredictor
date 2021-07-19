@@ -5,21 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
 
-namespace StockPredictCore.Filter
+namespace StockPredictCore.Filter.Volumn
 {
-    public class VolumnIncreaseFilter : IFilter
+    public class VolumnDecreaseFilter : IFilter
     {
-        public VolumnIncreaseFilter()
+        public VolumnDecreaseFilter()
         {
             parameter = 2;
         }
 
-        public VolumnIncreaseFilter(double initParam) : base(initParam)
+        public VolumnDecreaseFilter(double initParam) : base(initParam)
         {
 
         }
 
-        public VolumnIncreaseFilter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
+        public VolumnDecreaseFilter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
         {
         }
 
@@ -44,7 +44,7 @@ namespace StockPredictCore.Filter
                     if (currentData.Date[j].AddDays(-1) != currentData.Date[j - 1])
                         currentData.IsFilter[j] = true;
 
-                    bool isCorrespond = currentData.Volumn[j] > currentData.Volumn[j - 1] * parameter;
+                    bool isCorrespond = currentData.Volumn[j] < currentData.Volumn[j - 1] / parameter;
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;

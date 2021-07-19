@@ -35,7 +35,9 @@ namespace StockPredictCore.Filter
         [Description("成交量小於幾張")]
         VolumnLessThanFilter,
         [Description("成交量比昨日增加幾倍")]
-        VolumnIncreaseFilter
+        VolumnIncreaseFilter,
+        [Description("成交量比昨日減少幾倍")]
+        VolumnDecreaseFilter
 
     }
 }

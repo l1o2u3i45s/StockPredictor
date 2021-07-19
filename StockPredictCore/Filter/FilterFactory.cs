@@ -42,7 +42,9 @@ namespace StockPredictor.Class
                     return new VolumnLessThanFilter(datas, param); 
                 case FilterType.VolumnIncreaseFilter:
                     return new VolumnIncreaseFilter(datas, param);
-                   
+                case FilterType.VolumnDecreaseFilter:
+                    return new VolumnDecreaseFilter(datas, param);
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

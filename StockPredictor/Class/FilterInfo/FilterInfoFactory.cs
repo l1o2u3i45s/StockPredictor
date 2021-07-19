@@ -38,12 +38,19 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.Ma5HMa60Filter:
                     info.Param = new Ma5HMa60Filter().GetParam();
                     break;
+
+
+
                 case FilterType.PriceDecreaseFilter:
                     info.Param = new PriceDecreaseFilter().GetParam();
                     break;
                 case FilterType.PriceIncreaseFilter:
                     info.Param = new PriceIncreaseFilter().GetParam();
                     break;
+
+
+
+
                 case FilterType.VolumnMoreThanFilter:
                     info.Param = new VolumnMoreThanFilter().GetParam();
                     break;
@@ -53,8 +60,11 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.VolumnIncreaseFilter:
                     info.Param = new VolumnIncreaseFilter().GetParam();
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                case FilterType.VolumnDecreaseFilter:
+                    info.Param = new VolumnDecreaseFilter().GetParam();
+                    break;
+
+              
             } 
             return info; 
         }
