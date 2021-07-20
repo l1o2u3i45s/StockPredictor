@@ -11,6 +11,7 @@ using InfraStructure;
 using StockPredictCore;
 using StockPredictCore.Filter;
 using StockPredictor.Class;
+using StockPredictor.Class.AlgoStategy;
 using StockPredictor.Class.FilterInfo;
 using StockPredictor.Class.SumResult;
 
@@ -30,7 +31,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = false; 
+        private bool isDesign = true; 
         private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
@@ -91,6 +92,7 @@ namespace StockPredictor.ViewModel
         }
          
 
+        public RelayCommand AddStrategyCommand { get; set; }
         public RelayCommand AnalysisCommand { get; set; }
 
         public MainViewModel()
@@ -101,10 +103,27 @@ namespace StockPredictor.ViewModel
             {
                 PreProcessData(Directory.GetFiles(DataParser.rawDataFolderPath));
             }
-              
-            AlgoStrategyCollection.Add(new AlgoStrategy());
-            AlgoStrategyCollection.Add(new AlgoStrategy());
+
+
+            AlgoStrategyCollection = new ObservableCollection<AlgoStrategy>(AlgoStrategyService.Load()); 
+
+            if (AlgoStrategyCollection.Count == 0)
+            {
+                AlgoStrategyCollection.Add(new AlgoStrategy(true));
+                AlgoStrategyCollection.Add(new AlgoStrategy(true));
+            }
+           
             SeletedAlgoStratrgy = algoStrategyCollection[0];
+        }
+
+        ~MainViewModel()
+        {
+
+            foreach (var algo in AlgoStrategyCollection)
+            {
+                algo.Save();
+            }
+
         }
 
         private void AnalysisAction()

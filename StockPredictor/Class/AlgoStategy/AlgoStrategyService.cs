@@ -1,24 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace StockPredictor.Class.AlgoStategy
 {
-    public class AlgoStrategyService
+    public static class AlgoStrategyService
     {
-        public void Save(List<AlgoStrategy> algoStrategy)
-        { 
-            var json = new JavaScriptSerializer().Serialize(algoStrategy);
+        private static string filePath = "AlgoStrategy";
+
+        public static void Save(this AlgoStrategy algoStrategy)
+        {
+            if (Directory.Exists(filePath) == false)
+                Directory.CreateDirectory(filePath);
+
+            string json = JsonConvert.SerializeObject(algoStrategy);
+
+            File.WriteAllText($"AlgoStrategy\\{algoStrategy.Name}_{DateTime.Now.ToString("yyyyMMddmmss")}.txt", json);
         }
 
-        public List<AlgoStrategy> Load(string file)
+        public static List<AlgoStrategy> Load( )
         {
-            var data = new JavaScriptSerializer().DeserializeObject(file);
+            List<AlgoStrategy> result = new List<AlgoStrategy>();
 
-            return data as List<AlgoStrategy>;
+            string[] files = Directory.GetFiles(filePath);
+
+            foreach (var file in files)
+            {
+
+                var json =System.IO.File.ReadAllText(file);
+
+                var data = JsonConvert.DeserializeObject<AlgoStrategy>(json);
+                result.Add(data);
+            }
+           
+            return result;
         }
     }
 }

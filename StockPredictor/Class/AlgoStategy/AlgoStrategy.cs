@@ -29,10 +29,19 @@ namespace StockPredictor.Class
         
         public AlgoStrategy()
         {
-            foreach (FilterType type in Enum.GetValues(typeof(FilterType)))
-            {
-                FilterInfoList.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type));
-            }
+           
         }
+        public AlgoStrategy(bool init)
+        {
+            if (init)
+            {
+                foreach (FilterType type in Enum.GetValues(typeof(FilterType)))
+                {
+                    FilterInfoList.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type));
+                }
+            }
+         
+        }
+       
     }
 }
