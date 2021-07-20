@@ -30,8 +30,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = false;
-        const string fileFolder = @"E:\\StockData";
+        private bool isDesign = false; 
         private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
@@ -100,7 +99,7 @@ namespace StockPredictor.ViewModel
             AnalysisCommand = new RelayCommand(AnalysisAction);
             if (isDesign == false)
             {
-                PreProcessData(Directory.GetFiles(fileFolder));
+                PreProcessData(Directory.GetFiles(DataParser.rawDataFolderPath));
             }
               
             AlgoStrategyCollection.Add(new AlgoStrategy());
@@ -128,7 +127,7 @@ namespace StockPredictor.ViewModel
                     if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime &&
                         stockData.Date[i] <= EndTime)
                     {
-                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
+                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 2], 2);
 
                         if(stockInfoDictionary.ContainsKey(stockData.ID) == false)
                             continue;
@@ -149,6 +148,14 @@ namespace StockPredictor.ViewModel
 
         private void PreProcessData(string[] stockFiles)
         {
+
+            //foreach (var _ in stockFiles)
+            //{
+            //    StockData data = DataParser.ConvertData(_);
+            //    PreProcessor preProcessor = new PreProcessor();
+            //    preProcessor.Execute(data);
+            //    stockDataList.Add(data);
+            //}
             Parallel.ForEach(stockFiles, _ =>
             {
                 StockData data = DataParser.ConvertData(_);
@@ -172,19 +179,7 @@ namespace StockPredictor.ViewModel
         }
 
         private void InitStockInfo()
-        {
-            List<string> stockCodeList = new List<string>();
-            using (var reader = new StreamReader(@"StockInfofile\\stockIDList.txt"))
-            { 
-                while (!reader.EndOfStream)
-                {
-                    stockCodeList.Add(reader.ReadLine()); 
-                }
-            }
-             
-            //DataParser.CrawData(new DateTime(2018,1,1), stockCodeList);
-
-
+        { 
             using (var reader = new StreamReader(@"stockInfo.csv"))
             {
                 bool isTitle = true;

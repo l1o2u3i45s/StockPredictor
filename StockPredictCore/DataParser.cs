@@ -16,56 +16,65 @@ namespace StockPredictCore
 {
     public class DataParser
     {
-       
-
+        public static readonly string apiToken = "60f5a54edc6276.88263769";
+        public static readonly string rawDataFolderPath = "StockRawData";
         public static void CrawData(DateTime startDate, List<string> stockCodeList)
         {
-            string token = "60f390f6c33936.94175919";
-            string stockRawDataPath = "StockRawData";
-            if (Directory.Exists(stockRawDataPath) == false)
-                Directory.CreateDirectory(stockRawDataPath);
-
+             
+            if (Directory.Exists(rawDataFolderPath) == false)
+                Directory.CreateDirectory(rawDataFolderPath);
 
             foreach (var stockCode in stockCodeList)
             {
-                string idpath = Path.Combine(stockRawDataPath, $"{stockCode}.txt");
+                string idpath = Path.Combine(rawDataFolderPath, $"{stockCode}.txt");
                 DateTime timeDateTime = new DateTime(startDate.Year, startDate.Month, 1);
                 string sTime = timeDateTime.ToString("yyyy-MM-dd");
                 string eTime = DateTime.Today.ToString("yyyy-MM-dd");
-                string url = $@"https://eodhistoricaldata.com/api/eod/{stockCode}.TW?from={sTime}&to={eTime}&period=d&api_token={token}";
-                using(var client = new WebClient())
-{
-                   client.DownloadFile(url, idpath);
-                }
+                string url = $@"https://eodhistoricaldata.com/api/eod/{stockCode}.TW?from={sTime}&to={eTime}&period=d&api_token={apiToken}";
+
+                Task.Run(() =>
+                {
+                    using (var client = new WebClient())
+                    {
+                        client.DownloadFile(url, idpath);
+                    }
+
+                }); 
             }
 
+           
+             
         }
 
         public static StockData ConvertData(string filepath)
         {
             string[] lines = System.IO.File.ReadAllLines(filepath);
             StockData result = new StockData(lines.Length, Path.GetFileNameWithoutExtension(filepath));
+            
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string[] data = lines[i].Split(',');
+                    if (data.Count(_ => string.IsNullOrEmpty(_)) > 0)
+                        continue;
 
-            for (int i = 1; i < lines.Length; i++)
-            {
-                string[] data = lines[i].Split(',');
-                if (data.Count(_ => string.IsNullOrEmpty(_)) > 0)
-                    continue;
+                    DateTime time;
+                    if(DateTime.TryParse(data[0], out time) == false)
+                        continue;
 
-                result.Date[i] = Convert.ToDateTime(data[0]);
-                result.OpenPrice[i] = Convert.ToDouble(data[1]);
-                result.HightestPrice[i] = Convert.ToDouble(data[2]);
-                result.LowestPrice[i] = Convert.ToDouble(data[3]);
-                result.ClosePrice[i] = Convert.ToDouble(data[4]);
-                result.Volumn[i] = Convert.ToDouble(data[5]);
-                result.KValue[i] = 0;
-                result.DValue[i] = 0;
+                    result.Date[i] = time;
+                    result.OpenPrice[i] = Convert.ToDouble(data[1]);
+                    result.HightestPrice[i] = Convert.ToDouble(data[2]);
+                    result.LowestPrice[i] = Convert.ToDouble(data[3]);
+                    result.ClosePrice[i] = Convert.ToDouble(data[4]);
+                    result.Volumn[i] = Convert.ToDouble(data[6]);
+                    result.KValue[i] = 0;
+                    result.DValue[i] = 0;
 
-                result.MA60[i] = 0;
-                result.MA20[i] = 0;
-                result.MA5[i] = 0;
-            }
-
+                    result.MA60[i] = 0;
+                    result.MA20[i] = 0;
+                    result.MA5[i] = 0;
+                }
+           
             return result;
         }
 

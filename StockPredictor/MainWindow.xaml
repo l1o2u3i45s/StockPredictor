@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockPredictor"
+        xmlns:viewModel="clr-namespace:StockPredictor.ViewModel"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
@@ -169,8 +170,20 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="個股分析">
-
+            <TabItem Header="資料中心" >
+                <TabItem.DataContext>
+                    <viewModel:DataCenterViewModel/>
+                </TabItem.DataContext>
+                <Grid>
+<Grid.RowDefinitions>
+    <RowDefinition Height="50"/>
+    <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" >
+                        <Button Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"></Button>
+                    </StackPanel>
+                </Grid>
+               
             </TabItem>
         </TabControl>
 
