@@ -4,11 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockPredictor"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:viewModel="clr-namespace:StockPredictor.ViewModel"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Title="MainWindow" Height="800" Width="1600">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <TabControl>
             <TabItem Header="股票篩選" >
@@ -36,9 +42,21 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <ListBox  Margin="5" Grid.Column="0" SelectedItem="{Binding SeletedAlgoStratrgy,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AlgoStrategyCollection,UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name">
-                               
-                            </ListBox>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <ListBox  Margin="5" Grid.Column="0" SelectedItem="{Binding SeletedAlgoStratrgy,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AlgoStrategyCollection,UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name">
+                                </ListBox>
+
+                                <DockPanel Grid.Row="1">
+                                    <Button Content="刪除" Margin="5" Width="50"  Command="{Binding RemoveStrategyCommand}"/>
+                                    <Button Content="新增" Margin="5" Width="50" HorizontalAlignment="Right"  Command="{Binding AddStrategyCommand}"/>
+                                   
+                                </DockPanel>
+                            </Grid>
+                           
                             <ItemsControl Grid.Column="1" ItemsSource="{Binding SeletedAlgoStratrgy.FilterInfoList,UpdateSourceTrigger=PropertyChanged}">
                                 <ItemsControl.Template>
                                     <ControlTemplate TargetType="ItemsControl">

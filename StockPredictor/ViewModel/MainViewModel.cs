@@ -93,12 +93,18 @@ namespace StockPredictor.ViewModel
          
 
         public RelayCommand AddStrategyCommand { get; set; }
+        public RelayCommand RemoveStrategyCommand { get; set; }
         public RelayCommand AnalysisCommand { get; set; }
-
+        public RelayCommand CloseWindowCommand { get; set; }
         public MainViewModel()
         {
             InitStockInfo(); 
             AnalysisCommand = new RelayCommand(AnalysisAction);
+            AddStrategyCommand = new RelayCommand(AddStrategyAction);
+            RemoveStrategyCommand = new RelayCommand(RemoveStrategyAction);
+            CloseWindowCommand = new RelayCommand(CloseWindowAction);
+
+
             if (isDesign == false)
             {
                 PreProcessData(Directory.GetFiles(DataParser.rawDataFolderPath));
@@ -116,14 +122,39 @@ namespace StockPredictor.ViewModel
             SeletedAlgoStratrgy = algoStrategyCollection[0];
         }
 
-        ~MainViewModel()
+        private void CloseWindowAction()
         {
+            if (Directory.Exists(AlgoStrategyService.filePath) == false)
+                Directory.CreateDirectory(AlgoStrategyService.filePath);
 
+            foreach (var file in Directory.GetFiles(AlgoStrategyService.filePath))
+            {
+                File.Delete(file);
+            }
             foreach (var algo in AlgoStrategyCollection)
             {
                 algo.Save();
             }
+        }
+       
 
+        private void RemoveStrategyAction()
+        {
+            if(AlgoStrategyCollection.Count < 2 || SeletedAlgoStratrgy == null)
+                return;
+
+            int idx = AlgoStrategyCollection.IndexOf(SeletedAlgoStratrgy);
+
+            AlgoStrategyCollection.Remove(SeletedAlgoStratrgy);
+
+            SeletedAlgoStratrgy = AlgoStrategyCollection[idx-1];
+
+        }
+
+        private void AddStrategyAction()
+        {
+
+            AlgoStrategyCollection.Add(new AlgoStrategy(true));
         }
 
         private void AnalysisAction()
