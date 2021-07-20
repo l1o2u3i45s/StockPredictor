@@ -31,7 +31,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = true; 
+        private bool isDesign = false; 
         private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
