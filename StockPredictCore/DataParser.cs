@@ -42,8 +42,8 @@ namespace StockPredictCore
                 }); 
             }
 
-           
-             
+
+            Task.WaitAll();
         }
 
         public static StockData ConvertData(string filepath)
