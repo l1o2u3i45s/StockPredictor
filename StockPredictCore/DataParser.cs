@@ -49,9 +49,9 @@ namespace StockPredictCore
         public static StockData ConvertData(string filepath)
         {
             string[] lines = System.IO.File.ReadAllLines(filepath);
-            StockData result = new StockData(lines.Length, Path.GetFileNameWithoutExtension(filepath));
+            StockData result = new StockData(lines.Length-1, Path.GetFileNameWithoutExtension(filepath));
             
-                for (int i = 1; i < lines.Length; i++)
+                for (int i = 1; i < lines.Length-1; i++)
                 {
                     string[] data = lines[i].Split(',');
                     if (data.Count(_ => string.IsNullOrEmpty(_)) > 0)

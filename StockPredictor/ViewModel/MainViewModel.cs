@@ -177,7 +177,7 @@ namespace StockPredictor.ViewModel
                     if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime &&
                         stockData.Date[i] <= EndTime)
                     {
-                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 2], 2);
+                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
 
                         if(stockInfoDictionary.ContainsKey(stockData.ID) == false)
                             continue;
