@@ -34,9 +34,9 @@ namespace StockPredictCore.Filter.ValueDiff
                 {
                     if (currentData.IsFilter[j])
                         continue;
-                     
 
-                    bool isCorrespond = currentData.ClosePrice[j] / currentData.ClosePrice[j - 1] <=   (1 - ratio);
+
+                    bool isCorrespond = currentData.ClosePrice[j] - currentData.ClosePrice[j - 1] / currentData.ClosePrice[j - 1] <= ratio*-1;
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
