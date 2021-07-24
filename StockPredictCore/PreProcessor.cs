@@ -47,6 +47,7 @@ namespace StockPredictCore
             Queue<double> queue5 = new Queue<double>();
             Queue<double> queue20 = new Queue<double>();
             Queue<double> queue60 = new Queue<double>();
+            Queue<double> queue120 = new Queue<double>();
             for (int i = 0; i < dataCount; i++)
             {
                 if (queue5.Count < 5)
@@ -57,6 +58,9 @@ namespace StockPredictCore
                  
                 if (queue60.Count < 60)
                     queue60.Enqueue(data.ClosePrice[i]);
+
+                if (queue120.Count < 120)
+                    queue120.Enqueue(data.ClosePrice[i]);
 
                 if (queue5.Count == 5)
                 { 
@@ -74,6 +78,12 @@ namespace StockPredictCore
                 { 
                     data.MA60[i] = queue60.Average();
                     queue60.Dequeue();
+                }
+
+                if (queue120.Count == 120)
+                {
+                    data.MA120[i] = queue120.Average();
+                    queue120.Dequeue();
                 }
 
             }

@@ -28,6 +28,10 @@ namespace StockPredictor.Class
                     return new Ma5LMa60Filter(datas, param);
                 case FilterType.Ma5HMa60Filter:
                     return new Ma5HMa60Filter(datas, param);
+                case FilterType.Ma5LMa120Filter:
+                    return new Ma5LMa120Filter(datas, param);
+                case FilterType.Ma5HMa120Filter:
+                    return new Ma5HMa120Filter(datas, param);
 
                 case FilterType.PriceDecreaseFilter:
                     return new PriceDecreaseFilter(datas, param); 

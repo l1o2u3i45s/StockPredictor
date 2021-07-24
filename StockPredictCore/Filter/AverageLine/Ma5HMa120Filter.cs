@@ -5,21 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
 
-namespace StockPredictCore.Filter.AverageLine
+namespace StockPredictCore.Filter
 {
-    public class Ma5HMa20Filter: IFilter
+    public class Ma5HMa120Filter: IFilter
     {
-        public Ma5HMa20Filter()
+        public Ma5HMa120Filter()
         {
             parameter = 1;
         }
 
-        public Ma5HMa20Filter(double initParam) : base(initParam)
+
+        public Ma5HMa120Filter(double initParam) : base(initParam)
         {
 
         }
 
-        public Ma5HMa20Filter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
+        public Ma5HMa120Filter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
         {
         }
 
@@ -36,7 +37,7 @@ namespace StockPredictCore.Filter.AverageLine
                     if (currentData.IsFilter[j])
                         continue;
 
-                    bool isCorrespond = currentData.MA5[j] > currentData.MA20[j] + currentData.MA20[j] * ratio;
+                    bool isCorrespond = currentData.MA5[j] > currentData.MA120[j] + currentData.MA120[j] * ratio;
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
