@@ -47,7 +47,15 @@
                                     <RowDefinition/>
                                     <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
-                                <ListBox  Margin="5" Grid.Column="0" SelectedItem="{Binding SeletedAlgoStratrgy,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AlgoStrategyCollection,UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name">
+                                <ListBox  Margin="5" Grid.Column="0" SelectedItem="{Binding SeletedAlgoStratrgy,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AlgoStrategyCollection,UpdateSourceTrigger=PropertyChanged}" >
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBox  Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
+                                                <Rectangle Width="20"></Rectangle>
+                                            </StackPanel> 
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
                                 </ListBox>
 
                                 <DockPanel Grid.Row="1">
