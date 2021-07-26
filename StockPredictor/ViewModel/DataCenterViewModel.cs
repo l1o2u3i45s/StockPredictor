@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using StockPredictCore;
@@ -34,6 +35,7 @@ namespace StockPredictor.ViewModel
             }
              
             DataParser.CrawData(new DateTime(2000,1,1), stockCodeList);
+            MessageBox.Show("更新股價完成");
         }
     }
 }

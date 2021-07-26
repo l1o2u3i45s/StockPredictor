@@ -24,26 +24,32 @@ namespace StockPredictCore
             if (Directory.Exists(rawDataFolderPath) == false)
                 Directory.CreateDirectory(rawDataFolderPath);
 
+            var tasks = new List<Task>();
             foreach (var stockCode in stockCodeList)
             {
+               
                 string idpath = Path.Combine(rawDataFolderPath, $"{stockCode}.txt");
                 DateTime timeDateTime = new DateTime(startDate.Year, startDate.Month, 1);
                 string sTime = timeDateTime.ToString("yyyy-MM-dd");
                 string eTime = DateTime.Today.ToString("yyyy-MM-dd");
                 string url = $@"https://eodhistoricaldata.com/api/eod/{stockCode}.TW?from={sTime}&to={eTime}&period=d&api_token={apiToken}";
 
-                Task.Run(() =>
+                tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    using (var client = new WebClient())
+                    try
                     {
-                        client.DownloadFile(url, idpath);
+                        using (var client = new WebClient())
+                        {
+                            client.DownloadFile(url, idpath);
+                        }
                     }
-
-                }); 
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                })); 
             }
-
-
-            Task.WaitAll();
+            Task.WaitAll(tasks.ToArray());
         }
 
         public static StockData ConvertData(string filepath)
