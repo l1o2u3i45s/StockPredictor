@@ -33,9 +33,9 @@ namespace StockPredictCore.AverageLine
                 for (int j = 1; j < currentData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
-                        continue; 
+                        continue;
 
-                    bool isCorrespond = currentData.MA5[j] - currentData.MA5[j - 1] <= currentData.MA5[j-1] * parameter / 100 && currentData.MA5[j] - currentData.MA5[j - 1]>0;
+                    bool isCorrespond = (currentData.MA5[j - 1] - currentData.MA5[j]) * -1 / currentData.MA5[j - 1] >= parameter / 100;
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
