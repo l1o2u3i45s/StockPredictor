@@ -9,9 +9,9 @@ namespace StockPredictCore.Filter
 { 
     public enum FilterType
     {
-        [Description("Ma5比昨天漲了幾%內")]
+        [Description("Ma5比昨天漲了幾%上")]
         Ma5IncreaseFilter,
-        [Description("Ma5比昨天跌了幾%內")]
+        [Description("Ma5比昨天跌了幾%上")]
         Ma5DecreaseFilter,
         [Description("Ma5小於Ma20幾%以上")]
         Ma5LMa20Filter,
