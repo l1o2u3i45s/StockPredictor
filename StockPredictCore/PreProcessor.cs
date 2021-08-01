@@ -13,6 +13,58 @@ namespace StockPredictCore
         {
             CaculateRSVandKD(data);
             CaculateMA(data);
+            CaculateRSI5(data);
+            CaculateRSI10(data);
+        }
+
+        void CaculateRSI5(StockData data)
+        {
+            int dataCount = data.Date.Count();
+           
+            //RSI5
+            for (int i = 5; i < dataCount; i++)
+            {
+
+                double sumUp = 0;
+                double sumDown = 0;
+                for (int j = i-5; j < i; j++)
+                {
+                    double diff = data.ClosePrice[j + 1] - data.ClosePrice[j];
+
+                    if (diff > 0)
+                        sumUp += diff;
+                    else if (diff < 0)
+                        sumDown += diff*-1;
+                }
+
+                data.RSI5[i] = sumUp / (sumUp + sumDown) * 100;
+
+            }
+        }
+
+        void CaculateRSI10(StockData data)
+        {
+            int dataCount = data.Date.Count();
+            int amount = 10;
+            //RSI0
+            for (int i = amount; i < dataCount; i++)
+            {
+
+                double sumUp = 0;
+                double sumDown = 0;
+                for (int j = i - amount; j < i; j++)
+                {
+                    double diff = data.ClosePrice[j + 1] - data.ClosePrice[j];
+
+                    if (diff > 0)
+                        sumUp += diff;
+                    else if (diff < 0)
+                        sumDown += diff * -1;
+                }
+
+                data.RSI10[i] = sumUp / (sumUp + sumDown) * 100;
+
+            }
         }
 
         void CaculateRSVandKD(StockData data)

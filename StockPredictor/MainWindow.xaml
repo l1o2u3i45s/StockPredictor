@@ -69,7 +69,9 @@
                                 <ItemsControl.Template>
                                     <ControlTemplate TargetType="ItemsControl">
                                         <GroupBox Header="Filter" Margin="10">
-                                            <ItemsPresenter/>
+                                            <ScrollViewer>
+                                                <ItemsPresenter/>
+                                            </ScrollViewer> 
                                         </GroupBox>
                                     </ControlTemplate>
                                 </ItemsControl.Template>

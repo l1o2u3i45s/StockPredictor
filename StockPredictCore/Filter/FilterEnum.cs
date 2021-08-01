@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace StockPredictCore.Filter
-{ 
+{
     public enum FilterType
     {
         [Description("Ma5比昨天漲了幾%上")]
@@ -41,7 +41,20 @@ namespace StockPredictCore.Filter
         [Description("成交量比昨日增加幾倍")]
         VolumnIncreaseFilter,
         [Description("成交量比昨日減少幾倍")]
-        VolumnDecreaseFilter
+        VolumnDecreaseFilter,
 
+
+        [Description("RSI5比昨天少幾%")]
+        RSI5DecreaseFilter,
+        [Description("RSI5比昨天多幾%")]
+        RSI5IncreaseFilter,
+        [Description("RSI5大於RSI10幾%")]
+        RSI5HRSI10Filter,
+        [Description("RSI5小於RSI10幾%")]
+        RSI5LRSI10Filter,
+        [Description("RSI5小於多少")]
+        RSI5LowerThanValueFilter,
+        [Description("RSI5大於多少")]
+        RSIHigherThanValueFilter
     }
 }

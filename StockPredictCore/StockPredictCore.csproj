@@ -65,6 +65,12 @@
     <Compile Include="Filter\FilterEnum.cs" />
     <Compile Include="Filter\FilterFactory.cs" />
     <Compile Include="Filter\AverageLine\Ma5HMa120Filter.cs" />
+    <Compile Include="Filter\RSI\RSI5DecreaseFilter.cs" />
+    <Compile Include="Filter\RSI\RSI5HRSI10Filter.cs" />
+    <Compile Include="Filter\RSI\RSI5IncreaseFilter.cs" />
+    <Compile Include="Filter\RSI\RSI5LowerThanValueFilter.cs" />
+    <Compile Include="Filter\RSI\RSI5LRSI10Filter.cs" />
+    <Compile Include="Filter\RSI\RSIHigherThanValueFilter.cs" />
     <Compile Include="Filter\Value\PriceDecreaseFilter.cs" />
     <Compile Include="Filter\Value\PriceIncreaseFilter.cs" />
     <Compile Include="Filter\FilterService.cs" />

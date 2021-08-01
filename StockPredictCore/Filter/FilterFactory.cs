@@ -4,6 +4,7 @@ using InfraStructure;
 using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
+using StockPredictCore.Filter.RSI;
 using StockPredictCore.Filter.ValueDiff;
 using StockPredictCore.Filter.Volumn;
 using StockPredictCore.ValueDiff; 
@@ -49,9 +50,23 @@ namespace StockPredictor.Class
                 case FilterType.VolumnDecreaseFilter:
                     return new VolumnDecreaseFilter(datas, param);
 
+
+                case FilterType.RSI5DecreaseFilter:
+                    return new RSI5DecreaseFilter(datas, param);
+                case FilterType.RSI5IncreaseFilter:
+                    return new RSI5IncreaseFilter(datas, param);
+                case FilterType.RSI5HRSI10Filter:
+                    return new RSI5HRSI10Filter(datas, param);
+                case FilterType.RSI5LRSI10Filter:
+                    return new RSI5LRSI10Filter(datas, param);
+                case FilterType.RSI5LowerThanValueFilter:
+                    return new RSI5LowerThanValueFilter(datas, param);
+                case FilterType.RSIHigherThanValueFilter:
+                    return new RSIHigherThanValueFilter(datas, param);
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
     }
-}
+}  
