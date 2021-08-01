@@ -37,6 +37,12 @@ namespace StockPredictCore.Filter.RSI
 
                     bool isCorrespond = currentData.RSI5[j] > currentData.RSI10[j] + currentData.RSI10[j] * ratio;
 
+                    if (isCorrespond)
+                    {
+                        var a = currentData.RSI5[j];
+                        var b = currentData.RSI10[j];
+                    }
+
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
                 }

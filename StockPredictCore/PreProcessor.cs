@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EODHistoricalData.NET;
 
 namespace StockPredictCore
 {
@@ -24,6 +25,8 @@ namespace StockPredictCore
             //RSI5
             for (int i = 5; i < dataCount; i++)
             {
+              
+
 
                 double sumUp = 0;
                 double sumDown = 0;
@@ -37,8 +40,12 @@ namespace StockPredictCore
                         sumDown += diff*-1;
                 }
 
+                sumUp = sumUp / 5;
+                sumDown = sumDown / 5;
                 data.RSI5[i] = sumUp / (sumUp + sumDown) * 100;
 
+                if (i == dataCount - 1)
+                    Console.WriteLine("");
             }
         }
 
@@ -61,7 +68,8 @@ namespace StockPredictCore
                     else if (diff < 0)
                         sumDown += diff * -1;
                 }
-
+                sumUp = sumUp / amount;
+                sumDown = sumDown / amount;
                 data.RSI10[i] = sumUp / (sumUp + sumDown) * 100;
 
             }

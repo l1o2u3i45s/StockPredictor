@@ -140,14 +140,15 @@ namespace StockPredictor.ViewModel
 
         private void RemoveStrategyAction()
         {
-            if(AlgoStrategyCollection.Count < 2 || SeletedAlgoStratrgy == null)
+            if( SeletedAlgoStratrgy == null)
                 return;
 
             int idx = AlgoStrategyCollection.IndexOf(SeletedAlgoStratrgy);
 
             AlgoStrategyCollection.Remove(SeletedAlgoStratrgy);
 
-            SeletedAlgoStratrgy = AlgoStrategyCollection[idx-1];
+            if(idx>0)
+              SeletedAlgoStratrgy = AlgoStrategyCollection[idx-1];
 
         }
 
