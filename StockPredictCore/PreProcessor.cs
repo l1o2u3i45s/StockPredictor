@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EODHistoricalData.NET;
+using NetTrader.Indicator;
 
 namespace StockPredictCore
 {
@@ -14,66 +15,46 @@ namespace StockPredictCore
         {
             CaculateRSVandKD(data);
             CaculateMA(data);
-            CaculateRSI5(data);
-            CaculateRSI10(data);
+           CaculateRSI(data);
         }
 
-        void CaculateRSI5(StockData data)
+        void CaculateRSI(StockData data)
         {
-            int dataCount = data.Date.Count();
-           
-            //RSI5
-            for (int i = 5; i < dataCount; i++)
+            int dataCount = data.Date.Count();  
+            List<Ohlc> ohlcList = new List<Ohlc>();
+            for (int i = 0; i < dataCount; i++)
             {
-              
-
-
-                double sumUp = 0;
-                double sumDown = 0;
-                for (int j = i-5; j < i; j++)
-                {
-                    double diff = data.ClosePrice[j + 1] - data.ClosePrice[j];
-
-                    if (diff > 0)
-                        sumUp += diff;
-                    else if (diff < 0)
-                        sumDown += diff*-1;
-                }
-
-                sumUp = sumUp / 5;
-                sumDown = sumDown / 5;
-                data.RSI5[i] = sumUp / (sumUp + sumDown) * 100;
-
-                if (i == dataCount - 1)
-                    Console.WriteLine("");
+                Ohlc a = new Ohlc();
+                a.Date = data.Date[i];
+                a.Open = data.OpenPrice[i];
+                a.Close = data.ClosePrice[i];
+                a.High = data.HightestPrice[i];
+                a.Low = data.LowestPrice[i];
+                ohlcList.Add(a); 
             }
-        }
+            if (dataCount < 10)
+                return;
 
-        void CaculateRSI10(StockData data)
-        {
-            int dataCount = data.Date.Count();
-            int amount = 10;
-            //RSI0
-            for (int i = amount; i < dataCount; i++)
+            RSI rsi5 = new RSI(5);
+            rsi5.Load(ohlcList);
+            RSISerie serie5 = rsi5.Calculate();
+
+
+            RSI rsi10 = new RSI(10);
+            rsi10.Load(ohlcList);
+            RSISerie serie10 = rsi10.Calculate();
+
+            for (int i = 0; i < dataCount; i++)
             {
+                if (serie5.RSI[i] != null)
+                    data.RSI5[i] = (double)serie5.RSI[i];
 
-                double sumUp = 0;
-                double sumDown = 0;
-                for (int j = i - amount; j < i; j++)
-                {
-                    double diff = data.ClosePrice[j + 1] - data.ClosePrice[j];
-
-                    if (diff > 0)
-                        sumUp += diff;
-                    else if (diff < 0)
-                        sumDown += diff * -1;
-                }
-                sumUp = sumUp / amount;
-                sumDown = sumDown / amount;
-                data.RSI10[i] = sumUp / (sumUp + sumDown) * 100;
+                if (serie10.RSI[i] != null)
+                    data.RSI10[i] = (double)serie10.RSI[i];
 
             }
         }
+        
 
         void CaculateRSVandKD(StockData data)
         {
