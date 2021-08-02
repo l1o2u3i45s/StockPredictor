@@ -26,7 +26,28 @@ namespace StockPredictor.Class
             get => filterInfoList;
             set { Set(() => FilterInfoList, ref filterInfoList, value); }
         }
-        
+         
+
+        public List<FilterInfo.FilterInfo> AverageLineFilterList //均線
+        {
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("Ma")).ToList(); 
+        }
+
+        public List<FilterInfo.FilterInfo> TargerFilterList //指標
+        {
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("RSI")).ToList();
+        }
+
+        public List<FilterInfo.FilterInfo> ValueFilterList //價格
+        {
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("股價")).ToList();
+        }
+
+        public List<FilterInfo.FilterInfo> VolumnFilterList //成交量
+        {
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("成交量")).ToList();
+        }
+
         public AlgoStrategy()
         {
            
