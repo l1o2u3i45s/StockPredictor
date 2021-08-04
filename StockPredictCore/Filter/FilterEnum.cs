@@ -31,7 +31,8 @@ namespace StockPredictCore.Filter
         PriceDecreaseFilter,
         [Description("股價漲幾%以上")]
         PriceIncreaseFilter,
-
+        [Description("股價N日內最高")]
+        PriceMostHighInDaysFilter,
 
 
         [Description("成交量大於幾張")]

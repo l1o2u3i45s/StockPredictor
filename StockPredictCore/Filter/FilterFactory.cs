@@ -5,6 +5,7 @@ using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
 using StockPredictCore.Filter.RSI;
+using StockPredictCore.Filter.Value;
 using StockPredictCore.Filter.ValueDiff;
 using StockPredictCore.Filter.Volumn;
 using StockPredictCore.ValueDiff; 
@@ -38,7 +39,8 @@ namespace StockPredictor.Class
                     return new PriceDecreaseFilter(datas, param); 
                 case FilterType.PriceIncreaseFilter:
                     return new PriceIncreaseFilter(datas, param); 
-
+                case FilterType.PriceMostHighInDaysFilter:
+                    return new PriceMostHighInDaysFilter(datas, param); 
 
 
                 case FilterType.VolumnMoreThanFilter:

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
+using StockPredictCore.Filter.RSI;
+using StockPredictCore.Filter.Value;
 using StockPredictCore.Filter.ValueDiff;
 using StockPredictCore.Filter.Volumn;
 using StockPredictCore.ValueDiff;
@@ -46,15 +48,36 @@ namespace StockPredictor.Class.FilterInfo
                     break;
 
 
+                case FilterType.RSI5DecreaseFilter:
+                    info.Param = new RSI5DecreaseFilter().GetParam();
+                    break;
+                case FilterType.RSI5HRSI10Filter:
+                    info.Param = new RSI5HRSI10Filter().GetParam();
+                    break;
+                case FilterType.RSI5IncreaseFilter:
+                    info.Param = new RSI5IncreaseFilter().GetParam();
+                    break;
+                case FilterType.RSI5LowerThanValueFilter:
+                    info.Param = new RSI5LowerThanValueFilter().GetParam();
+                    break;
+                case FilterType.RSI5LRSI10Filter:
+                    info.Param = new RSI5LRSI10Filter().GetParam();
+                    break;
+                case FilterType.RSIHigherThanValueFilter:
+                    info.Param = new RSIHigherThanValueFilter().GetParam();
+                    break;
+
+
+
                 case FilterType.PriceDecreaseFilter:
                     info.Param = new PriceDecreaseFilter().GetParam();
                     break;
                 case FilterType.PriceIncreaseFilter:
                     info.Param = new PriceIncreaseFilter().GetParam();
                     break;
-
-
-
+                case FilterType.PriceMostHighInDaysFilter:
+                    info.Param = new PriceMostHighInDaysFilter().GetParam();
+                    break;
 
                 case FilterType.VolumnMoreThanFilter:
                     info.Param = new VolumnMoreThanFilter().GetParam();
@@ -68,8 +91,10 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.VolumnDecreaseFilter:
                     info.Param = new VolumnDecreaseFilter().GetParam();
                     break;
+                default:
+                    throw new NotImplementedException();
+                
 
-              
             } 
             return info; 
         }
