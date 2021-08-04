@@ -35,7 +35,8 @@ namespace StockPredictCore.Filter.Value
                     if (currentData.IsFilter[j])
                         continue;
 
-                    bool isCorrespond = currentData.ClosePrice[j] >=  currentData.MA60[j] + currentData.MA60[j] * ratio;
+                    bool isCorrespond = currentData.MA60[j] >= currentData.ClosePrice[j] * (1-ratio) && 
+                                        currentData.MA60[j] <= currentData.ClosePrice[j];
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
