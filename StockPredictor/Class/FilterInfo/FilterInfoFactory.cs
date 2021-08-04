@@ -46,8 +46,11 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.Ma5HMa120Filter:
                     info.Param = new Ma5HMa120Filter().GetParam();
                     break;
+                case FilterType.Ma60LowerPriceFilter:
+                    info.Param = new Ma60LowerPriceFilter().GetParam();
+                    break;
 
-
+                    
                 case FilterType.RSI5DecreaseFilter:
                     info.Param = new RSI5DecreaseFilter().GetParam();
                     break;
