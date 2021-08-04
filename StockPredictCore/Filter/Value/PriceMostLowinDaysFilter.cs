@@ -35,7 +35,7 @@ namespace StockPredictCore.Filter.Value
                     if (currentData.IsFilter[j])
                         continue;
 
-                    double mostlowClosePrice = 0;
+                    double mostlowClosePrice = 10000;
                     for (int k = j - days; k < j; k++)
                     {
                         if (currentData.LowestPrice[k] < mostlowClosePrice)
