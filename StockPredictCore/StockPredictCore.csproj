@@ -84,6 +84,7 @@
     <Compile Include="Filter\AverageLine\Ma5IncreaseFilter.cs" />
     <Compile Include="Filter\MA5low20low60AndTanis0.cs" />
     <Compile Include="Filter\Value\PriceMostHighInDaysFilter.cs" />
+    <Compile Include="Filter\Value\PriceMostLowinDaysFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnDecreaseFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnIncreaseFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnLessThanFilter.cs" />
