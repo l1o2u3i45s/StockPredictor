@@ -90,6 +90,8 @@
     <Compile Include="Filter\Volumn\VolumnIncreaseFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnLessThanFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnMoreThanFilter.cs" />
+    <Compile Include="Filter\Volumn\VolumnMostHighInDayFilter.cs" />
+    <Compile Include="Filter\Volumn\VolumnMostLowInDayFilter.cs" />
     <Compile Include="MathTool.cs" />
     <Compile Include="PreProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -46,6 +46,10 @@ namespace StockPredictCore.Filter
         VolumnIncreaseFilter,
         [Description("成交量比昨日減少幾倍")]
         VolumnDecreaseFilter,
+        [Description("成交量N日內最高")]
+        VolumnMostHighInDayFilter,
+        [Description("成交量N日內最低")]
+        VolumnMostLowInDayFilter,
 
 
         [Description("RSI5比昨天少幾%")]

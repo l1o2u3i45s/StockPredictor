@@ -54,7 +54,10 @@ namespace StockPredictor.Class
                     return new VolumnIncreaseFilter(datas, param);
                 case FilterType.VolumnDecreaseFilter:
                     return new VolumnDecreaseFilter(datas, param);
-
+                case FilterType.VolumnMostHighInDayFilter:
+                    return new VolumnMostHighInDayFilter(datas, param);
+                case FilterType.VolumnMostLowInDayFilter:
+                    return new VolumnMostLowInDayFilter(datas, param);
 
                 case FilterType.RSI5DecreaseFilter:
                     return new RSI5DecreaseFilter(datas, param);

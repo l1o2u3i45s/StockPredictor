@@ -97,6 +97,13 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.VolumnDecreaseFilter:
                     info.Param = new VolumnDecreaseFilter().GetParam();
                     break;
+                case FilterType.VolumnMostHighInDayFilter:
+                    info.Param = new VolumnMostHighInDayFilter().GetParam();
+                    break;
+                case FilterType.VolumnMostLowInDayFilter:
+                    info.Param = new VolumnMostLowInDayFilter().GetParam();
+                    break;
+                
                 default:
                     throw new NotImplementedException();
                 
