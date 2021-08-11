@@ -71,6 +71,7 @@
     <Compile Include="Filter\FilterEnum.cs" />
     <Compile Include="Filter\FilterFactory.cs" />
     <Compile Include="Filter\AverageLine\Ma5HMa120Filter.cs" />
+    <Compile Include="Filter\Other\Other_RSI5L20_HigherThanLastLowFilter.cs" />
     <Compile Include="Filter\RSI\RSI5DecreaseFilter.cs" />
     <Compile Include="Filter\RSI\RSI5HRSI10Filter.cs" />
     <Compile Include="Filter\RSI\RSI5IncreaseFilter.cs" />

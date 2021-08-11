@@ -158,7 +158,30 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </TabItem>
-
+                                <TabItem Header="特殊算法">
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding SeletedAlgoStratrgy.OtherFilterList,UpdateSourceTrigger=PropertyChanged}">
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="ItemsControl">
+                                                <Grid Background="{StaticResource  AccordionBackgroundBrush}">
+                                                    <ScrollViewer Margin="10">
+                                                        <ItemsPresenter/>
+                                                    </ScrollViewer>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Background="{StaticResource  AccordionBackgroundBrush}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <CheckBox Content="{Binding TypeName}" IsChecked="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}"/>
+                                                        <TextBox Width="60" IsEnabled="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}" Text="{Binding Param,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </TabItem>
+                                
                             </TabControl>
                            
                         </Grid>

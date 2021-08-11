@@ -4,6 +4,7 @@ using InfraStructure;
 using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
+using StockPredictCore.Filter.Other;
 using StockPredictCore.Filter.RSI;
 using StockPredictCore.Filter.Value;
 using StockPredictCore.Filter.ValueDiff;
@@ -71,6 +72,10 @@ namespace StockPredictor.Class
                     return new RSI5LowerThanValueFilter(datas, param);
                 case FilterType.RSIHigherThanValueFilter:
                     return new RSIHigherThanValueFilter(datas, param);
+
+
+                case FilterType.Other_RSI5L20_HigherThanLastLowFilter:
+                    return new Other_RSI5L20_HigherThanLastLowFilter(datas, param); 
 
                 default:
                     throw new ArgumentOutOfRangeException();

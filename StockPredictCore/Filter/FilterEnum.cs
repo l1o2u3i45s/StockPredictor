@@ -63,6 +63,12 @@ namespace StockPredictCore.Filter
         [Description("RSI5小於多少")]
         RSI5LowerThanValueFilter,
         [Description("RSI5大於多少")]
-        RSIHigherThanValueFilter
+        RSIHigherThanValueFilter,
+
+
+
+
+        [Description("特殊算法_RSI5回測買進")]
+        Other_RSI5L20_HigherThanLastLowFilter
     }
 }

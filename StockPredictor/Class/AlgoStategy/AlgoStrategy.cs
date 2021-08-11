@@ -48,6 +48,12 @@ namespace StockPredictor.Class
             get => FilterInfoList.Where(_ => _.TypeName.Contains("成交量")).ToList();
         }
 
+        public List<FilterInfo.FilterInfo> OtherFilterList //特殊算法
+        {
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("特殊算法")).ToList();
+        }
+        
+
         public AlgoStrategy()
         {
            

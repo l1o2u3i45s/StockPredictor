@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
+using StockPredictCore.Filter.Other;
 using StockPredictCore.Filter.RSI;
 using StockPredictCore.Filter.Value;
 using StockPredictCore.Filter.ValueDiff;
@@ -103,7 +104,14 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.VolumnMostLowInDayFilter:
                     info.Param = new VolumnMostLowInDayFilter().GetParam();
                     break;
-                
+
+
+
+                case FilterType.Other_RSI5L20_HigherThanLastLowFilter:
+                    info.Param = new Other_RSI5L20_HigherThanLastLowFilter().GetParam();
+                    break;
+
+                    
                 default:
                     throw new NotImplementedException();
                 
