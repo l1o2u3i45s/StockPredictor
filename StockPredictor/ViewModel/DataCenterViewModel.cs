@@ -14,8 +14,15 @@ namespace StockPredictor.ViewModel
     public class DataCenterViewModel:ViewModelBase
     {
 
-
+        public delegate void UpdateDataDoneCallback();
         public RelayCommand UpdateHistorialStockDataCommand { get; set; }
+
+        private UpdateDataDoneCallback updateDataDoneCallback;
+
+        public void SetUpdateDataDoneCallback(UpdateDataDoneCallback cb)
+        {
+            updateDataDoneCallback = cb;
+        }
 
         public DataCenterViewModel()
         {
@@ -35,7 +42,12 @@ namespace StockPredictor.ViewModel
             }
              
             DataParser.GetStockPriceData(new DateTime(2000,1,1), stockCodeList);
+
+            if(updateDataDoneCallback != null)
+                updateDataDoneCallback.Invoke();
+             
             MessageBox.Show("更新股價完成");
+             
         }
     }
 }

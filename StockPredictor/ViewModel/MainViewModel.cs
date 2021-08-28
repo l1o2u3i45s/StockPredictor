@@ -32,7 +32,7 @@ namespace StockPredictor.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private bool isDesign = false; 
-        private ConcurrentBag<StockData> stockDataList = new ConcurrentBag<StockData>();
+        private ConcurrentBag<StockData> stockDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
@@ -90,35 +90,55 @@ namespace StockPredictor.ViewModel
             get => seletedAlgoStratrgy;
             set { Set(() => SeletedAlgoStratrgy, ref seletedAlgoStratrgy, value); }
         }
-         
+
+        private DataCenterViewModel dataCenterViewModel;
+
+        public DataCenterViewModel DataCenterViewModel
+        {
+            get => dataCenterViewModel;
+            set { Set(() => DataCenterViewModel, ref dataCenterViewModel, value); }
+        }
 
         public RelayCommand AddStrategyCommand { get; set; }
         public RelayCommand RemoveStrategyCommand { get; set; }
         public RelayCommand AnalysisCommand { get; set; }
         public RelayCommand CloseWindowCommand { get; set; }
+
+        
+
         public MainViewModel()
         {
-            InitStockInfo(); 
+            DataCenterViewModel = new DataCenterViewModel() ;
+            DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
+
+            InitStockInfo();
+            UpdateStockData();
+            InitAlgoStrategy();
+
             AnalysisCommand = new RelayCommand(AnalysisAction);
             AddStrategyCommand = new RelayCommand(AddStrategyAction);
             RemoveStrategyCommand = new RelayCommand(RemoveStrategyAction);
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
+        }
 
-
+        private void UpdateStockData()
+        {
             if (isDesign == false)
             {
                 PreProcessData(Directory.GetFiles(DataParser.rawDataFolderPath));
-            }
+            } 
+        }
 
-
-            AlgoStrategyCollection = new ObservableCollection<AlgoStrategy>(AlgoStrategyService.Load()); 
+        private void InitAlgoStrategy()
+        {
+            AlgoStrategyCollection = new ObservableCollection<AlgoStrategy>(AlgoStrategyService.Load());
 
             if (AlgoStrategyCollection.Count == 0)
             {
                 AlgoStrategyCollection.Add(new AlgoStrategy(true));
                 AlgoStrategyCollection.Add(new AlgoStrategy(true));
             }
-           
+
             SeletedAlgoStratrgy = algoStrategyCollection[0];
         }
 
@@ -207,6 +227,7 @@ namespace StockPredictor.ViewModel
             //    preProcessor.Execute(data);
             //    stockDataList.Add(data);
             //}
+            stockDataList = new ConcurrentBag<StockData>();
             Parallel.ForEach(stockFiles, _ =>
             {
                 StockData data = DataParser.ConvertData(_);

@@ -239,10 +239,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="資料中心" >
-                <TabItem.DataContext>
-                    <viewModel:DataCenterViewModel/>
-                </TabItem.DataContext>
+            <TabItem Header="資料中心" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" > 
                 <Grid>
 <Grid.RowDefinitions>
     <RowDefinition Height="50"/>

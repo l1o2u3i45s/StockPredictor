@@ -39,27 +39,21 @@ namespace StockPredictCore
                 DateTime timeDateTime = new DateTime(startDate.Year, startDate.Month, 1); 
 
                 string queryString = GetQueryString(dataSet, stockCode, timeDateTime, DateTime.Today);
-
-                using (var client = new WebClient())
+                 
+                tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    client.DownloadFile(queryString, idpath);
-                }
-
-                //TaiwanStockPrice
-                //tasks.Add(Task.Factory.StartNew(() =>
-                //{
-                //    try
-                //    {
-                //        using (var client = new WebClient())
-                //        {
-                //            client.DownloadFile(queryString, idpath);
-                //        }
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        Console.WriteLine(e);
-                //    }
-                //})); 
+                    try
+                    {
+                        using (var client = new WebClient())
+                        {
+                            client.DownloadFile(queryString, idpath);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }));
             }
             Task.WaitAll(tasks.ToArray());
         }
