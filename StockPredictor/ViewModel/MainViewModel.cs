@@ -231,7 +231,7 @@ namespace StockPredictor.ViewModel
 
         private void InitStockInfo()
         { 
-            using (var reader = new StreamReader(@"stockInfo.csv"))
+            using (var reader = new StreamReader(@"StockInfoList\\stockInfo.csv"))
             {
                 bool isTitle = true;
                 while (!reader.EndOfStream)

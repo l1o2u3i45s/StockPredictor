@@ -24,7 +24,7 @@ namespace PredictConsole
             }
 
             Task.Run(() => {
-                DataParser.CrawData(new DateTime(2018, 1, 1), stockCodeList);
+                DataParser.GetStockPriceData(new DateTime(2018, 1, 1), stockCodeList);
             });
            
 

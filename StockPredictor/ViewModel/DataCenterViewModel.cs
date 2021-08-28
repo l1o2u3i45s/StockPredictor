@@ -26,7 +26,7 @@ namespace StockPredictor.ViewModel
         private void UpdateHistorialStockDataAction()
         {
             List<string> stockCodeList = new List<string>();
-            using (var reader = new StreamReader(@"StockInfofile\\stockIDList.txt"))
+            using (var reader = new StreamReader(@"StockInfofile\\0050.txt"))
             {
                 while (!reader.EndOfStream)
                 {
@@ -34,7 +34,7 @@ namespace StockPredictor.ViewModel
                 }
             }
              
-            DataParser.CrawData(new DateTime(2000,1,1), stockCodeList);
+            DataParser.GetStockPriceData(new DateTime(2000,1,1), stockCodeList);
             MessageBox.Show("更新股價完成");
         }
     }

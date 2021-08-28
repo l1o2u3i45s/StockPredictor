@@ -8,6 +8,8 @@ namespace InfraStructure
 {
     public class StockData
     {
+
+
         public StockData(int size,string id)
         {
             ID = id;
