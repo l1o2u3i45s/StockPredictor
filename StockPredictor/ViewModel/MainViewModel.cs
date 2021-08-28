@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using InfraStructure;
@@ -13,7 +14,7 @@ using StockPredictCore.Filter;
 using StockPredictor.Class;
 using StockPredictor.Class.AlgoStategy;
 using StockPredictor.Class.FilterInfo;
-using StockPredictor.Class.SumResult;
+using StockPredictor.Class.SumResult; 
 
 namespace StockPredictor.ViewModel
 {
@@ -76,6 +77,14 @@ namespace StockPredictor.ViewModel
             set { Set(() => StockInfoCollection, ref stockInfoCollection, value); }
         }
 
+        private StockInfo selectedStockInfo;
+
+        public StockInfo SelectedStockInfo
+        {
+            get => selectedStockInfo;
+            set { Set(() => SelectedStockInfo, ref selectedStockInfo, value); }
+        }
+
         private ObservableCollection<AlgoStrategy> algoStrategyCollection = new ObservableCollection<AlgoStrategy>();
 
         public ObservableCollection<AlgoStrategy> AlgoStrategyCollection
@@ -100,11 +109,20 @@ namespace StockPredictor.ViewModel
             set { Set(() => DataCenterViewModel, ref dataCenterViewModel, value); }
         }
 
+        private ObservableCollection<StockDetailViewModel> stockDetailViewModelList =
+            new ObservableCollection<StockDetailViewModel>();
+
+        public ObservableCollection<StockDetailViewModel> StockDetailViewModelList
+        {
+            get => stockDetailViewModelList;
+            set { Set(() => StockDetailViewModelList, ref stockDetailViewModelList, value); }
+        }
+
         public RelayCommand AddStrategyCommand { get; set; }
         public RelayCommand RemoveStrategyCommand { get; set; }
         public RelayCommand AnalysisCommand { get; set; }
         public RelayCommand CloseWindowCommand { get; set; }
-
+        public RelayCommand<TabControl> CreateStockDetailCommand { get; set; }
         
 
         public MainViewModel()
@@ -120,6 +138,35 @@ namespace StockPredictor.ViewModel
             AddStrategyCommand = new RelayCommand(AddStrategyAction);
             RemoveStrategyCommand = new RelayCommand(RemoveStrategyAction);
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
+            CreateStockDetailCommand = new RelayCommand<TabControl>(CreateStockDetailAction);
+        }
+
+        private void CreateStockDetailAction(TabControl tabControl)
+        {
+            if (StockDetailViewModelList.Any(_ => _.StockID == SelectedStockInfo.ID))
+            {
+                foreach (TabItem item in tabControl.Items)
+                {
+                    if (item.Header.ToString() == $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}")
+                    {
+                        tabControl.SelectedIndex = tabControl.Items.IndexOf(item); 
+                        break;
+                    }
+                }
+
+                return;
+            }
+               
+            TabItem newTabItem = new TabItem
+            {
+                Header = $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}"
+            };
+            StockDetailViewModel newTabVM = new StockDetailViewModel(SelectedStockInfo.ID, SelectedStockInfo.Name);
+            newTabItem.DataContext = newTabVM;
+            StockDetailViewModelList.Add(newTabVM);
+            tabControl.Items.Add(newTabItem);
+            
+            tabControl.SelectedIndex = tabControl.Items.IndexOf(newTabVM);
         }
 
         private void UpdateStockData()

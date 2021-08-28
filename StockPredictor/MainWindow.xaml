@@ -16,7 +16,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <TabControl>
+        <TabControl x:Name="MainTabControl">
             <TabItem Header="股票篩選" >
                 <Grid Background="{StaticResource AccordionBackgroundBrush}">
                     <Grid.ColumnDefinitions>
@@ -195,14 +195,17 @@
                             <RowDefinition/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-                        <DataGrid   ItemsSource="{Binding StockInfoCollection}" AutoGenerateColumns="False" >
+                        <DataGrid  IsReadOnly="True" SelectedItem="{Binding SelectedStockInfo}" ItemsSource="{Binding StockInfoCollection}" AutoGenerateColumns="False" >
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Background" Value="{StaticResource AccordionArrowBackgroundBrush}"/>
                                     <Setter Property="Foreground" Value="White"/>
                                     <Setter Property="FontSize" Value="18"/>
-                                </Style>
+                                </Style> 
                             </DataGrid.Resources>
+                            <DataGrid.InputBindings>
+                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Source={StaticResource Locator},Path=Main.CreateStockDetailCommand}" CommandParameter="{Binding ElementName=MainTabControl}" />
+                            </DataGrid.InputBindings>
                             <DataGrid.Columns> 
                                 <DataGridTextColumn Foreground="Black" Width="80" FontSize="20" Header="股票代碼"  Binding="{Binding ID}"/>
                                 <DataGridTextColumn Foreground="Black" Width="140" FontSize="20" Header="名稱"  Binding="{Binding Name}"/>

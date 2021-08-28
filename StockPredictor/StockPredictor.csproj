@@ -91,6 +91,7 @@
     <Compile Include="Class\SumResult\SumResultService.cs" />
     <Compile Include="ViewModel\DataCenterViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\StockDetailViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
