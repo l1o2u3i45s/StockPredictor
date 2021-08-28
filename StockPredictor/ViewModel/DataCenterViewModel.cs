@@ -33,14 +33,14 @@ namespace StockPredictor.ViewModel
 
         private void GetFinancialStatementAction()
         {
-            DataParser.GetFinancialStatementsData(new DateTime(2000, 1, 1), GetStockIdList());
+            DataParser.CrawlFinancialStatementsData(new DateTime(2000, 1, 1), GetStockIdList());
              
             MessageBox.Show("更新綜合損益表完成");
         }
 
         private void UpdateHistorialStockDataAction()
         { 
-            DataParser.GetStockPriceData(new DateTime(2000,1,1), GetStockIdList());
+            DataParser.CrawlStockPriceData(new DateTime(2000,1,1), GetStockIdList());
 
             if(updateDataDoneCallback != null)
                 updateDataDoneCallback.Invoke();

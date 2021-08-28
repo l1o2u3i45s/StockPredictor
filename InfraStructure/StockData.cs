@@ -32,9 +32,23 @@ namespace InfraStructure
             RSI10 = new double[size];
 
             RSV = new double[size];
-            IsFilter = new bool[size];
+            IsFilter = new bool[size]; 
+        }
 
+        public void UpdateData(StockDataJson jsonOject,int idx)
+        { 
+            Date[idx] = jsonOject.date;
+            OpenPrice[idx] = jsonOject.open;
+            HightestPrice[idx] = jsonOject.max;
+            LowestPrice[idx] = jsonOject.min;
+            ClosePrice[idx] = jsonOject.close;
+            Volumn[idx] = jsonOject.Trading_Volume;
+            KValue[idx] = 0;
+            DValue[idx] = 0;
 
+            MA60[idx] = 0;
+            MA20[idx] = 0;
+            MA5[idx] = 0;
         }
 
         public string ID { get; set; }
@@ -120,5 +134,28 @@ namespace InfraStructure
         { 
             get => Math.Round( ((CurrentClosePrice / ClosePrice) -1) * 100, 1);
         }
+    }
+
+    public class StockQueryJson
+    {
+        public StockQueryJson() { }
+        public string msg { get; set; }
+        public string status { get; set; }
+        public List<StockDataJson> data { get; set; }
+    }
+
+    public class StockDataJson
+    {
+        public StockDataJson() { }
+        public DateTime date { get; set; }
+        public string stock_id { get; set; }
+        public double Trading_Volume { get; set; }
+        public double Trading_money { get; set; }
+        public double open { get; set; }
+        public double max { get; set; }
+        public double min { get; set; }
+        public double close { get; set; }
+        public double spread { get; set; }
+        public double Trading_turnover { get; set; }
     }
 }

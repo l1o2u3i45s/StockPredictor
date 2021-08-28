@@ -222,7 +222,7 @@ namespace StockPredictor.ViewModel
 
             //foreach (var _ in stockFiles)
             //{
-            //    StockData data = DataParser.ConvertData(_);
+            //    StockData data = DataParser.GetStockData(_);
             //    PreProcessor preProcessor = new PreProcessor();
             //    preProcessor.Execute(data);
             //    stockDataList.Add(data);
@@ -230,7 +230,7 @@ namespace StockPredictor.ViewModel
             stockDataList = new ConcurrentBag<StockData>();
             Parallel.ForEach(stockFiles, _ =>
             {
-                StockData data = DataParser.ConvertData(_);
+                StockData data = DataParser.GetStockData(_);
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                 stockDataList.Add(data);

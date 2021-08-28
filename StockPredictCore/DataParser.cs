@@ -24,21 +24,22 @@ namespace StockPredictCore
 
         public readonly static string StockRawDataPath = "StockRawData";//每日股價
         public readonly static string FinancialStatementPath = "FinancialStatement"; //綜合損益表
+
         //取得股價資訊
-        public static void GetStockPriceData(DateTime startDate, List<string> stockCodeList)
+        public static void CrawlStockPriceData(DateTime startDate, List<string> stockCodeList)
         {   
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
             DownloadFile(DatasetType.TaiwanStockPrice, stockCodeList, StockRawDataPath, startDateTime, DateTime.Today);
         }
 
         //取得綜合損益表
-        public static void GetFinancialStatementsData(DateTime startDate, List<string> stockCodeList)
+        public static void CrawlFinancialStatementsData(DateTime startDate, List<string> stockCodeList)
         { 
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
             DownloadFile(DatasetType.TaiwanStockFinancialStatements, stockCodeList, FinancialStatementPath, startDateTime, DateTime.Today);
         }
 
-        public static StockData ConvertData(string filepath)
+        public static StockData GetStockData(string filepath)
         {
             string alltext = System.IO.File.ReadAllText(filepath);
             StockQueryJson dataList = JsonConvert.DeserializeObject<StockQueryJson>(alltext);
@@ -46,20 +47,8 @@ namespace StockPredictCore
             StockData result = new StockData(dataList.data.Count, Path.GetFileNameWithoutExtension(filepath));
 
             for (int i = 1; i < dataList.data.Count; i++)
-            {
-                StockDataJson currrentData = dataList.data[i];
-                result.Date[i] = currrentData.date;
-                result.OpenPrice[i] = currrentData.open;
-                result.HightestPrice[i] = currrentData.max;
-                result.LowestPrice[i] = currrentData.min;
-                result.ClosePrice[i] = currrentData.close;
-                result.Volumn[i] = currrentData.Trading_Volume;
-                result.KValue[i] = 0;
-                result.DValue[i] = 0;
-
-                result.MA60[i] = 0;
-                result.MA20[i] = 0;
-                result.MA5[i] = 0;
+            { 
+                result.UpdateData(dataList.data[i],i); 
             }
 
             return result;
@@ -102,30 +91,7 @@ namespace StockPredictCore
         {
             return $"{apiUrl}dataset={dataSet}&data_id={stockID}&start_date={startDate.ToString("yyyy-MM-dd")}&end_date={endDate.ToString("yyyy-MM-dd")}&token={apiToken}";
         }
-
-        class StockQueryJson
-        {
-            public StockQueryJson() { }
-            public string msg { get; set; }
-            public string status { get; set; }
-            public List<StockDataJson> data { get; set; }
-        }
-
-        class StockDataJson
-        {
-            public StockDataJson() { }
-            public DateTime date { get; set; }
-            public string stock_id { get; set; }
-            public double Trading_Volume { get; set; }
-            public double Trading_money { get; set; }
-            public double open { get; set; }
-            public double max { get; set; }
-            public double min { get; set; }
-            public double close { get; set; }
-            public double spread { get; set; }
-            public double Trading_turnover { get; set; }
-        }
-
+         
         enum DatasetType
         {
             [Description("TaiwanStockPrice")]
