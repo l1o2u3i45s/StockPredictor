@@ -246,7 +246,9 @@
     <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" >
-                        <Button Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"></Button>
+                        <Button Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"/>
+                        <Button Margin="5,0,0,0" Content="取得綜合損益表" Command="{Binding GetFinancialStatementCommand}"/>
+                        
                     </StackPanel>
                 </Grid>
                

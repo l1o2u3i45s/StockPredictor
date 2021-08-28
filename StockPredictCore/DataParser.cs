@@ -22,16 +22,20 @@ namespace StockPredictCore
 
         public static readonly string apiUrl = "https://api.finmindtrade.com/api/v4/data?";
 
-        public readonly static string StockRawDataPath = "StockRawData";
-
+        public readonly static string StockRawDataPath = "StockRawData";//每日股價
+        public readonly static string FinancialStatementPath = "FinancialStatement"; //綜合損益表
         //取得股價資訊
         public static void GetStockPriceData(DateTime startDate, List<string> stockCodeList)
-        { 
-            if (Directory.Exists(StockRawDataPath) == false)
-                Directory.CreateDirectory(StockRawDataPath);
-
+        {   
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
             DownloadFile(DatasetType.TaiwanStockPrice, stockCodeList, StockRawDataPath, startDateTime, DateTime.Today);
+        }
+
+        //取得綜合損益表
+        public static void GetFinancialStatementsData(DateTime startDate, List<string> stockCodeList)
+        { 
+            DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
+            DownloadFile(DatasetType.TaiwanStockFinancialStatements, stockCodeList, FinancialStatementPath, startDateTime, DateTime.Today);
         }
 
         public static StockData ConvertData(string filepath)
@@ -64,6 +68,9 @@ namespace StockPredictCore
 
         private static void DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
         {
+            if (Directory.Exists(downloadFolder) == false)
+                Directory.CreateDirectory(downloadFolder);
+
             List<Task> taskList = new List<Task>();
             foreach (var stockCode in stockCodeList)
             { 
@@ -122,7 +129,9 @@ namespace StockPredictCore
         enum DatasetType
         {
             [Description("TaiwanStockPrice")]
-            TaiwanStockPrice
+            TaiwanStockPrice, //每日股價
+            [Description("TaiwanStockFinancialStatements")]
+            TaiwanStockFinancialStatements //綜合損益表
         }
     }
 }
