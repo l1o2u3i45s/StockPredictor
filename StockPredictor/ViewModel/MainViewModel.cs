@@ -33,6 +33,7 @@ namespace StockPredictor.ViewModel
     {
         private bool isDesign = false; 
         private ConcurrentBag<StockData> stockDataList;
+        private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
@@ -126,6 +127,7 @@ namespace StockPredictor.ViewModel
             if (isDesign == false)
             {
                 PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
+                GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath)); 
             } 
         }
 
@@ -234,11 +236,22 @@ namespace StockPredictor.ViewModel
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                 stockDataList.Add(data);
-            });
+            }); 
         }
 
-       
+        private void GetFinancialStatementsData(string[] stockFiles)
+        {
+            financialStatementsDataList = new ConcurrentBag<FinancialStatementsData>();
 
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                foreach (var data in DataParser.GetFinancialStatementsData(_))
+                {
+                    financialStatementsDataList.Add(data);
+                }
+            }); 
+        }
+         
         private void ResetData(IEnumerable<StockData>  stockDataList)
         {
             Parallel.ForEach(stockDataList, stockData =>

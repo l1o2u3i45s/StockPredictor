@@ -53,7 +53,20 @@ namespace StockPredictCore
 
             return result;
         }
+        public static List<FinancialStatementsData> GetFinancialStatementsData(string filepath)
+        {
+            string alltext = System.IO.File.ReadAllText(filepath);
+            FinancialStatementJson dataList = JsonConvert.DeserializeObject<FinancialStatementJson>(alltext);
+            List<FinancialStatementsData> result = new List<FinancialStatementsData>();
 
+            foreach (var item in dataList.data.Where(_ => _.type == "EPS"))
+            {
+                result.Add(new FinancialStatementsData(item.stock_id, item.date, item.value));
+            }
+             
+            return result;
+        }
+        
 
         private static void DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
         {
