@@ -125,7 +125,7 @@ namespace StockPredictor.ViewModel
         {
             if (isDesign == false)
             {
-                PreProcessData(Directory.GetFiles(DataParser.rawDataFolderPath));
+                PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
             } 
         }
 
@@ -271,8 +271,7 @@ namespace StockPredictor.ViewModel
                     stockInfoDictionary.Add( code, companyName);
                 }
             }
-
-            DataParser.GetFinancialReport("FinanicalReport");
+            
         }
 
         

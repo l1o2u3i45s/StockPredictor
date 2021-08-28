@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using InfraStructure;
 using StockPredictCore.Filter;
 
 namespace StockPredictor.Class.FilterInfo

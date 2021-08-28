@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockPredictor.Class
+namespace InfraStructure
 {
     public static class XilianTool
     {
