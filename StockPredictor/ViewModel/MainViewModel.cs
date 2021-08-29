@@ -14,7 +14,7 @@ using StockPredictCore.Filter;
 using StockPredictor.Class;
 using StockPredictor.Class.AlgoStategy;
 using StockPredictor.Class.FilterInfo;
-using StockPredictor.Class.SumResult; 
+using StockPredictor.Class.SumResult;
 
 namespace StockPredictor.ViewModel
 {
@@ -32,10 +32,10 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool isDesign = false; 
+        private bool isDesign = false;
         private ConcurrentBag<StockData> stockDataList;
         private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
-        private ConcurrentBag<PERatioTableData> peRatioTableDataDataList; 
+        private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
@@ -53,7 +53,7 @@ namespace StockPredictor.ViewModel
             set { Set(() => EndTime, ref endTime, value); }
         }
 
-        
+
         private SumResult totalSumResult = new SumResult();
 
         public SumResult TotalSumResult
@@ -62,14 +62,14 @@ namespace StockPredictor.ViewModel
             set { Set(() => TotalSumResult, ref totalSumResult, value); }
         }
 
-        private double totalDiffValue ;
+        private double totalDiffValue;
 
         public double TotalDiffValue
         {
             get => totalDiffValue;
             set { Set(() => TotalDiffValue, ref totalDiffValue, value); }
         }
-         
+
         private List<StockInfo> stockInfoCollection = new List<StockInfo>();
 
         public List<StockInfo> StockInfoCollection
@@ -124,11 +124,11 @@ namespace StockPredictor.ViewModel
         public RelayCommand AnalysisCommand { get; set; }
         public RelayCommand CloseWindowCommand { get; set; }
         public RelayCommand<TabControl> CreateStockDetailCommand { get; set; }
-        
+
 
         public MainViewModel()
         {
-            DataCenterViewModel = new DataCenterViewModel() ;
+            DataCenterViewModel = new DataCenterViewModel();
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
 
             InitStockInfo();
@@ -144,33 +144,32 @@ namespace StockPredictor.ViewModel
 
         private void CreateStockDetailAction(TabControl tabControl)
         {
-            if(SelectedStockInfo == null)
+            if (SelectedStockInfo == null)
                 return;
-             
+
             if (StockDetailViewModelList.Any(_ => _.StockID == SelectedStockInfo.ID))
             {
                 foreach (TabItem item in tabControl.Items)
                 {
                     if (item.Header.ToString() == $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}")
                     {
-                        tabControl.SelectedIndex = tabControl.Items.IndexOf(item); 
+                        tabControl.SelectedIndex = tabControl.Items.IndexOf(item);
                         break;
                     }
                 }
-
                 return;
             }
-               
+            StockDetailViewModel newTabVM = new StockDetailViewModel(SelectedStockInfo.ID, SelectedStockInfo.Name);
             TabItem newTabItem = new TabItem
             {
-                Header = $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}"
+                Header = $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}",
+                DataContext = newTabVM
             };
-            StockDetailViewModel newTabVM = new StockDetailViewModel(SelectedStockInfo.ID, SelectedStockInfo.Name);
-            newTabItem.DataContext = newTabVM;
+             
             StockDetailViewModelList.Add(newTabVM);
             tabControl.Items.Add(newTabItem);
-            
-            tabControl.SelectedIndex = tabControl.Items.Count-1;
+
+            tabControl.SelectedIndex = tabControl.Items.Count - 1;
         }
 
         private void UpdateStockData()
@@ -180,7 +179,7 @@ namespace StockPredictor.ViewModel
                 PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
                 GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath));
                 GetPERatioTableData(Directory.GetFiles(DataParser.PERatioTablePath));
-            } 
+            }
         }
 
         private void InitAlgoStrategy()
@@ -210,19 +209,19 @@ namespace StockPredictor.ViewModel
                 algo.Save();
             }
         }
-       
+
 
         private void RemoveStrategyAction()
         {
-            if( SeletedAlgoStratrgy == null)
+            if (SeletedAlgoStratrgy == null)
                 return;
 
             int idx = AlgoStrategyCollection.IndexOf(SeletedAlgoStratrgy);
 
             AlgoStrategyCollection.Remove(SeletedAlgoStratrgy);
 
-            if(idx>0)
-              SeletedAlgoStratrgy = AlgoStrategyCollection[idx-1];
+            if (idx > 0)
+                SeletedAlgoStratrgy = AlgoStrategyCollection[idx - 1];
 
         }
 
@@ -237,13 +236,13 @@ namespace StockPredictor.ViewModel
             ResetData(stockDataList);
             FilterService service = new FilterService();
             foreach (var selectedFilter in SeletedAlgoStratrgy.FilterInfoList.Where(_ => _.IsSelected))
-            { 
-                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type,selectedFilter.Param, stockDataList));
+            {
+                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, selectedFilter.Param, stockDataList));
             }
             service.Execute();
 
             ConcurrentBag<StockInfo> stockInfoList = new ConcurrentBag<StockInfo>();
-             
+
             Parallel.ForEach(stockDataList, stockData =>
             {
                 for (int i = 0; i < stockData.Date.Length; i++)
@@ -254,18 +253,18 @@ namespace StockPredictor.ViewModel
                     {
                         double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
 
-                        if(stockInfoDictionary.ContainsKey(stockData.ID) == false)
+                        if (stockInfoDictionary.ContainsKey(stockData.ID) == false)
                             continue;
-                          
+
                         var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
                         info.CurrentClosePrice = lastestClosePrice;
-                         
-                        if(stockInfoList.Count(_ => _.Name == info.Name) == 0)
-                             stockInfoList.Add(info);
+
+                        if (stockInfoList.Count(_ => _.Name == info.Name) == 0)
+                            stockInfoList.Add(info);
                     }
                 }
             });
-             
+
             TotalSumResult = SumResultService.Create(stockInfoList);
 
             StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
@@ -288,7 +287,7 @@ namespace StockPredictor.ViewModel
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                 stockDataList.Add(data);
-            }); 
+            });
         }
 
         private void GetFinancialStatementsData(string[] stockFiles)
@@ -301,7 +300,7 @@ namespace StockPredictor.ViewModel
                 {
                     financialStatementsDataList.Add(data);
                 }
-            }); 
+            });
         }
 
         private void GetPERatioTableData(string[] stockFiles)
@@ -316,9 +315,9 @@ namespace StockPredictor.ViewModel
                 }
             });
         }
-        
 
-        private void ResetData(IEnumerable<StockData>  stockDataList)
+
+        private void ResetData(IEnumerable<StockData> stockDataList)
         {
             Parallel.ForEach(stockDataList, stockData =>
             {
@@ -330,12 +329,12 @@ namespace StockPredictor.ViewModel
         }
 
         private void InitStockInfo()
-        { 
+        {
             using (var reader = new StreamReader(@"StockInfoList\\stockInfo.csv"))
             {
                 bool isTitle = true;
                 while (!reader.EndOfStream)
-                { 
+                {
                     if (isTitle)
                     {
                         reader.ReadLine();
@@ -345,16 +344,16 @@ namespace StockPredictor.ViewModel
                     var line = reader.ReadLine();
                     var values = line.Split(',');
 
-                    string code = values[1].ToString().Replace('"',' ').Trim(); 
-                    string companyName = values[3].Replace('"',' ').Trim();
-                    stockInfoDictionary.Add( code, companyName);
+                    string code = values[1].ToString().Replace('"', ' ').Trim();
+                    string companyName = values[3].Replace('"', ' ').Trim();
+                    stockInfoDictionary.Add(code, companyName);
                 }
             }
-            
+
         }
 
-        
+
     }
 
-   
+
 }

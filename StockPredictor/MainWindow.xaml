@@ -15,14 +15,19 @@
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
         </i:EventTrigger>
-    </i:Interaction.Triggers> 
+    </i:Interaction.Triggers>
     <Grid>
         <TabControl x:Name="MainTabControl">
             <TabControl.Resources>
-                <DataTemplate x:Key="DataTemplate" DataType="{x:Type viewModel:StockDetailViewModel}">
+                <DataTemplate DataType="{x:Type viewModel:StockDetailViewModel}">
                     <userControl:ucStockDetail DataContext="{Binding .}"/>
                 </DataTemplate>
             </TabControl.Resources>
+            <!--<TabControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewModel:StockDetailViewModel}">
+                    <userControl:ucStockDetail DataContext="{Binding .}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>-->
             <TabItem Header="股票篩選" >
                 <Grid Background="{StaticResource AccordionBackgroundBrush}">
                     <Grid.ColumnDefinitions>
@@ -59,7 +64,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBox  Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"/>
                                                 <Rectangle Width="20"></Rectangle>
-                                            </StackPanel> 
+                                            </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -67,7 +72,7 @@
                                 <DockPanel Grid.Row="1">
                                     <Button Content="刪除" Margin="5" Width="50"  Command="{Binding RemoveStrategyCommand}"/>
                                     <Button Content="新增" Margin="5" Width="50" HorizontalAlignment="Right"  Command="{Binding AddStrategyCommand}"/>
-                                   
+
                                 </DockPanel>
                             </Grid>
 
@@ -126,7 +131,7 @@
                                                     <ScrollViewer Margin="10" >
                                                         <ItemsPresenter/>
                                                     </ScrollViewer>
-                                                </Grid> 
+                                                </Grid>
                                             </ControlTemplate>
                                         </ItemsControl.Template>
                                         <ItemsControl.ItemTemplate>
@@ -187,11 +192,11 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </TabItem>
-                                
+
                             </TabControl>
-                           
+
                         </Grid>
-                    
+
 
                         <Button Grid.Row="2" Margin="10" Content="Analysis" Command="{Binding AnalysisCommand}"></Button>
                     </Grid>
@@ -207,12 +212,12 @@
                                     <Setter Property="Background" Value="{StaticResource AccordionArrowBackgroundBrush}"/>
                                     <Setter Property="Foreground" Value="White"/>
                                     <Setter Property="FontSize" Value="18"/>
-                                </Style> 
+                                </Style>
                             </DataGrid.Resources>
                             <DataGrid.InputBindings>
                                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Source={StaticResource Locator},Path=Main.CreateStockDetailCommand}" CommandParameter="{Binding ElementName=MainTabControl}" />
                             </DataGrid.InputBindings>
-                            <DataGrid.Columns> 
+                            <DataGrid.Columns>
                                 <DataGridTextColumn Foreground="Black" Width="80" FontSize="20" Header="股票代碼"  Binding="{Binding ID}"/>
                                 <DataGridTextColumn Foreground="Black" Width="140" FontSize="20" Header="名稱"  Binding="{Binding Name}"/>
                                 <DataGridTextColumn Foreground="Black" Width="140" FontSize="20" Header="訊號日期"  Binding="{Binding Date,StringFormat='{}{0:yyyy-MM-dd}'}"/>
@@ -222,7 +227,7 @@
                                 <DataGridTextColumn Foreground="Black" Width="100" FontSize="20" Header="漲跌幅%"  Binding="{Binding GrowRatio}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                  
+
                         <StackPanel  Grid.Row="1" Orientation="Horizontal"   Margin="10">
                             <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="買入金額:" FontSize="20"/>
                             <TextBlock  Foreground="{StaticResource  AccordionBorderBrush}" Text="{Binding TotalSumResult.TotalPrice}" FontSize="20"/>
@@ -248,20 +253,20 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="資料中心" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" > 
+            <TabItem Header="資料中心" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" >
                 <Grid>
-<Grid.RowDefinitions>
-    <RowDefinition Height="50"/>
-    <RowDefinition/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" >
                         <Button Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"/>
                         <Button Margin="5,0,0,0" Content="取得綜合損益表" Command="{Binding GetFinancialStatementCommand}"/>
                         <Button Margin="5,0,0,0" Content="取得P/E Ratio表" Command="{Binding GetPERDataCommand}"/>
 
-</StackPanel>
+                    </StackPanel>
                 </Grid>
-               
+
             </TabItem>
         </TabControl>
 
