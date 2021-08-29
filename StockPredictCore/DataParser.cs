@@ -24,7 +24,7 @@ namespace StockPredictCore
 
         public readonly static string StockRawDataPath = "StockRawData";//每日股價
         public readonly static string FinancialStatementPath = "FinancialStatement"; //綜合損益表
-
+        public readonly static string PERatioTablePath = "PERatioTable"; //P/E ratio表
         //取得股價資訊
         public static void CrawlStockPriceData(DateTime startDate, List<string> stockCodeList)
         {   
@@ -37,6 +37,13 @@ namespace StockPredictCore
         { 
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
             DownloadFile(DatasetType.TaiwanStockFinancialStatements, stockCodeList, FinancialStatementPath, startDateTime, DateTime.Today);
+        }
+
+        //取得P/E ratio表
+        public static void CrawlStockPERData(DateTime startDate, List<string> stockCodeList)
+        {
+            DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
+            DownloadFile(DatasetType.TaiwanStockPER, stockCodeList, PERatioTablePath, startDateTime, DateTime.Today);
         }
 
         public static StockData GetStockData(string filepath)
@@ -66,7 +73,29 @@ namespace StockPredictCore
              
             return result;
         }
-        
+
+        public static List<PERatioTableData> GetPERatioTableData(string filepath)
+        {
+            string alltext = System.IO.File.ReadAllText(filepath);
+            PERatioTableJson dataList = JsonConvert.DeserializeObject<PERatioTableJson>(alltext);
+            List<PERatioTableData> result = new List<PERatioTableData>();
+
+            foreach (var item in dataList.data)
+            {
+                result.Add(new PERatioTableData()
+                {
+                    Date = item.date ,
+                    StockID = item.stock_id,
+                    PBRatio = item.PBR,
+                    PERatio = item.PER,
+                    DividendYield = item.dividend_yield
+                });
+            }
+
+            return result;
+        }
+
+
 
         private static void DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
         {
@@ -110,7 +139,9 @@ namespace StockPredictCore
             [Description("TaiwanStockPrice")]
             TaiwanStockPrice, //每日股價
             [Description("TaiwanStockFinancialStatements")]
-            TaiwanStockFinancialStatements //綜合損益表
+            TaiwanStockFinancialStatements, //綜合損益表
+            [Description("TaiwanStockPER")]
+            TaiwanStockPER, //P/E ratio and P/B ratio表
         }
     }
 }

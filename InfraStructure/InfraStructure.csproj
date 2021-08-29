@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FinancialStatementsData.cs" />
+    <Compile Include="PERatioTableData.cs" />
     <Compile Include="StockData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StrategyEnum.cs" />

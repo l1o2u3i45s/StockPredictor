@@ -35,6 +35,7 @@ namespace StockPredictor.ViewModel
         private bool isDesign = false; 
         private ConcurrentBag<StockData> stockDataList;
         private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
+        private ConcurrentBag<PERatioTableData> peRatioTableDataDataList; 
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
@@ -174,7 +175,8 @@ namespace StockPredictor.ViewModel
             if (isDesign == false)
             {
                 PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
-                GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath)); 
+                GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath));
+                GetPERatioTableData(Directory.GetFiles(DataParser.PERatioTablePath));
             } 
         }
 
@@ -298,7 +300,21 @@ namespace StockPredictor.ViewModel
                 }
             }); 
         }
-         
+
+        private void GetPERatioTableData(string[] stockFiles)
+        {
+            peRatioTableDataDataList = new ConcurrentBag<PERatioTableData>();
+
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                foreach (var data in DataParser.GetPERatioTableData(_))
+                {
+                    peRatioTableDataDataList.Add(data);
+                }
+            });
+        }
+        
+
         private void ResetData(IEnumerable<StockData>  stockDataList)
         {
             Parallel.ForEach(stockDataList, stockData =>

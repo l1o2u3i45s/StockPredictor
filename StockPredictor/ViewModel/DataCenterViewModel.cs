@@ -18,6 +18,9 @@ namespace StockPredictor.ViewModel
 
         public RelayCommand UpdateHistorialStockDataCommand { get; set; }
         public RelayCommand GetFinancialStatementCommand { get; set; }
+        public RelayCommand GetPERDataCommand { get; set; }
+         
+
         private UpdateDataDoneCallback updateDataDoneCallback;
 
         public void SetUpdateDataDoneCallback(UpdateDataDoneCallback cb)
@@ -29,8 +32,16 @@ namespace StockPredictor.ViewModel
         {
             UpdateHistorialStockDataCommand = new RelayCommand(UpdateHistorialStockDataAction);
             GetFinancialStatementCommand = new RelayCommand(GetFinancialStatementAction);
+            GetPERDataCommand = new RelayCommand(GetPERDataAction);
         }
 
+        private void GetPERDataAction()
+        {
+            DataParser.CrawlStockPERData(new DateTime(2000, 1, 1), GetStockIdList());
+
+            MessageBox.Show("更新P/E ratio表完成");
+        }
+       
         private void GetFinancialStatementAction()
         {
             DataParser.CrawlFinancialStatementsData(new DateTime(2000, 1, 1), GetStockIdList());

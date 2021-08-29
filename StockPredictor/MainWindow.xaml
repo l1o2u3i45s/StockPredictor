@@ -251,8 +251,9 @@
                     <StackPanel Orientation="Horizontal" >
                         <Button Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"/>
                         <Button Margin="5,0,0,0" Content="取得綜合損益表" Command="{Binding GetFinancialStatementCommand}"/>
-                        
-                    </StackPanel>
+                        <Button Margin="5,0,0,0" Content="取得P/E Ratio表" Command="{Binding GetPERDataCommand}"/>
+
+</StackPanel>
                 </Grid>
                
             </TabItem>
