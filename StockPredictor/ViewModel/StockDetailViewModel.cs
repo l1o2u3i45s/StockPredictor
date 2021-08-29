@@ -24,9 +24,7 @@ namespace StockPredictor.ViewModel
             get => stockName;
             set { Set(() => StockName, ref stockName, value); }
         }
-
-        public StockDetailViewModel(){}
-
+         
         public StockDetailViewModel(string _stockID, string _stockName)
         {
             StockID = _stockID;

@@ -89,6 +89,9 @@
     <Compile Include="Class\FilterInfo\FilterInfoFactory.cs" />
     <Compile Include="Class\SumResult\SumResult.cs" />
     <Compile Include="Class\SumResult\SumResultService.cs" />
+    <Compile Include="UserControl\ucStockDetail.xaml.cs">
+      <DependentUpon>ucStockDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\DataCenterViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\StockDetailViewModel.cs" />
@@ -124,6 +127,10 @@
     <Page Include="Themes\MetroDark\Theme.Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\ucStockDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

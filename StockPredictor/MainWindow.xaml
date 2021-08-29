@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:StockPredictor"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:viewModel="clr-namespace:StockPredictor.ViewModel"
+        xmlns:userControl="clr-namespace:StockPredictor.UserControl"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
@@ -14,9 +15,14 @@
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
         </i:EventTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers> 
     <Grid>
         <TabControl x:Name="MainTabControl">
+            <TabControl.Resources>
+                <DataTemplate x:Key="DataTemplate" DataType="{x:Type viewModel:StockDetailViewModel}">
+                    <userControl:ucStockDetail DataContext="{Binding .}"/>
+                </DataTemplate>
+            </TabControl.Resources>
             <TabItem Header="股票篩選" >
                 <Grid Background="{StaticResource AccordionBackgroundBrush}">
                     <Grid.ColumnDefinitions>

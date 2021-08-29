@@ -144,6 +144,9 @@ namespace StockPredictor.ViewModel
 
         private void CreateStockDetailAction(TabControl tabControl)
         {
+            if(SelectedStockInfo == null)
+                return;
+             
             if (StockDetailViewModelList.Any(_ => _.StockID == SelectedStockInfo.ID))
             {
                 foreach (TabItem item in tabControl.Items)
@@ -167,7 +170,7 @@ namespace StockPredictor.ViewModel
             StockDetailViewModelList.Add(newTabVM);
             tabControl.Items.Add(newTabItem);
             
-            tabControl.SelectedIndex = tabControl.Items.IndexOf(newTabVM);
+            tabControl.SelectedIndex = tabControl.Items.Count-1;
         }
 
         private void UpdateStockData()
