@@ -330,6 +330,15 @@ namespace StockPredictor.ViewModel
 
         private void InitStockInfo()
         {
+            if (Directory.Exists(DataParser.StockRawDataPath) == false)
+                Directory.CreateDirectory(DataParser.StockRawDataPath);
+
+            if (Directory.Exists(DataParser.PERatioTablePath) == false)
+                Directory.CreateDirectory(DataParser.PERatioTablePath);
+
+            if (Directory.Exists(DataParser.FinancialStatementPath) == false)
+                Directory.CreateDirectory(DataParser.FinancialStatementPath);
+
             using (var reader = new StreamReader(@"StockInfoList\\stockInfo.csv"))
             {
                 bool isTitle = true;
