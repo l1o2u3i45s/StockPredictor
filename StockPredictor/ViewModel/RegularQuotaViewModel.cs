@@ -8,6 +8,9 @@ using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using InfraStructure;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using StockPredictCore.Service;
 
 namespace StockPredictor.ViewModel
@@ -40,6 +43,15 @@ namespace StockPredictor.ViewModel
             set { Set(() => StockID, ref stockID, value); }
         }
 
+        private SeriesCollection seriesList = new SeriesCollection();
+
+        public SeriesCollection SeriesList
+        {
+            get => seriesList;
+            set { Set(() => SeriesList, ref seriesList, value); }
+        }
+     
+
         public RelayCommand CaculateCommand { get; set; }
 
         public RegularQuotaViewModel(ConcurrentBag<StockData> stockdataList)
@@ -57,7 +69,18 @@ namespace StockPredictor.ViewModel
                return;
             }
 
-            var result = RegularQuotaService.Calulate(data,startDate,monthlyInvestValue);
+            var resultList = RegularQuotaService.Calulate(data,startDate,monthlyInvestValue);
+            SeriesList.Clear();
+            LineSeries currentStockPriceLineSeries = new LineSeries(){Values = new ChartValues<ObservableValue>() };
+            LineSeries averageHistoryStockPriceLineSeries = new LineSeries() { Values = new ChartValues<ObservableValue>(),  };
+            SeriesList.Add(currentStockPriceLineSeries);
+            SeriesList.Add(averageHistoryStockPriceLineSeries);
+
+            foreach (var result in resultList)
+            { 
+                currentStockPriceLineSeries.Values.Add(new ObservableValue(result.CurrentPrice));
+                averageHistoryStockPriceLineSeries.Values.Add(new ObservableValue(result.InventoryAveragePrice));
+            }
         }
     }
 }

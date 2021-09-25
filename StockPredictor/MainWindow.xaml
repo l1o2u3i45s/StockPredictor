@@ -7,6 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:viewModel="clr-namespace:StockPredictor.ViewModel"
         xmlns:userControl="clr-namespace:StockPredictor.UserControl"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
@@ -303,6 +304,10 @@
                         <TextBox Text="{Binding MonthlyInvestValue}" VerticalAlignment="Center" Width="100" Margin="5,0,0,0"/>
                     </StackPanel>
                     <Button Grid.Row="3" Content="計算" Command="{Binding CaculateCommand}" Margin="5"/>
+
+                    <Grid Grid.Column="1" Grid.RowSpan="6">
+                        <lvc:CartesianChart    Series="{Binding SeriesList}" />
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -50,7 +50,7 @@ namespace StockPredictCore
         {
             string alltext = System.IO.File.ReadAllText(filepath);
             StockQueryJson dataList = JsonConvert.DeserializeObject<StockQueryJson>(alltext);
-
+            dataList.data.RemoveAll(_ => _.close == 0);
             StockData result = new StockData(dataList.data.Count, Path.GetFileNameWithoutExtension(filepath));
 
             for (int i = 1; i < dataList.data.Count; i++)
