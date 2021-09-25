@@ -149,12 +149,11 @@ namespace StockPredictor.ViewModel
         public MainViewModel()
         {
             DataCenterViewModel = new DataCenterViewModel();
-            DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
-            RegularQuotaViewModel = new RegularQuotaViewModel();
+            DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData); 
             InitStockInfo();
             UpdateStockData();
             InitAlgoStrategy();
-
+            RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
             AnalysisCommand = new RelayCommand(AnalysisAction);
             AddStrategyCommand = new RelayCommand(AddStrategyAction);
             RemoveStrategyCommand = new RelayCommand(RemoveStrategyAction);
