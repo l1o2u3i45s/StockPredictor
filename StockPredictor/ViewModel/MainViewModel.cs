@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -68,6 +69,17 @@ namespace StockPredictor.ViewModel
         {
             get => totalDiffValue;
             set { Set(() => TotalDiffValue, ref totalDiffValue, value); }
+        }
+
+        private eSelectTabType selectedTabItemType;
+
+        public eSelectTabType SelectedTabItemType
+        {
+            get => selectedTabItemType;
+            set
+            {
+                Set(() => SelectedTabItemType, ref selectedTabItemType, value);
+            }
         }
 
         private List<StockInfo> stockInfoCollection = new List<StockInfo>();
@@ -163,7 +175,8 @@ namespace StockPredictor.ViewModel
             TabItem newTabItem = new TabItem
             {
                 Header = $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}",
-                DataContext = newTabVM
+                DataContext = newTabVM,
+                Tag = eSelectTabType.StockDetail
             };
              
             StockDetailViewModelList.Add(newTabVM);
@@ -364,5 +377,11 @@ namespace StockPredictor.ViewModel
 
     }
 
+    public enum eSelectTabType
+    {
+        StockFilter,
+        DataCenter,
+        StockDetail
+    }
 
 }
