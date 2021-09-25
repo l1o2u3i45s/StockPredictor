@@ -122,6 +122,14 @@ namespace StockPredictor.ViewModel
             set { Set(() => DataCenterViewModel, ref dataCenterViewModel, value); }
         }
 
+        private RegularQuotaViewModel regularQuotaViewModel;
+
+        public RegularQuotaViewModel RegularQuotaViewModel
+        {
+            get => regularQuotaViewModel;
+            set { Set(() => RegularQuotaViewModel, ref regularQuotaViewModel, value); }
+        }
+
         private ObservableCollection<StockDetailViewModel> stockDetailViewModelList =
             new ObservableCollection<StockDetailViewModel>();
 
@@ -142,7 +150,7 @@ namespace StockPredictor.ViewModel
         {
             DataCenterViewModel = new DataCenterViewModel();
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
-
+            RegularQuotaViewModel = new RegularQuotaViewModel();
             InitStockInfo();
             UpdateStockData();
             InitAlgoStrategy();

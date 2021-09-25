@@ -18,21 +18,21 @@
     </i:Interaction.Triggers>
     <Grid>
         <TabControl x:Name="MainTabControl" SelectedValue="{Binding SelectedTabItemType}" SelectedValuePath="Tag">
-            <TabControl.Resources> 
-                <DataTemplate x:Key="UcStockDetail"> 
-                    <userControl:ucStockDetail  /> 
+            <TabControl.Resources>
+                <DataTemplate x:Key="UcStockDetail">
+                    <userControl:ucStockDetail DataContext="{Binding .}"  />
                 </DataTemplate>
             </TabControl.Resources>
-            <TabControl.ItemContainerStyle> 
-                <Style TargetType="TabItem"> 
-                    <Style.Triggers> 
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem">
+                    <Style.Triggers>
                         <DataTrigger Binding="{Binding Source={StaticResource Locator} ,Path=Main.SelectedTabItemType}" 
-                                     Value="{x:Static viewModel:eSelectTabType.StockDetail}" > 
-                            <Setter Property="ContentTemplate" Value="{StaticResource UcStockDetail}" /> 
-                        </DataTrigger> 
-                    </Style.Triggers> 
+                                     Value="{x:Static viewModel:eSelectTabType.StockDetail}" >
+                            <Setter Property="ContentTemplate" Value="{StaticResource UcStockDetail}" />
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
-            </TabControl.ItemContainerStyle> 
+            </TabControl.ItemContainerStyle>
             <TabItem Header="股票篩選" Tag="{x:Static viewModel:eSelectTabType.StockFilter}" >
                 <Grid Background="{StaticResource AccordionBackgroundBrush}">
                     <Grid.ColumnDefinitions>
@@ -40,20 +40,24 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                     <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="149*"/>
+                            <ColumnDefinition Width="380*"/>
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
                             <RowDefinition/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel Orientation="Horizontal" Margin="10" Grid.ColumnSpan="2">
                             <DatePicker FontSize="18" VerticalAlignment="Center"  DisplayDate="{Binding StartTime}"
                                         SelectedDate="{Binding StartTime, Mode=TwoWay}"/>
                             <TextBlock FontSize="18" Margin="5,0,0,0" VerticalAlignment="Center" Text="~"/>
                             <DatePicker FontSize="18" VerticalAlignment="Center"  DisplayDate="{Binding EndTime}"
                                         SelectedDate="{Binding EndTime, Mode=TwoWay}"/>
                         </StackPanel>
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
@@ -203,7 +207,7 @@
                         </Grid>
 
 
-                        <Button Grid.Row="2" Margin="10" Content="Analysis" Command="{Binding AnalysisCommand}"></Button>
+                        <Button Grid.Row="2" Margin="10" Content="Analysis" Command="{Binding AnalysisCommand}" Grid.ColumnSpan="2"></Button>
                     </Grid>
 
                     <Grid Grid.Column="1">
@@ -258,7 +262,7 @@
 
                 </Grid>
             </TabItem>
-             <TabItem Header="資料中心" Tag="{x:Static viewModel:eSelectTabType.DataCenter}" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" >
+            <TabItem Header="資料中心" Tag="{x:Static viewModel:eSelectTabType.DataCenter}" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -271,7 +275,35 @@
 
                     </StackPanel>
                 </Grid>
-
+            </TabItem>
+            <TabItem Header="定期定額試算" DataContext="{Binding RegularQuotaViewModel}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions> 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="股票代號" VerticalAlignment="Center"/>
+                        <TextBox VerticalAlignment="Center" Text="{Binding StockID}" Width="100" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text="開始日期" VerticalAlignment="Center"/>
+                        <DatePicker Margin="5,0,0,0" FontSize="18" VerticalAlignment="Center"  DisplayDate="{Binding StartDate}"
+                                    SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <TextBlock Text="每月定期金額" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding MonthlyInvestValue}" VerticalAlignment="Center" Width="100" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <Button Grid.Row="3" Content="計算" Command="{Binding CaculateCommand}" Margin="5"></Button>
+                </Grid>
             </TabItem>
         </TabControl>
 

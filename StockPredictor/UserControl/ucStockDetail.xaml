@@ -14,7 +14,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid>
-            <TextBlock Text="{Binding StockID}"></TextBlock>
+            <TextBlock FontSize="30" Text="{Binding StockID}"></TextBlock>
         </Grid>
     </Grid>
 </UserControl>
