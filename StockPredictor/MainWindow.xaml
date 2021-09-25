@@ -314,6 +314,14 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="20" Text="股票名稱"></TextBlock>
                                 <TextBlock FontSize="20" Text="{Binding DisplayResult_StockNameInfo}"></TextBlock>
+                            </StackPanel> 
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="平均買入股價"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_AveragePrice}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="目前股價"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_LastestPrice}"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontSize="20" Text="總投入金額"></TextBlock>

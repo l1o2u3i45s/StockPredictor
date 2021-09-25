@@ -24,7 +24,7 @@ namespace StockPredictCore.Service
                     result.Add(info);
                     info.Date = data.Date[i];
                     info.CurrentPrice = data.ClosePrice[i];  
-                    info.InventoryAveragePrice = result.Average(_ => _.CurrentPrice);
+                    info.InventoryAveragePrice = Math.Round(result.Average(_ => _.CurrentPrice),2);
                     info.AccumulationMoney = result.Count() * monthlyInvestValue; 
                     info.GrowRatio = info.CurrentPrice / info.InventoryAveragePrice;
                     info.TotalStockValue = info.GrowRatio * info.AccumulationMoney;

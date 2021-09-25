@@ -75,6 +75,22 @@ namespace StockPredictor.ViewModel
             set { Set(() => DisplayResult_CurrentEarningMoney, ref displayResult_CurrentEarningMoney, value); }
         }
 
+        private double displayResult_AveragePrice;
+
+        public double DisplayResult_AveragePrice
+        {
+            get => displayResult_AveragePrice;
+            set { Set(() => DisplayResult_AveragePrice, ref displayResult_AveragePrice, value); }
+        }
+
+        private double displayResult_LastestPrice;
+
+        public double DisplayResult_LastestPrice
+        {
+            get => displayResult_LastestPrice;
+            set { Set(() => DisplayResult_LastestPrice, ref displayResult_LastestPrice, value); }
+        }
+
         private double displayResult_GrowRatio;
 
         public double DisplayResult_GrowRatio
@@ -131,13 +147,14 @@ namespace StockPredictor.ViewModel
                 currentStockPriceLineSeries.Values.Add(new ObservableValue(result.CurrentPrice));
                 averageHistoryStockPriceLineSeries.Values.Add(new ObservableValue(result.InventoryAveragePrice));
             }
-
+            double yearhDiff = ((double)(DateTime.Now.Year - StartDate.Year) * 12 + DateTime.Now.Month - StartDate.Month) / 12;
             DisplayResult_StockNameInfo = $"{data.ID} {data.Name}";
             DisplayResult_TotalInvestMoney = (int)resultList.Last().AccumulationMoney;
-            DisplayResult_CurrentEarningMoney = (int)resultList.Last().TotalStockValue;
-            DisplayResult_GrowRatio = Math.Round(resultList.Last().GrowRatio - 1,2) * 100;
-            var monthDiff = ((DateTime.Now.Year - StartDate.Year) * 12) + DateTime.Now.Month - StartDate.Month;
-            DisplayResult_YearlyGrowRatio = Math.Round(DisplayResult_GrowRatio / monthDiff / 12 * 100,2);
+            DisplayResult_LastestPrice = data.ClosePrice[data.ClosePrice.Length - 1];
+            DisplayResult_AveragePrice = resultList.Last().InventoryAveragePrice;
+            DisplayResult_GrowRatio = Math.Round( (DisplayResult_LastestPrice / DisplayResult_AveragePrice) - 1, 2) * 100;
+            DisplayResult_CurrentEarningMoney = (int)(DisplayResult_TotalInvestMoney * (100 + DisplayResult_GrowRatio )/100); 
+            DisplayResult_YearlyGrowRatio = Math.Round(DisplayResult_GrowRatio / yearhDiff ,2);
         }
     }
 }
