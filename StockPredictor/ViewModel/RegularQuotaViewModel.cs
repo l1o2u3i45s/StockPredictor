@@ -35,7 +35,7 @@ namespace StockPredictor.ViewModel
             set { Set(() => MonthlyInvestValue, ref monthlyInvestValue, value); }
         }
 
-        private string stockID;
+        private string stockID = "0050";
 
         public string StockID
         {
@@ -50,16 +50,56 @@ namespace StockPredictor.ViewModel
             get => seriesList;
             set { Set(() => SeriesList, ref seriesList, value); }
         }
-     
 
-        public RelayCommand CaculateCommand { get; set; }
+        private string displayResult_StockNameInfo;
+
+        public string DisplayResult_StockNameInfo
+        {
+            get => displayResult_StockNameInfo;
+            set { Set(() => DisplayResult_StockNameInfo, ref displayResult_StockNameInfo, value); }
+        }
+
+        private int displayResult_TotalInvestMoney;
+
+        public int DisplayResult_TotalInvestMoney
+        {
+            get => displayResult_TotalInvestMoney;
+            set { Set(() => DisplayResult_TotalInvestMoney, ref displayResult_TotalInvestMoney, value); }
+        }
+
+        private int displayResult_CurrentEarningMoney;
+
+        public int DisplayResult_CurrentEarningMoney
+        {
+            get => displayResult_CurrentEarningMoney;
+            set { Set(() => DisplayResult_CurrentEarningMoney, ref displayResult_CurrentEarningMoney, value); }
+        }
+
+        private double displayResult_GrowRatio;
+
+        public double DisplayResult_GrowRatio
+        {
+            get => displayResult_GrowRatio;
+            set { Set(() => DisplayResult_GrowRatio, ref displayResult_GrowRatio, value); }
+        }
+
+        private double displayResult_YearlyGrowRatio;
+
+        public double DisplayResult_YearlyGrowRatio
+        {
+            get => displayResult_YearlyGrowRatio;
+            set { Set(() => DisplayResult_YearlyGrowRatio, ref displayResult_YearlyGrowRatio, value); }
+        }
+
+        public RelayCommand CaculateCommand { get; set; } 
 
         public RegularQuotaViewModel(ConcurrentBag<StockData> stockdataList)
         { 
             CaculateCommand = new RelayCommand(CaculateAction);
             _stockDataList = stockdataList;
+           
         }
-
+          
         private void CaculateAction()
         {
             var data = _stockDataList.SingleOrDefault(_ => _.ID == stockID);
@@ -70,17 +110,34 @@ namespace StockPredictor.ViewModel
             }
 
             var resultList = RegularQuotaService.Calulate(data,startDate,monthlyInvestValue);
-            SeriesList.Clear();
-            LineSeries currentStockPriceLineSeries = new LineSeries(){Values = new ChartValues<ObservableValue>() };
-            LineSeries averageHistoryStockPriceLineSeries = new LineSeries() { Values = new ChartValues<ObservableValue>(),  };
+            SeriesList.Clear(); 
+            LineSeries currentStockPriceLineSeries = new LineSeries(){
+                Values = new ChartValues<ObservableValue>() ,
+                PointGeometrySize = 0,
+                StrokeThickness = 3,
+                Title = "現在股價"
+            };
+            LineSeries averageHistoryStockPriceLineSeries = new LineSeries() { 
+                Values = new ChartValues<ObservableValue>(),
+                PointGeometrySize = 0,
+                StrokeThickness = 3,
+                Title = "定期定額均價"
+            }; 
             SeriesList.Add(currentStockPriceLineSeries);
             SeriesList.Add(averageHistoryStockPriceLineSeries);
-
+             
             foreach (var result in resultList)
             { 
                 currentStockPriceLineSeries.Values.Add(new ObservableValue(result.CurrentPrice));
                 averageHistoryStockPriceLineSeries.Values.Add(new ObservableValue(result.InventoryAveragePrice));
             }
+
+            DisplayResult_StockNameInfo = $"{data.ID} {data.Name}";
+            DisplayResult_TotalInvestMoney = (int)resultList.Last().AccumulationMoney;
+            DisplayResult_CurrentEarningMoney = (int)resultList.Last().TotalStockValue;
+            DisplayResult_GrowRatio = Math.Round(resultList.Last().GrowRatio - 1,2) * 100;
+            var monthDiff = ((DateTime.Now.Year - StartDate.Year) * 12) + DateTime.Now.Month - StartDate.Month;
+            DisplayResult_YearlyGrowRatio = Math.Round(DisplayResult_GrowRatio / monthDiff / 12 * 100,2);
         }
     }
 }

@@ -52,6 +52,7 @@ namespace InfraStructure
         }
 
         public string ID { get; set; }
+        public string Name { get; set; }
 
         public DateTime[] Date { get; set; }
         public double[] OpenPrice { get; set; }

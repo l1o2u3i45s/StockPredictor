@@ -304,6 +304,9 @@ namespace StockPredictor.ViewModel
             Parallel.ForEach(stockFiles, _ =>
             {
                 StockData data = DataParser.GetStockData(_);
+                if (stockInfoDictionary.ContainsKey(data.ID))
+                    data.Name = stockInfoDictionary[data.ID];
+
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                 stockDataList.Add(data);

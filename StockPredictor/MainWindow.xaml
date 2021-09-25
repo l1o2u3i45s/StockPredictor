@@ -306,7 +306,44 @@
                     <Button Grid.Row="3" Content="計算" Command="{Binding CaculateCommand}" Margin="5"/>
 
                     <Grid Grid.Column="1" Grid.RowSpan="6">
-                        <lvc:CartesianChart    Series="{Binding SeriesList}" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="5">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="股票名稱"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_StockNameInfo}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="總投入金額"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_TotalInvestMoney}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="目前現值"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_CurrentEarningMoney}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="總報酬率"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_GrowRatio}"></TextBlock>
+                                <TextBlock FontSize="20" Text="%"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="20" Text="年報酬率"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding DisplayResult_YearlyGrowRatio}"></TextBlock>
+                                <TextBlock FontSize="20" Text="%"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <lvc:CartesianChart Series="{Binding SeriesList}" Grid.Column="1">
+                            <lvc:CartesianChart.Template>
+                                <ControlTemplate TargetType="{x:Type UserControl}">
+                                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </lvc:CartesianChart.Template>
+                        </lvc:CartesianChart>
                     </Grid>
                 </Grid>
             </TabItem>
