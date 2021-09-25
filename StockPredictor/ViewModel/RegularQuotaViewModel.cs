@@ -8,6 +8,7 @@ using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using InfraStructure;
+using StockPredictCore.Service;
 
 namespace StockPredictor.ViewModel
 {
@@ -55,7 +56,8 @@ namespace StockPredictor.ViewModel
                 MessageBox.Show("股票代碼錯誤!");
                return;
             }
-                 
+
+            var result = RegularQuotaService.Calulate(data,startDate,monthlyInvestValue);
         }
     }
 }

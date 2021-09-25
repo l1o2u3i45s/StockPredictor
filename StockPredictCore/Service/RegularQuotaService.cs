@@ -11,41 +11,43 @@ namespace StockPredictCore.Service
     public static class RegularQuotaService
     {
 
-        public static RegularQuotaResult Calulate(StockData data,DateTime startDate,int monthlyInvestValue)
+        public static List<RegularQuotaStockInfo> Calulate(StockData data, DateTime startDate, int monthlyInvestValue)
         {
-            RegularQuotaResult result = new RegularQuotaResult();
+            List<RegularQuotaStockInfo> result = new List<RegularQuotaStockInfo>();
 
-            for (int i = 0; i < data.Date.Length; i++)
+            for (int i = 1; i < data.Date.Length; i++)
             {
-                
+                if (data.Date[i] >= startDate && data.Date[i].Month == data.Date[i-1].AddMonths(1).Month)
+                {
+                   
+                    RegularQuotaStockInfo info = new RegularQuotaStockInfo();
+                    result.Add(info);
+                    info.Date = data.Date[i];
+                    info.CurrentPrice = data.ClosePrice[i];  
+                    info.InventoryAveragePrice = result.Average(_ => _.CurrentPrice);
+                    info.AccumulationMoney = result.Count() * monthlyInvestValue; 
+                    info.GrowRatio = info.CurrentPrice / info.InventoryAveragePrice;
+                    info.TotalStockValue = info.GrowRatio * info.AccumulationMoney;
+                }
+
             }
 
             return result;
         }
-
-        public class RegularQuotaResult
-        {
-            public RegularQuotaResult()
-            {
-                RegularQuotaStockInfoList = new List<RegularQuotaStockInfo>();
-            }
-
-            public int InvestTotalMoney { get; set; }
-            public int FinalTotalMoney { get; set; }
-            public double GrowRatio { get; set; }
-
-            public List<RegularQuotaStockInfo> RegularQuotaStockInfoList { get; set; }  
-        }
-
+         
         public class RegularQuotaStockInfo
         {
             public DateTime Date { get; set; }
 
-            public double InventoryAveragePrice { get; set; }
+            public double InventoryAveragePrice { get; set; } //目前平均股價
 
-            public double CurrentPrice { get; set; }
+            public double CurrentPrice { get; set; } //現在股價
 
-            public double CurrentInventory { get; set; }
+            public double AccumulationMoney { get; set; }  //累積金額
+
+            public double TotalStockValue { get; set; }  //股票現值
+
+            public double GrowRatio { get; set; } //收益率
         }
     }
 }

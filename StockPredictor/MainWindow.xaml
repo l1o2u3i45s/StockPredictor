@@ -302,7 +302,7 @@
                         <TextBlock Text="每月定期金額" VerticalAlignment="Center"/>
                         <TextBox Text="{Binding MonthlyInvestValue}" VerticalAlignment="Center" Width="100" Margin="5,0,0,0"/>
                     </StackPanel>
-                    <Button Grid.Row="3" Content="計算" Command="{Binding CaculateCommand}" Margin="5"></Button>
+                    <Button Grid.Row="3" Content="計算" Command="{Binding CaculateCommand}" Margin="5"/>
                 </Grid>
             </TabItem>
         </TabControl>
