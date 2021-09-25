@@ -14,7 +14,12 @@ namespace StockPredictCore.Service
         public static RegularQuotaResult Calulate(StockData data,DateTime startDate,int monthlyInvestValue)
         {
             RegularQuotaResult result = new RegularQuotaResult();
-              
+
+            for (int i = 0; i < data.Date.Length; i++)
+            {
+                
+            }
+
             return result;
         }
 
