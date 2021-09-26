@@ -13,6 +13,21 @@ namespace StockPredictor.ViewModel
 {
     public class DataCenterViewModel:ViewModelBase
     {
+        private List<string> stockIDfileList;
+
+        public List<string> StockIDfileList
+        {
+            get => stockIDfileList;
+            set { Set(() => StockIDfileList, ref stockIDfileList, value); }
+        }
+
+        private string selectedStockIDFile;
+
+        public string SelectedStockIDFile
+        {
+            get => selectedStockIDFile;
+            set { Set(() => SelectedStockIDFile, ref selectedStockIDFile, value); }
+        }
 
         public delegate void UpdateDataDoneCallback();
 
@@ -33,6 +48,10 @@ namespace StockPredictor.ViewModel
             UpdateHistorialStockDataCommand = new RelayCommand(UpdateHistorialStockDataAction);
             GetFinancialStatementCommand = new RelayCommand(GetFinancialStatementAction);
             GetPERDataCommand = new RelayCommand(GetPERDataAction);
+
+            StockIDfileList = new List<string>();
+            StockIDfileList.AddRange(Directory.GetFiles("StockInfofile"));
+            SelectedStockIDFile = StockIDfileList[0];
         }
 
         private void GetPERDataAction()
@@ -63,7 +82,7 @@ namespace StockPredictor.ViewModel
         private List<string> GetStockIdList()
         {
             List<string> stockCodeList = new List<string>();
-            using (var reader = new StreamReader(@"StockInfofile\\0050.txt"))
+            using (var reader = new StreamReader(selectedStockIDFile))
             {
                 while (!reader.EndOfStream)
                 {

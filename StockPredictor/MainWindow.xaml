@@ -264,15 +264,17 @@
                 </Grid>
             </TabItem>
             <TabItem Header="資料中心" Tag="{x:Static viewModel:eSelectTabType.DataCenter}" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" >
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" >
-                        <Button Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"/>
-                        <Button Margin="5,0,0,0" Content="取得綜合損益表" Command="{Binding GetFinancialStatementCommand}"/>
-                        <Button Margin="5,0,0,0" Content="取得P/E Ratio表" Command="{Binding GetPERDataCommand}"/>
+                <Grid> 
+                    <StackPanel  >
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <ComboBox Width="250" ItemsSource="{Binding StockIDfileList}" SelectedItem="{Binding SelectedStockIDFile}"></ComboBox>
+                            <Button Margin="5,0,0,0" Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"/>
+                        </StackPanel>
+                       <StackPanel  Orientation="Horizontal">
+                           <Button Margin="5,0,0,0" Content="取得綜合損益表" Command="{Binding GetFinancialStatementCommand}"/>
+                           <Button Margin="5,0,0,0" Content="取得P/E Ratio表" Command="{Binding GetPERDataCommand}"/>
+                        </StackPanel>
+                      
 
                     </StackPanel>
                 </Grid>
