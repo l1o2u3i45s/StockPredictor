@@ -5,13 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using InfraStructure;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using StockPredictCore.Filter;
+using StockPredictCore.Filter.RSI;
 using StockPredictCore.Service;
+using StockPredictor.Class;
+using StockPredictor.Class.FilterInfo;
 
 namespace StockPredictor.ViewModel
 {
@@ -107,17 +113,49 @@ namespace StockPredictor.ViewModel
             set { Set(() => DisplayResult_YearlyGrowRatio, ref displayResult_YearlyGrowRatio, value); }
         }
 
+        private List<FilterInfo> filterTypeList;
+
+        public List<FilterInfo> FilterTypeList
+        {
+            get => filterTypeList;
+            set { Set(() => FilterTypeList, ref filterTypeList, value); }
+        }
+
+        private FilterInfo selectedFilterInfo;
+
+        public FilterInfo SelectedFilterInfo
+        {
+            get => selectedFilterInfo;
+            set { Set(() => SelectedFilterInfo, ref selectedFilterInfo, value); }
+        }
+        
+
         public RelayCommand CaculateCommand { get; set; } 
 
         public RegularQuotaViewModel(ConcurrentBag<StockData> stockdataList)
         { 
             CaculateCommand = new RelayCommand(CaculateAction);
             _stockDataList = stockdataList;
-           
+
+            filterTypeList = new List<FilterInfo>();
+            foreach (FilterType type in Enum.GetValues(typeof(FilterType)))
+            {
+                filterTypeList.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type)); 
+            }
+
+            SelectedFilterInfo = filterTypeList[0];
         }
           
         private void CaculateAction()
         {
+            Parallel.ForEach(_stockDataList, stockData =>
+            {
+                for (int i = 0; i < stockData.Date.Length; i++)
+                {
+                    stockData.IsFilter[i] = false;
+                }
+            });
+
             var data = _stockDataList.SingleOrDefault(_ => _.ID == stockID);
             if (data == null)
             {
@@ -125,7 +163,13 @@ namespace StockPredictor.ViewModel
                return;
             }
 
-            var resultList = RegularQuotaService.Calulate(data,startDate,monthlyInvestValue);
+            List<StockData> stockDataList = new List<StockData>();
+            stockDataList.Add(data);
+
+            IFilter filter = FilterFactory.CreatFilterByFilterType(SelectedFilterInfo.Type, SelectedFilterInfo.Param, stockDataList);
+            filter.Execute();
+
+            var resultList = RegularQuotaService.Calulate(stockDataList.Single(), startDate,monthlyInvestValue);
             SeriesList.Clear(); 
             LineSeries currentStockPriceLineSeries = new LineSeries(){
                 Values = new ChartValues<ObservableValue>() ,
@@ -148,9 +192,9 @@ namespace StockPredictor.ViewModel
                 averageHistoryStockPriceLineSeries.Values.Add(new ObservableValue(result.InventoryAveragePrice));
             }
             double yearhDiff = ((double)(DateTime.Now.Year - StartDate.Year) * 12 + DateTime.Now.Month - StartDate.Month) / 12;
-            DisplayResult_StockNameInfo = $"{data.ID} {data.Name}";
+            DisplayResult_StockNameInfo = $"{stockDataList.Single().ID} {stockDataList.Single().Name}";
             DisplayResult_TotalInvestMoney = (int)resultList.Last().AccumulationMoney;
-            DisplayResult_LastestPrice = data.ClosePrice[data.ClosePrice.Length - 1];
+            DisplayResult_LastestPrice = stockDataList.Single().ClosePrice[stockDataList.Single().ClosePrice.Length - 1];
             DisplayResult_AveragePrice = resultList.Last().InventoryAveragePrice;
             DisplayResult_GrowRatio = Math.Round( (DisplayResult_LastestPrice / DisplayResult_AveragePrice) - 1, 2) * 100;
             DisplayResult_CurrentEarningMoney = (int)(DisplayResult_TotalInvestMoney * (100 + DisplayResult_GrowRatio )/100); 

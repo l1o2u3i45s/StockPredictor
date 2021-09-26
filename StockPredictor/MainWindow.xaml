@@ -285,6 +285,7 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -300,10 +301,18 @@
                                     SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="2">
-                        <TextBlock Text="每月定期金額" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding MonthlyInvestValue}" VerticalAlignment="Center" Width="100" Margin="5,0,0,0"/>
+                        <TextBlock Text="買入條件" VerticalAlignment="Center"/>
+                        <ComboBox ItemsSource="{Binding FilterTypeList}" 
+                                  SelectedItem="{Binding SelectedFilterInfo}"
+                                  DisplayMemberPath="TypeName" Width="200" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SelectedFilterInfo.Param}" 
+                                 Margin="5,0,0,0" Width="100" VerticalAlignment="Center"></TextBox>
                     </StackPanel>
-                    <Button Grid.Row="3" Content="計算" Command="{Binding CaculateCommand}" Margin="5"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="3">
+                        <TextBlock Text="每次定期金額" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding MonthlyInvestValue}" VerticalAlignment="Center" Width="100" Margin="5,0,0,0"/>
+                    </StackPanel> 
+                    <Button Grid.Row="4" Content="計算" Command="{Binding CaculateCommand}" Margin="5"/>
 
                     <Grid Grid.Column="1" Grid.RowSpan="6">
                         <Grid.ColumnDefinitions>

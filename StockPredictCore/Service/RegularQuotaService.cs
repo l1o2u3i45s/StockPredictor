@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using InfraStructure;
+using StockPredictCore.Filter;
 
 namespace StockPredictCore.Service
 {
@@ -17,7 +18,7 @@ namespace StockPredictCore.Service
 
             for (int i = 1; i < data.Date.Length; i++)
             {
-                if (data.Date[i] >= startDate && data.Date[i].Month == data.Date[i-1].AddMonths(1).Month)
+                if (data.Date[i] >= startDate && data.Date[i].Month == data.Date[i-1].AddMonths(1).Month && data.IsFilter[i] == false)
                 {
                    
                     RegularQuotaStockInfo info = new RegularQuotaStockInfo();
