@@ -16,15 +16,15 @@ namespace StockPredictCore.Service
         {
             List<RegularQuotaStockInfo> result = new List<RegularQuotaStockInfo>();
 
-            for (int i = 1; i < data.Date.Length; i++)
+            for (int i = 1; i < data.Date.Length-1; i++)
             {
                 if (data.Date[i] >= startDate && data.IsFilter[i] == false)
                 {
                    
                     RegularQuotaStockInfo info = new RegularQuotaStockInfo();
                     result.Add(info);
-                    info.Date = data.Date[i];
-                    info.CurrentPrice = data.ClosePrice[i];  
+                    info.Date = data.Date[i+1];
+                    info.CurrentPrice = data.OpenPrice[i+1];  
                     info.InventoryAveragePrice = Math.Round(result.Average(_ => _.CurrentPrice),2);
                     info.AccumulationMoney = result.Count() * monthlyInvestValue; 
                     info.GrowRatio = info.CurrentPrice / info.InventoryAveragePrice;
