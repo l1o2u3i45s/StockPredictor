@@ -170,6 +170,13 @@ namespace StockPredictor.ViewModel
             filter.Execute();
 
             var resultList = RegularQuotaService.Calulate(stockDataList.Single(), startDate,monthlyInvestValue);
+
+            if (resultList.Count == 0)
+            {
+                MessageBox.Show("無資料符合條件!");
+                return;
+            }
+
             SeriesList.Clear(); 
             LineSeries currentStockPriceLineSeries = new LineSeries(){
                 Values = new ChartValues<ObservableValue>() ,
