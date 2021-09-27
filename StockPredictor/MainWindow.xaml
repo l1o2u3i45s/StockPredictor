@@ -19,21 +19,6 @@
     </i:Interaction.Triggers>
     <Grid>
         <TabControl x:Name="MainTabControl" SelectedValue="{Binding SelectedTabItemType}" SelectedValuePath="Tag">
-            <TabControl.Resources>
-                <DataTemplate x:Key="UcStockDetail">
-                    <userControl:ucStockDetail DataContext="{Binding .}"  />
-                </DataTemplate>
-            </TabControl.Resources>
-            <TabControl.ItemContainerStyle>
-                <Style TargetType="TabItem">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Source={StaticResource Locator} ,Path=Main.SelectedTabItemType}" 
-                                     Value="{x:Static viewModel:eSelectTabType.StockDetail}" >
-                            <Setter Property="ContentTemplate" Value="{StaticResource UcStockDetail}" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TabControl.ItemContainerStyle>
             <TabItem Header="股票篩選" Tag="{x:Static viewModel:eSelectTabType.StockFilter}" >
                 <Grid Background="{StaticResource AccordionBackgroundBrush}">
                     <Grid.ColumnDefinitions>

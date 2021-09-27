@@ -16,6 +16,7 @@ using StockPredictor.Class;
 using StockPredictor.Class.AlgoStategy;
 using StockPredictor.Class.FilterInfo;
 using StockPredictor.Class.SumResult;
+using StockPredictor.UserControl;
 
 namespace StockPredictor.ViewModel
 {
@@ -179,10 +180,11 @@ namespace StockPredictor.ViewModel
                 return;
             }
             StockDetailViewModel newTabVM = new StockDetailViewModel(SelectedStockInfo.ID, SelectedStockInfo.Name);
+            ucStockDetail ucStockDetail = new ucStockDetail(){DataContext = newTabVM};
             TabItem newTabItem = new TabItem
             {
                 Header = $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}",
-                DataContext = newTabVM,
+                Content = ucStockDetail,
                 Tag = eSelectTabType.StockDetail
             };
              
