@@ -179,7 +179,10 @@ namespace StockPredictor.ViewModel
                 }
                 return;
             }
-            StockDetailViewModel newTabVM = new StockDetailViewModel(SelectedStockInfo.ID, SelectedStockInfo.Name);
+
+            var data = stockDataList.Single(_ => _.ID == SelectedStockInfo.ID);
+
+            StockDetailViewModel newTabVM = new StockDetailViewModel(data);
             ucStockDetail ucStockDetail = new ucStockDetail(){DataContext = newTabVM};
             TabItem newTabItem = new TabItem
             {

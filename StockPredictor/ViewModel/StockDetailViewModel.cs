@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using InfraStructure;
 
 namespace StockPredictor.ViewModel
 {
@@ -25,10 +26,10 @@ namespace StockPredictor.ViewModel
             set { Set(() => StockName, ref stockName, value); }
         }
          
-        public StockDetailViewModel(string _stockID, string _stockName)
+        public StockDetailViewModel(StockData stockData)
         {
-            StockID = _stockID;
-            StockName = _stockName;
+            StockID = stockData.ID;
+            StockName = stockData.Name;
         }
     }
 }
