@@ -12,7 +12,37 @@ namespace StockPredictCore
         {
             CaculateRSVandKD(data);
             CaculateMA(data);
-           CaculateRSI(data);
+            CaculateRSI(data);
+            CaculateBoolling(data);
+        }
+
+        void CaculateBoolling(StockData data)
+        {
+            int dataCount = data.Date.Count();
+            int day = 20;
+            for (int i = day * 2 -1; i < dataCount; i++)
+            {
+
+                double avg = 0;
+                double masum = 0;
+                for (int j = i- day + 1; j <= i; j++)
+                {
+                    masum += data.MA20[j];
+                } 
+                avg = masum / day;
+
+                double sigmasum = 0;
+                for (int j = i - day + 1; j < i; j++)
+                {
+                    sigmasum += (data.ClosePrice[j] - avg) * (data.ClosePrice[j] - avg);
+                }
+
+                double std = Math.Sqrt(sigmasum / day);
+
+                data.BoollingHighLimit[i] = avg + std * 2;
+                data.BoollingLowLimit[i] = avg - std * 2;
+                   
+            }
         }
 
         void CaculateRSI(StockData data)
@@ -40,7 +70,7 @@ namespace StockPredictCore
             RSI rsi10 = new RSI(10);
             rsi10.Load(ohlcList);
             RSISerie serie10 = rsi10.Calculate();
-
+             
             for (int i = 0; i < dataCount; i++)
             {
                 if (serie5.RSI[i] != null)

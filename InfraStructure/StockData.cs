@@ -32,6 +32,10 @@ namespace InfraStructure
             RSI10 = new double[size];
 
             RSV = new double[size];
+
+            BoollingHighLimit = new double[size];
+            BoollingLowLimit = new double[size];
+
             IsFilter = new bool[size]; 
         }
 
@@ -73,6 +77,9 @@ namespace InfraStructure
         public double[] RSI5 { get; set; }
         public double[] RSI10 { get; set; }
 
+        public double[] BoollingHighLimit { get; set; }
+        public double[] BoollingLowLimit { get; set; }
+
         public bool[] IsFilter { get; set; }
     }
 
@@ -102,6 +109,9 @@ namespace InfraStructure
 
             RSI5 = data.RSI5[index];
             RSI10 = data.RSI10[index];
+
+            BoollingHighLimit = data.BoollingHighLimit[index];
+            BoollingLowLimit = data.BoollingLowLimit[index];
         }
 
         public string ID { get; set; }
@@ -125,6 +135,9 @@ namespace InfraStructure
 
         public double RSI5 { get; set; }
         public double RSI10 { get; set; }
+
+        public double BoollingHighLimit { get; set; }
+        public double BoollingLowLimit { get; set; }
 
         public double CurrentClosePrice { get; set; }
         public double CloseDiffValue

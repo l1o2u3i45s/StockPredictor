@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
+using StockPredictCore.Filter.Boollingerband;
 using StockPredictCore.Filter.Other;
 using StockPredictCore.Filter.RSI;
 using StockPredictCore.Filter.Value;
@@ -71,6 +72,10 @@ namespace StockPredictor.Class.FilterInfo
                     info.Param = new RSIHigherThanValueFilter().GetParam();
                     break;
 
+
+                case FilterType.BoollingLowThanLowLimitFilter:
+                    info.Param = new BoollingLowThanLowLimitFilter().GetParam();
+                    break;
 
 
                 case FilterType.PriceDecreaseFilter:

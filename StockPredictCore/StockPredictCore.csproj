@@ -68,6 +68,7 @@
     <Compile Include="Filter\AverageLine\Ma5LMa120Filter.cs" />
     <Compile Include="Filter\AverageLine\Ma5LMa20Filter.cs" />
     <Compile Include="Filter\AverageLine\Ma5LMa60Filter.cs" />
+    <Compile Include="Filter\Boollingerband\BoollingLowThanLowLimitFilter.cs" />
     <Compile Include="Filter\FilterEnum.cs" />
     <Compile Include="Filter\FilterFactory.cs" />
     <Compile Include="Filter\AverageLine\Ma5HMa120Filter.cs" />

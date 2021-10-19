@@ -25,6 +25,8 @@ namespace StockPredictCore
         public readonly static string StockRawDataPath = "StockRawData";//每日股價
         public readonly static string FinancialStatementPath = "FinancialStatement"; //綜合損益表
         public readonly static string PERatioTablePath = "PERatioTable"; //P/E ratio表
+        public readonly static string TaiwanStockInstitutionalInvestorsBuySell = "TaiwanStockInstitutionalInvestorsBuySell"; //法人買賣
+        
         //取得股價資訊
         public static void CrawlStockPriceData(DateTime startDate, List<string> stockCodeList)
         {   

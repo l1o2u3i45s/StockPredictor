@@ -35,7 +35,7 @@ namespace StockPredictor.Class
 
         public List<FilterInfo.FilterInfo> TargerFilterList //指標
         {
-            get => FilterInfoList.Where(_ => _.TypeName.Contains("RSI")).ToList();
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("RSI") || _.TypeName.Contains("布林通道")).ToList();
         }
 
         public List<FilterInfo.FilterInfo> ValueFilterList //價格
