@@ -351,6 +351,42 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="定期定額目標計算" DataContext="{Binding RegularQuotaProfitCaculateViewModel}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/> 
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="預期達到金額" VerticalAlignment="Center"/>
+                            <TextBox Margin="5,0,0,0" VerticalAlignment="Center" Width="200" Text="{Binding TargetMoney}"/>
+                            <TextBlock Text="萬" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <TextBlock Text="預期投入年份" VerticalAlignment="Center"/>
+                            <TextBox Margin="5,0,0,0" VerticalAlignment="Center" Width="200" Text="{Binding TargetYear}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="2">
+                            <TextBlock Text="預期年報酬(%)" VerticalAlignment="Center"/>
+                            <TextBox Margin="5,0,0,0" VerticalAlignment="Center" Width="200" Text="{Binding YearlyRatio}"/>
+                        </StackPanel>
+
+                        <Button Content="計算" Grid.Row="3" Margin="5" Command="{Binding CaculationCommand}"/>
+
+                        <TextBlock Grid.Row="4" Text="{Binding Result}"></TextBlock>
+                    </Grid>
+                </Grid>
+            </TabItem>
         </TabControl>
 
     </Grid>

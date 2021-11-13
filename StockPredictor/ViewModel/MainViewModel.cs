@@ -131,6 +131,15 @@ namespace StockPredictor.ViewModel
             set { Set(() => RegularQuotaViewModel, ref regularQuotaViewModel, value); }
         }
 
+        private RegularQuotaProfitCaculateViewModel regularQuotaProfitCaculateViewModel;
+
+        public RegularQuotaProfitCaculateViewModel RegularQuotaProfitCaculateViewModel
+        {
+            get => regularQuotaProfitCaculateViewModel;
+            set { Set(() => RegularQuotaProfitCaculateViewModel, ref regularQuotaProfitCaculateViewModel, value); }
+        }
+        
+
         private ObservableCollection<StockDetailViewModel> stockDetailViewModelList =
             new ObservableCollection<StockDetailViewModel>();
 
@@ -155,6 +164,7 @@ namespace StockPredictor.ViewModel
             UpdateStockData();
             InitAlgoStrategy();
             RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
+            RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
             AnalysisCommand = new RelayCommand(AnalysisAction);
             AddStrategyCommand = new RelayCommand(AddStrategyAction);
             RemoveStrategyCommand = new RelayCommand(RemoveStrategyAction);
