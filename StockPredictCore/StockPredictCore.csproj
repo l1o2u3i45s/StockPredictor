@@ -61,7 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataParser.cs" />
+    <Compile Include="Service\DataParser.cs" />
     <Compile Include="Filter\AverageLine\Ma5DecreaseFilter.cs" />
     <Compile Include="Filter\AverageLine\Ma5HMa20Filter.cs" />
     <Compile Include="Filter\AverageLine\Ma5HMa60Filter.cs" />
@@ -94,8 +94,8 @@
     <Compile Include="Filter\Volumn\VolumnMoreThanFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnMostHighInDayFilter.cs" />
     <Compile Include="Filter\Volumn\VolumnMostLowInDayFilter.cs" />
-    <Compile Include="MathTool.cs" />
-    <Compile Include="PreProcessor.cs" />
+    <Compile Include="Service\MathTool.cs" />
+    <Compile Include="Service\PreProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\RegularQuotaService.cs" />
   </ItemGroup>
@@ -108,23 +108,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="FinanicalReport\FinanicalReport_2020_Q1.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FinanicalReport\FinanicalReport_2020_Q2.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FinanicalReport\FinanicalReport_2020_Q3.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FinanicalReport\FinanicalReport_2020_Q4.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FinanicalReport\FinanicalReport_2021_Q1.xls">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="StockInfoFile\0050.txt">
