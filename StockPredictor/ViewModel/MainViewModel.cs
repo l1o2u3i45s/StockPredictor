@@ -38,6 +38,7 @@ namespace StockPredictor.ViewModel
         private ConcurrentBag<StockData> stockDataList;
         private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
         private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
+        private ConcurrentBag<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private DateTime startTime = DateTime.Today.AddDays(-7);
 
@@ -354,6 +355,17 @@ namespace StockPredictor.ViewModel
             });
         }
 
+        private void GetInvestInstitutionBuySellDataData(string[] stockFiles)
+        {
+            investInstitutionBuySellDataDataList = new ConcurrentBag<InvestInstitutionBuySellData>();
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                foreach (var data in DataParser.GetInvestInstitutionBuySellData(_))
+                {
+                    investInstitutionBuySellDataDataList.Add(data);
+                }
+            });
+        }
 
         private void ResetData(IEnumerable<StockData> stockDataList)
         {

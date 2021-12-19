@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace InfraStructure
 {
+
+    public struct InvestInstitutionBuySellData
+    {
+        public DateTime Date { get; set; }
+        public string StockID { get; set; }
+        public string Name { get; set; }  
+        public double Buy { get; set; }  
+        public double Sell { get; set; }  
+        
+    }
    public struct PERatioTableData
     {
         public DateTime Date { get; set; }
@@ -23,8 +33,8 @@ namespace InfraStructure
 
        public List<PERatioTableItemJson> data { get; set; }
     }
-
-   public class PERatioTableItemJson
+     
+    public class PERatioTableItemJson
     {
        public PERatioTableItemJson() { }
        public DateTime date { get; set; }
@@ -33,4 +43,23 @@ namespace InfraStructure
        public double PER { get; set; }
        public double PBR { get; set; } 
    }
+
+    public class InvestInstitutionBuySellTableJson
+    {
+        public string msg { get; set; }
+
+        public string status { get; set; }
+
+        public List<InvestInstitutionBuySellTableItemJson> data { get; set; }
+    }
+
+    public class InvestInstitutionBuySellTableItemJson
+    {
+        public InvestInstitutionBuySellTableItemJson() { }
+        public DateTime date { get; set; }
+        public string stock_id { get; set; }
+        public double buy { get; set; }
+        public double sell { get; set; }
+        public string name { get; set; }
+    }
 }

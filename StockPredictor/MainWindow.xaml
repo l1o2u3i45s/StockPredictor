@@ -254,6 +254,7 @@
                         <StackPanel Orientation="Horizontal" Margin="5">
                             <ComboBox Width="250" ItemsSource="{Binding StockIDfileList}" SelectedItem="{Binding SelectedStockIDFile}"></ComboBox>
                             <Button Margin="5,0,0,0" Content="取得最新歷史股價" Command="{Binding UpdateHistorialStockDataCommand}"/>
+                            <Button Margin="5,0,0,0" Content="取得法人買賣" Command="{Binding GetInstitutionalInvestCommand}"/> 
                         </StackPanel>
                        <StackPanel  Orientation="Horizontal">
                            <Button Margin="5,0,0,0" Content="取得綜合損益表" Command="{Binding GetFinancialStatementCommand}"/>

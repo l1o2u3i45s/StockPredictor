@@ -48,6 +48,13 @@ namespace StockPredictCore
             DownloadFile(DatasetType.TaiwanStockPER, stockCodeList, PERatioTablePath, startDateTime, DateTime.Today);
         }
 
+        //取得法人買賣
+        public static void CrawStockInstitutionalInvest(DateTime startDate, List<string> stockCodeList)
+        {
+            DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
+            DownloadFile(DatasetType.TaiwanStockInstitutionalInvestorsBuySell, stockCodeList, TaiwanStockInstitutionalInvestorsBuySell, startDateTime, DateTime.Today);
+        }
+
         public static StockData GetStockData(string filepath)
         {
             string alltext = System.IO.File.ReadAllText(filepath);
@@ -97,6 +104,40 @@ namespace StockPredictCore
             return result;
         }
 
+        public static List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellData(string filepath)
+        {
+            string alltext = System.IO.File.ReadAllText(filepath);
+            InvestInstitutionBuySellTableJson dataList = JsonConvert.DeserializeObject<InvestInstitutionBuySellTableJson>(alltext);
+            List<InvestInstitutionBuySellData> result = new List<InvestInstitutionBuySellData>();
+
+            foreach (var item in dataList.data)
+            {
+                var data = new InvestInstitutionBuySellData()
+                {
+                    Date = item.date,
+                    StockID = item.stock_id,
+                    Buy = item.buy,
+                    Sell = item.sell
+                };
+
+                switch (item.name)
+                {
+                    case "Foreign_Investor":
+                        data.Name = "外資";
+                        break;
+                    case "Investment_Trust":
+                        data.Name = "投信";
+                        break;
+                    case "Dealer":
+                        data.Name = "自營商";
+                        break;
+                }
+
+                result.Add(data);
+            }
+
+            return result;
+        }
 
 
         private static void DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
@@ -144,6 +185,8 @@ namespace StockPredictCore
             TaiwanStockFinancialStatements, //綜合損益表
             [Description("TaiwanStockPER")]
             TaiwanStockPER, //P/E ratio and P/B ratio表
+            [Description("TaiwanStockInstitutionalInvestorsBuySell")]
+            TaiwanStockInstitutionalInvestorsBuySell, //法人買賣
         }
     }
 }

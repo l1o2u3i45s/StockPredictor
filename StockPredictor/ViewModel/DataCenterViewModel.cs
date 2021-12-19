@@ -33,8 +33,8 @@ namespace StockPredictor.ViewModel
 
         public RelayCommand UpdateHistorialStockDataCommand { get; set; }
         public RelayCommand GetFinancialStatementCommand { get; set; }
-        public RelayCommand GetPERDataCommand { get; set; }
-         
+        public RelayCommand GetPERDataCommand { get; set; } 
+        public RelayCommand GetInstitutionalInvestCommand { get; set; }
 
         private UpdateDataDoneCallback updateDataDoneCallback;
 
@@ -48,10 +48,18 @@ namespace StockPredictor.ViewModel
             UpdateHistorialStockDataCommand = new RelayCommand(UpdateHistorialStockDataAction);
             GetFinancialStatementCommand = new RelayCommand(GetFinancialStatementAction);
             GetPERDataCommand = new RelayCommand(GetPERDataAction);
-
+            GetInstitutionalInvestCommand = new RelayCommand(GetInstitutionalInvestAction);
+            
             StockIDfileList = new List<string>();
             StockIDfileList.AddRange(Directory.GetFiles("StockInfofile"));
             SelectedStockIDFile = StockIDfileList[0];
+        }
+
+        private void GetInstitutionalInvestAction()
+        {
+            DataParser.CrawStockInstitutionalInvest(new DateTime(2000, 1, 1), GetStockIdList());
+
+            MessageBox.Show("更新法人買賣資料完成");
         }
 
         private void GetPERDataAction()
