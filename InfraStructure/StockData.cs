@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,10 @@ namespace InfraStructure
             BoollingHighLimit = new double[size];
             BoollingLowLimit = new double[size];
 
-            IsFilter = new bool[size]; 
+            IsFilter = new bool[size];
+
+            InstitutionBuyAndSell = new List<InstitutionBuySellInfo>();
+  
         }
 
         public void UpdateData(StockDataJson jsonOject,int idx)
@@ -53,6 +57,23 @@ namespace InfraStructure
             MA60[idx] = 0;
             MA20[idx] = 0;
             MA5[idx] = 0;
+        }
+
+        public void UpdateInstitutionBuySellData(List<InvestInstitutionBuySellData> data)
+        {
+            string[] types = new string[3] { "外資", "投信", "自營商" };
+
+            foreach (var type in types)
+            {
+                var selectedData = data.Where(_ => _.Name == type).ToList();
+                InstitutionBuyAndSell.Add(new InstitutionBuySellInfo()
+                {
+                    Name = type,
+                    Date = selectedData.Select(_ => _.Date).ToArray(),
+                    BuyAmount = selectedData.Select(_ => _.Buy).ToArray(),
+                    SellAmount = selectedData.Select(_ => _.Sell).ToArray()
+                }); 
+            } 
         }
 
         public string ID { get; set; }
@@ -81,7 +102,21 @@ namespace InfraStructure
         public double[] BoollingLowLimit { get; set; }
 
         public bool[] IsFilter { get; set; }
+
+
+        public List<InstitutionBuySellInfo> InstitutionBuyAndSell { get; set; }
+         
     }
+
+    public class InstitutionBuySellInfo
+    {
+        public string Name { get; set; }
+        public DateTime[] Date { get; set; } 
+        public double[] BuyAmount { get; set; }
+
+        public double[] SellAmount { get; set; }
+    }
+
 
     public class StockInfo
     {

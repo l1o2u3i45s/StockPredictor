@@ -141,8 +141,7 @@ namespace StockPredictor.ViewModel
         }
         
 
-        private ObservableCollection<StockDetailViewModel> stockDetailViewModelList =
-            new ObservableCollection<StockDetailViewModel>();
+        private ObservableCollection<StockDetailViewModel> stockDetailViewModelList = new ObservableCollection<StockDetailViewModel>();
 
         public ObservableCollection<StockDetailViewModel> StockDetailViewModelList
         {
@@ -211,10 +210,8 @@ namespace StockPredictor.ViewModel
         private void UpdateStockData()
         {
             if (isDesign == false)
-            {
+            { 
                 PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
-                GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath));
-                GetPERatioTableData(Directory.GetFiles(DataParser.PERatioTablePath));
             }
         }
 
@@ -308,6 +305,10 @@ namespace StockPredictor.ViewModel
 
         private void PreProcessData(string[] stockFiles)
         {
+            GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath));
+            GetPERatioTableData(Directory.GetFiles(DataParser.PERatioTablePath));
+            GetInvestInstitutionBuySellDataData(Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath));
+
             stockDataList = new ConcurrentBag<StockData>();
             //foreach (var _ in stockFiles)
             //{
@@ -316,13 +317,15 @@ namespace StockPredictor.ViewModel
             //    preProcessor.Execute(data);
             //    stockDataList.Add(data);
             //}
-            
+           
             Parallel.ForEach(stockFiles, _ =>
             {
                 StockData data = DataParser.GetStockData(_);
                 if (stockInfoDictionary.ContainsKey(data.ID))
                     data.Name = stockInfoDictionary[data.ID];
-
+                  
+                data.UpdateInstitutionBuySellData(investInstitutionBuySellDataDataList.Where(x => x.StockID == data.ID).ToList());
+                 
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
                 stockDataList.Add(data);
