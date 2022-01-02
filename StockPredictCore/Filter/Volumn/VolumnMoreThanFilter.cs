@@ -25,7 +25,7 @@ namespace StockPredictCore.Filter.Volumn
 
         public override void Execute()
         {
-            double target = parameter;
+            double target = parameter;    
 
             for (int i = 0; i < stockDataList.Count; i++)
             {

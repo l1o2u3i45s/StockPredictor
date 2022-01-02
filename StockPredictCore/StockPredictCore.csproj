@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filter\InvestInstitution\InvestTrustContinueBuyInDaysFilter.cs" />
     <Compile Include="Service\DataParser.cs" />
     <Compile Include="Filter\AverageLine\Ma5DecreaseFilter.cs" />
     <Compile Include="Filter\AverageLine\Ma5HMa20Filter.cs" />
@@ -124,5 +125,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
