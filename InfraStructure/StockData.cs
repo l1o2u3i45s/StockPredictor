@@ -66,13 +66,28 @@ namespace InfraStructure
             foreach (var type in types)
             {
                 var selectedData = data.Where(_ => _.Name == type).ToList();
-                InstitutionBuyAndSell.Add(new InstitutionBuySellInfo()
+
+                InstitutionBuySellInfo info = new InstitutionBuySellInfo()
                 {
-                    Name = type,
                     Date = selectedData.Select(_ => _.Date).ToArray(),
                     BuyAmount = selectedData.Select(_ => _.Buy).ToArray(),
                     SellAmount = selectedData.Select(_ => _.Sell).ToArray()
-                }); 
+                };
+
+                switch (type)
+                {
+                    case "外資":
+                        info.InstitutionType = eInstitution.外資;
+                        break;
+                    case "投信":
+                        info.InstitutionType = eInstitution.投信;
+                        break;
+                    case "自營商":
+                        info.InstitutionType = eInstitution.自營商;
+                        break;
+                }
+               
+                InstitutionBuyAndSell.Add(info); 
             } 
         }
 
@@ -110,13 +125,19 @@ namespace InfraStructure
 
     public class InstitutionBuySellInfo
     {
-        public string Name { get; set; }
+        public eInstitution InstitutionType { get; set; }
         public DateTime[] Date { get; set; } 
         public double[] BuyAmount { get; set; }
 
         public double[] SellAmount { get; set; }
     }
 
+    public enum eInstitution
+    {
+        外資,
+        投信,
+        自營商
+    }
 
     public class StockInfo
     {

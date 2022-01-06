@@ -69,6 +69,10 @@ namespace StockPredictCore.Filter
         BoollingLowThanLowLimitFilter,
 
         [Description("特殊算法_RSI5回測買進")]
-        Other_RSI5L20_HigherThanLastLowFilter
+        Other_RSI5L20_HigherThanLastLowFilter,
+
+
+        [Description("籌碼_外資連買N天")]
+        InvestTrustContinueBuyInDaysFilter
     }
 }

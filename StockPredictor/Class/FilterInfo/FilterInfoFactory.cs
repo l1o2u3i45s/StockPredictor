@@ -7,6 +7,7 @@ using StockPredictCore.AverageLine;
 using StockPredictCore.Filter;
 using StockPredictCore.Filter.AverageLine;
 using StockPredictCore.Filter.Boollingerband;
+using StockPredictCore.Filter.InvestInstitution;
 using StockPredictCore.Filter.Other;
 using StockPredictCore.Filter.RSI;
 using StockPredictCore.Filter.Value;
@@ -116,7 +117,10 @@ namespace StockPredictor.Class.FilterInfo
                     info.Param = new Other_RSI5L20_HigherThanLastLowFilter().GetParam();
                     break;
 
-                    
+                case FilterType.InvestTrustContinueBuyInDaysFilter:
+                    info.Param = new InvestTrustContinueBuyInDaysFilter().GetParam();
+                    break;
+
                 default:
                     throw new NotImplementedException();
                 

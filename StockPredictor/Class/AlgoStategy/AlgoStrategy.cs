@@ -52,7 +52,12 @@ namespace StockPredictor.Class
         {
             get => FilterInfoList.Where(_ => _.TypeName.Contains("特殊算法")).ToList();
         }
-        
+
+        public List<FilterInfo.FilterInfo> InstitutionFilterList //籌碼面
+        {
+            get => FilterInfoList.Where(_ => _.TypeName.Contains("籌碼")).ToList();
+        }
+
 
         public AlgoStrategy()
         {
