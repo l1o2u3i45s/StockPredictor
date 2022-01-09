@@ -128,7 +128,8 @@ namespace StockPredictCore
                     case "Investment_Trust":
                         data.Name = "投信";
                         break;
-                    case "Dealer":
+                    case "Dealer_Hedging":
+                    case "Dealer_self":
                         data.Name = "自營商";
                         break;
                 }

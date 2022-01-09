@@ -121,6 +121,10 @@ namespace StockPredictor.Class.FilterInfo
                     info.Param = new InvestTrustContinueBuyInDaysFilter().GetParam();
                     break;
 
+                case FilterType.ForeignContinueBuyInDaysFilter:
+                    info.Param = new ForeignContinueBuyInDaysFilter().GetParam();
+                    break;
+                    
                 default:
                     throw new NotImplementedException();
                 

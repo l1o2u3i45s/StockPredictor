@@ -69,9 +69,9 @@ namespace InfraStructure
 
                 InstitutionBuySellInfo info = new InstitutionBuySellInfo()
                 {
-                    Date = selectedData.Select(_ => _.Date).ToArray(),
-                    BuyAmount = selectedData.Select(_ => _.Buy).ToArray(),
-                    SellAmount = selectedData.Select(_ => _.Sell).ToArray()
+                    Date = selectedData.OrderBy(x => x.Date).Select(_ => _.Date).ToArray(),
+                    BuyAmount = selectedData.OrderBy(x => x.Date).Select(_ => _.Buy).ToArray(),
+                    SellAmount = selectedData.OrderBy(x => x.Date).Select(_ => _.Sell).ToArray()
                 };
 
                 switch (type)

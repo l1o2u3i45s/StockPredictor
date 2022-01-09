@@ -84,6 +84,10 @@ namespace StockPredictor.Class
                 case FilterType.InvestTrustContinueBuyInDaysFilter:
                     return new InvestTrustContinueBuyInDaysFilter(datas, param);
 
+                case FilterType.ForeignContinueBuyInDaysFilter:
+                    return new ForeignContinueBuyInDaysFilter(datas, param);
+                    
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

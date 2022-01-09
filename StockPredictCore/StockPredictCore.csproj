@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filter\InvestInstitution\ForeignContinueBuyInDaysFilter.cs" />
     <Compile Include="Filter\InvestInstitution\InvestTrustContinueBuyInDaysFilter.cs" />
     <Compile Include="Service\DataParser.cs" />
     <Compile Include="Filter\AverageLine\Ma5DecreaseFilter.cs" />

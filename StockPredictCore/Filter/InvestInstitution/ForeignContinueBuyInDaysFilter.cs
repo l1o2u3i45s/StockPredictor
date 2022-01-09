@@ -7,21 +7,21 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.InvestInstitution
 {
-    //投信連續幾天買進
-   
-    public class InvestTrustContinueBuyInDaysFilter : IFilter
+    //外資連續幾天買進
+
+    public class ForeignContinueBuyInDaysFilter : IFilter
     {
-        public InvestTrustContinueBuyInDaysFilter()
+        public ForeignContinueBuyInDaysFilter()
         {
             parameter = 5;
         }
 
-        public InvestTrustContinueBuyInDaysFilter(double initParam) : base(initParam)
+        public ForeignContinueBuyInDaysFilter(double initParam) : base(initParam)
         {
 
         }
 
-        public InvestTrustContinueBuyInDaysFilter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
+        public ForeignContinueBuyInDaysFilter(IEnumerable<StockData> _stockDataList, double _param) : base(_stockDataList, _param)
         {
         }
 
@@ -30,10 +30,11 @@ namespace StockPredictCore.Filter.InvestInstitution
             int target = (int)parameter;
 
             for (int i = 0; i < stockDataList.Count; i++)
-            {
+            { 
                 var currentData = stockDataList[i];
-                var institutionData = currentData.InstitutionBuyAndSell.Single(_ => _.InstitutionType == eInstitution.投信);
-                
+                  
+                var institutionData = currentData.InstitutionBuyAndSell.Single(_ => _.InstitutionType == eInstitution.外資);
+
                 int continueBuyDayCount = 0;
 
                 if (currentData.Date.Length != institutionData.Date.Length)
@@ -44,18 +45,18 @@ namespace StockPredictCore.Filter.InvestInstitution
                     }
                     continue;
                 }
-
+                   
                 for (int j = 0; j < institutionData.Date.Length; j++)
                 {
                     if (currentData.IsFilter[j])
-                       continue;
-
+                        continue;
+                   
                     if (institutionData.BuyAmount[j] > institutionData.SellAmount[j])
                         continueBuyDayCount++;
-                    else 
+                    else
                         continueBuyDayCount = 0;
 
-                    if (continueBuyDayCount < target)
+                    if (continueBuyDayCount <= target)
                         currentData.IsFilter[j] = true;
                 }
 

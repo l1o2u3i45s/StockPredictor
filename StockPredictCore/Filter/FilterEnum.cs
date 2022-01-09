@@ -72,7 +72,9 @@ namespace StockPredictCore.Filter
         Other_RSI5L20_HigherThanLastLowFilter,
 
 
+        [Description("籌碼_投信連買N天")]
+        InvestTrustContinueBuyInDaysFilter,
         [Description("籌碼_外資連買N天")]
-        InvestTrustContinueBuyInDaysFilter
+        ForeignContinueBuyInDaysFilter
     }
 }
