@@ -21,6 +21,8 @@ namespace StockPredictCore.Filter
         Ma5LMa60Filter,
         [Description("Ma5大於Ma60幾%以上")]
         Ma5HMa60Filter,
+        [Description("Ma5大於Ma60幾%以內")]
+        Ma5HMa60InRatioFilter,
         [Description("Ma5小於Ma120幾%以上")]
         Ma5LMa120Filter,
         [Description("Ma5大於Ma120幾%以上")]
