@@ -37,7 +37,7 @@ namespace StockPredictCore.Filter.InvestInstitution
 
                 int continueBuyDayCount = 0;
 
-                if (currentData.Date.Length != institutionData.Date.Length)
+                if (institutionData.Date.Length == 0)
                 {
                     for (int j = 0; j < currentData.Date.Length; j++)
                     {
@@ -45,19 +45,21 @@ namespace StockPredictCore.Filter.InvestInstitution
                     }
                     continue;
                 }
-                   
+
                 for (int j = 0; j < institutionData.Date.Length; j++)
                 {
-                    if (currentData.IsFilter[j])
+                    var idx = currentData.Date.ToList().IndexOf(institutionData.Date[j]);
+
+                    if(idx < 0 )
                         continue;
-                   
+                     
                     if (institutionData.BuyAmount[j] > institutionData.SellAmount[j])
                         continueBuyDayCount++;
                     else
                         continueBuyDayCount = 0;
 
-                    if (continueBuyDayCount <= target)
-                        currentData.IsFilter[j] = true;
+                    if (continueBuyDayCount < target)
+                        currentData.IsFilter[idx] = true;
                 }
 
             }
