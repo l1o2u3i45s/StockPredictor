@@ -29,7 +29,10 @@ namespace StockPredictCore.Filter
         Ma5HMa120Filter,
         [Description("Ma60小於收盤價幾%以內")]
         Ma60LowerPriceFilter,
-
+        [Description("Ma60穿過Ma5")]
+        Ma60OverMa5Filter,
+        [Description("Ma5穿過Ma60")]
+        Ma5OverMa60Filter,
 
         [Description("股價跌幾%以上")]
         PriceDecreaseFilter,
