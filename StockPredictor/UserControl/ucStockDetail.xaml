@@ -10,11 +10,38 @@
              d:DesignHeight="450" d:DesignWidth="800" Background="{StaticResource AccordionBackgroundBrush}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Background="{StaticResource GridSplitterBackgroundBrush}">
-            <TextBlock FontSize="30" Text="{Binding StockID}" ></TextBlock>
+        <StackPanel Orientation="Horizontal" Background="{StaticResource GridSplitterBackgroundBrush}">
+            <TextBlock FontSize="30" Text="{Binding StockID}" />
+            <TextBlock FontSize="30" Text="{Binding StockName}" Margin="5,0,0,0" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="410"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <DataGrid  IsReadOnly="True"   ItemsSource="{Binding Ma5ma60MappingFeatureList}" AutoGenerateColumns="False" >
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{StaticResource AccordionArrowBackgroundBrush}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="18"/>
+                    </Style>
+                </DataGrid.Resources> 
+                <DataGrid.Columns>
+                    <DataGridTextColumn Foreground="Black" Width="140" FontSize="20" Header="日期"  Binding="{Binding Date,StringFormat='{}{0:yyyy-MM-dd}'}"/>
+                    <DataGridTextColumn Foreground="Black" Width="80" FontSize="20" Header="收盤價"  Binding="{Binding ClosedPrice}"/>
+                    <DataGridTextColumn Foreground="Black" Width="150" FontSize="20" Header="狀態"  Binding="{Binding Status}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </Grid>
 </UserControl>
