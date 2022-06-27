@@ -143,7 +143,7 @@ namespace StockPredictor.ViewModel
                 filterTypeList.Add(FilterInfoFactory.CreatFilterInfoByFilterType(type)); 
             }
 
-            SelectedFilterInfo = filterTypeList[0];
+            SelectedFilterInfo = filterTypeList.FirstOrDefault();
         }
           
         private void CaculateAction()
