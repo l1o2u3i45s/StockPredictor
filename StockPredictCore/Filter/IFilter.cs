@@ -7,7 +7,14 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-    public abstract class FilterBase
+    public interface IFilter
+    {
+        void Execute();
+
+        double GetParam();
+    }
+
+    public abstract class FilterBase : IFilter
     { 
         public FilterBase(){}
 
