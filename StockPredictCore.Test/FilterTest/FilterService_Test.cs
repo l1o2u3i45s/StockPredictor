@@ -15,13 +15,7 @@ namespace StockPredictCore.Test
     {
         
         private FilterService _filterService  = new FilterService();
-
-        public FilterService_Test()
-        {
-
-        }
-
-
+         
         [TestMethod]
         public void TestExecuteReallyExecute()
         {
