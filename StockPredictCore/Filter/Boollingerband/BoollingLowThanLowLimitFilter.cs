@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Boollingerband
 { 
-    public class BoollingLowThanLowLimitFilter : IFilter
+    public class BoollingLowThanLowLimitFilter : FilterBase
     {
         public BoollingLowThanLowLimitFilter()
         {

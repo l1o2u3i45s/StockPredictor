@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter.InvestInstitution
 {
     //投信連續幾天買進
    
-    public class InvestTrustContinueBuyInDaysFilter : IFilter
+    public class InvestTrustContinueBuyInDaysFilter : FilterBase
     {
         public InvestTrustContinueBuyInDaysFilter()
         {

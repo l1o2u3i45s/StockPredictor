@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.AverageLine
 {
-   public class Ma5LMa120Filter: IFilter
+   public class Ma5LMa120Filter: FilterBase
     {
         public Ma5LMa120Filter()
         {

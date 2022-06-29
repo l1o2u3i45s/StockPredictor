@@ -8,7 +8,7 @@ using StockPredictCore.Filter;
 
 namespace StockPredictCore.AverageLine
 {
-    public class Ma5IncreaseFilter : IFilter
+    public class Ma5IncreaseFilter : FilterBase
     {
         public Ma5IncreaseFilter()
         {

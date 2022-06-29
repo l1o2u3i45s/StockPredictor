@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Value
 {
-    public class PriceMostLowinDaysFilter: IFilter
+    public class PriceMostLowinDaysFilter: FilterBase
     {
         public PriceMostLowinDaysFilter()
         {

@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-    public class Ma5HMa120Filter: IFilter
+    public class Ma5HMa120Filter: FilterBase
     {
         public Ma5HMa120Filter()
         {

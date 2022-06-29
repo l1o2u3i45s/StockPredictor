@@ -9,9 +9,9 @@ namespace StockPredictCore.Filter
 {
    public class FilterService
    {
-       private List<IFilter> filters = new List<IFilter>();
+       private List<FilterBase> filters = new List<FilterBase>();
 
-       public void AddFilter(IFilter filter)
+       public void AddFilter(FilterBase filter)
        {
            filters.Add(filter);
        }

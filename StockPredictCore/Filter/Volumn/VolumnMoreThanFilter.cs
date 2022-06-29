@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Volumn
 {
-    public class VolumnMoreThanFilter: IFilter
+    public class VolumnMoreThanFilter: FilterBase
     {
         public VolumnMoreThanFilter()
         {

@@ -8,7 +8,7 @@ using InfraStructure;
 namespace StockPredictCore.Filter.AverageLine
 {
      //Ma5大於Ma60 幾%以內
-    public class Ma5HMa60InRatioFilter : IFilter
+    public class Ma5HMa60InRatioFilter : FilterBase
     {
 
         public Ma5HMa60InRatioFilter()

@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Other
 {
-    public class Other_RSI5L20_HigherThanLastLowFilter:IFilter
+    public class Other_RSI5L20_HigherThanLastLowFilter:FilterBase
     {
         public Other_RSI5L20_HigherThanLastLowFilter()
         {

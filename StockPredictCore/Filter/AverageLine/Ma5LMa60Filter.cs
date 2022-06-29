@@ -8,7 +8,7 @@ using InfraStructure;
 namespace StockPredictCore.Filter.AverageLine
 {
     //Ma5小於MA60的幾倍
-    public class Ma5LMa60Filter:IFilter
+    public class Ma5LMa60Filter:FilterBase
     {
         public Ma5LMa60Filter()
         {

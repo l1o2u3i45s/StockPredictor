@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.RSI
 {
-    public class RSIHigherThanValueFilter:IFilter
+    public class RSIHigherThanValueFilter:FilterBase
     {
 
         public RSIHigherThanValueFilter()

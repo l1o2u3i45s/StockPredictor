@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Value
 {
-    public class Ma60LowerPriceFilter:IFilter
+    public class Ma60LowerPriceFilter:FilterBase
     {
         public Ma60LowerPriceFilter()
         {

@@ -7,16 +7,16 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-    public abstract class IFilter
+    public abstract class FilterBase
     { 
-        public IFilter(){}
+        public FilterBase(){}
 
-        public IFilter(double _initparam)
+        public FilterBase(double _initparam)
         {
             parameter = _initparam;
         }
 
-        public IFilter(IEnumerable<StockData> _stockDataList, double _param )
+        public FilterBase(IEnumerable<StockData> _stockDataList, double _param )
         {
             stockDataList = _stockDataList.ToList();
             parameter = _param;

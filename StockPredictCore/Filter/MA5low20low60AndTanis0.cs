@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter
 {
-    public class MA5low20low60AndTanis0: IFilter
+    public class MA5low20low60AndTanis0: FilterBase
     {
         public MA5low20low60AndTanis0(IEnumerable<StockData> _stockDataList,double param) : base(_stockDataList,param)
         {

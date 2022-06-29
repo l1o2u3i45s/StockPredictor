@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Volumn
 {
-    public class VolumnMostLowInDayFilter: IFilter
+    public class VolumnMostLowInDayFilter: FilterBase
     {
         public VolumnMostLowInDayFilter()
         {

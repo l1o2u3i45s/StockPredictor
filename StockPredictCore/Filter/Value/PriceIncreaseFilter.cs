@@ -8,7 +8,7 @@ using StockPredictCore.Filter;
 
 namespace StockPredictCore.ValueDiff
 {
-    public class PriceIncreaseFilter: IFilter
+    public class PriceIncreaseFilter: FilterBase
     {
         public PriceIncreaseFilter()
         {

@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.Volumn
 {
-    public class VolumnMostHighInDayFilter:IFilter
+    public class VolumnMostHighInDayFilter:FilterBase
     {
         public VolumnMostHighInDayFilter()
         {

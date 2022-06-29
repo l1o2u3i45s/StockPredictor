@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.ValueDiff
 {
-   public class PriceDecreaseFilter:IFilter
+   public class PriceDecreaseFilter:FilterBase
     {
         public PriceDecreaseFilter()
         {

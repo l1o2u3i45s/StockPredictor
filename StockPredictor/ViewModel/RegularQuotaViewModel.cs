@@ -166,7 +166,7 @@ namespace StockPredictor.ViewModel
             List<StockData> stockDataList = new List<StockData>();
             stockDataList.Add(data);
 
-            IFilter filter = FilterFactory.CreatFilterByFilterType(SelectedFilterInfo.Type, SelectedFilterInfo.Param, stockDataList);
+            FilterBase filter = FilterFactory.CreatFilterByFilterType(SelectedFilterInfo.Type, SelectedFilterInfo.Param, stockDataList);
             filter.Execute();
 
             var resultList = RegularQuotaService.Calulate(stockDataList.Single(), startDate,monthlyInvestValue);

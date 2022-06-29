@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictCore.Filter.RSI
 {
-   public  class RSI5IncreaseFilter:IFilter
+   public  class RSI5IncreaseFilter:FilterBase
     {
         public RSI5IncreaseFilter()
         {

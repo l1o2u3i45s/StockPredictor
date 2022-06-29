@@ -17,7 +17,7 @@ namespace StockPredictor.Class
 {
     public static class FilterFactory
     {
-        public static IFilter CreatFilterByFilterType(FilterType _type,double param, IEnumerable<StockData> datas)
+        public static FilterBase CreatFilterByFilterType(FilterType _type,double param, IEnumerable<StockData> datas)
         {
             switch (_type)
             {

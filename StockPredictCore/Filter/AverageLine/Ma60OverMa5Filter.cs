@@ -9,7 +9,7 @@ namespace StockPredictCore.Filter.AverageLine
 {
   
     //Ma60穿過Ma5
-    public class Ma60OverMa5Filter : IFilter
+    public class Ma60OverMa5Filter : FilterBase
     {
 
         public Ma60OverMa5Filter()
