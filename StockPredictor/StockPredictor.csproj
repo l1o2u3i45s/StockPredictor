@@ -92,6 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApplicationService\StockInfoService.cs" />
     <Compile Include="Class\AlgoStategy\AlgoStrategy.cs" />
     <Compile Include="Class\AlgoStategy\AlgoStrategyService.cs" />
     <Compile Include="Class\FilterInfo\FilterInfo.cs" />
@@ -187,5 +188,6 @@
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -14,6 +14,7 @@ using InfraStructure;
 using StockPredictCore;
 using StockPredictCore.Filter;
 using StockPredictCore.Service;
+using StockPredictor.ApplicationService;
 using StockPredictor.Class;
 using StockPredictor.Class.AlgoStategy;
 using StockPredictor.Class.FilterInfo;
@@ -293,41 +294,35 @@ namespace StockPredictor.ViewModel
 
         private void AnalysisAction()
         {
-            ResetData(stockDataList);
-            FilterService service = new FilterService();
-            foreach (var selectedFilter in SeletedAlgoStratrgy.FilterInfoList.Where(_ => _.IsSelected))
-            {
-                service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, selectedFilter.Param, stockDataList));
-            }
-            service.Execute();
+            BackgroundWorker worker = new BackgroundWorker();
 
-            ConcurrentBag<StockInfo> stockInfoList = new ConcurrentBag<StockInfo>();
-
-            Parallel.ForEach(stockDataList, stockData =>
+            worker.DoWork += (sender, args) =>
             {
-                for (int i = 0; i < stockData.Date.Length; i++)
+                ResetData(stockDataList);
+                FilterService service = new FilterService();
+                foreach (var selectedFilter in SeletedAlgoStratrgy.FilterInfoList.Where(_ => _.IsSelected))
                 {
-
-                    if (stockData.IsFilter[i] == false && stockData.Date[i] >= StartTime &&
-                        stockData.Date[i] <= EndTime)
-                    {
-                        double lastestClosePrice = Math.Round(stockData.ClosePrice[stockData.Date.Length - 1], 2);
-
-                        if (stockInfoDictionary.ContainsKey(stockData.ID) == false)
-                            continue;
-
-                        var info = new StockInfo(stockData, i, stockData.ID, stockInfoDictionary[stockData.ID]);
-                        info.CurrentClosePrice = lastestClosePrice;
-
-                        if (stockInfoList.Count(_ => _.Name == info.Name) == 0)
-                            stockInfoList.Add(info);
-                    }
+                    service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, selectedFilter.Param, stockDataList));
                 }
-            });
+                service.Execute();
 
-            TotalSumResult = SumResultFactory.Create(stockInfoList);
 
-            StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
+                StockInfoService stockInfoService = new StockInfoService(); 
+                var stockInfoList = stockInfoService.FilterData(stockDataList, stockInfoDictionary, startTime, endTime);
+                 
+                TotalSumResult = SumResultFactory.Create(stockInfoList); 
+                StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
+            };
+
+            worker.RunWorkerCompleted += (sender, args) =>
+            {
+                IsBusy = false;
+            };
+
+            IsBusy = true;
+            BusyContent = "Analysis Data....";
+
+            worker.RunWorkerAsync();
         }
 
         private void PreProcessData(string[] stockFiles)
