@@ -257,7 +257,7 @@ namespace StockPredictor.ViewModel
                 AlgoStrategyCollection.Add(new AlgoStrategy(true));
             }
 
-            SeletedAlgoStratrgy = algoStrategyCollection[0];
+            SeletedAlgoStratrgy = algoStrategyCollection.FirstOrDefault();
         }
 
         private void CloseWindowAction()
@@ -280,19 +280,13 @@ namespace StockPredictor.ViewModel
         {
             if (SeletedAlgoStratrgy == null)
                 return;
-
-            int idx = AlgoStrategyCollection.IndexOf(SeletedAlgoStratrgy);
-
-            AlgoStrategyCollection.Remove(SeletedAlgoStratrgy);
-
-            if (idx > 0)
-                SeletedAlgoStratrgy = AlgoStrategyCollection[idx - 1];
-
+             
+            AlgoStrategyCollection.Remove(SeletedAlgoStratrgy); 
+            SeletedAlgoStratrgy = AlgoStrategyCollection.LastOrDefault(); 
         }
 
         private void AddStrategyAction()
-        {
-
+        { 
             AlgoStrategyCollection.Add(new AlgoStrategy(true));
         }
 
@@ -330,7 +324,7 @@ namespace StockPredictor.ViewModel
                 }
             });
 
-            TotalSumResult = SumResultService.Create(stockInfoList);
+            TotalSumResult = SumResultFactory.Create(stockInfoList);
 
             StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
         }

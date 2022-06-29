@@ -97,7 +97,7 @@
     <Compile Include="Class\FilterInfo\FilterInfo.cs" />
     <Compile Include="Class\FilterInfo\FilterInfoFactory.cs" />
     <Compile Include="Class\SumResult\SumResult.cs" />
-    <Compile Include="Class\SumResult\SumResultService.cs" />
+    <Compile Include="Class\SumResult\SumResultFactory.cs" />
     <Compile Include="UserControl\ucStockDetail.xaml.cs">
       <DependentUpon>ucStockDetail.xaml</DependentUpon>
     </Compile>

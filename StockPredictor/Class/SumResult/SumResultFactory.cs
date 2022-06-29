@@ -7,7 +7,7 @@ using InfraStructure;
 
 namespace StockPredictor.Class.SumResult
 {
-    public static class SumResultService
+    public static class SumResultFactory
     {
         public static SumResult Create(IEnumerable<StockInfo> stockInfoList)
         {
