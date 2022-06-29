@@ -6,19 +6,21 @@
         xmlns:local="clr-namespace:StockPredictor"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:viewModel="clr-namespace:StockPredictor.ViewModel"
-        xmlns:userControl="clr-namespace:StockPredictor.UserControl"
+        xmlns:userControl="clr-namespace:StockPredictor.UserControl" 
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:busyIndicatorEasy="clr-namespace:Wpf.BusyIndicatorEasy;assembly=Wpf.BusyIndicatorEasy"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
-        Title="MainWindow" Height="800" Width="1600">
+        Title="Stock Predictor" Height="800" Width="1600">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <TabControl x:Name="MainTabControl" SelectedValue="{Binding SelectedTabItemType}" SelectedValuePath="Tag">
+        <busyIndicatorEasy:BusyIndicator IsBusy="{Binding IsBusy}"  BusyContent="{Binding BusyContent}">
+            <TabControl x:Name="MainTabControl" SelectedValue="{Binding SelectedTabItemType}" SelectedValuePath="Tag">
             <TabItem Header="股票篩選" Tag="{x:Static viewModel:eSelectTabType.StockFilter}" >
                 <Grid Background="{StaticResource AccordionBackgroundBrush}">
                     <Grid.ColumnDefinitions>
@@ -412,6 +414,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
+        </busyIndicatorEasy:BusyIndicator>
     </Grid>
 </Window>

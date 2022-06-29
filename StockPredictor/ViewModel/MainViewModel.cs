@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,8 +41,25 @@ namespace StockPredictor.ViewModel
         private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
         private ConcurrentBag<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
-        private DateTime startTime = DateTime.Today.AddDays(-7);
 
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set { Set(() => IsBusy, ref _isBusy, value); }
+        }
+
+        private string _busyContent;
+
+        public string BusyContent
+        {
+            get => _busyContent;
+            set { Set(() => BusyContent, ref _busyContent, value); }
+        }
+
+        private DateTime startTime = DateTime.Today.AddDays(-7);
+         
         public DateTime StartTime
         {
             get => startTime;
@@ -209,10 +227,24 @@ namespace StockPredictor.ViewModel
 
         private void UpdateStockData()
         {
-            if (isDesign == false)
-            { 
-                PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
-            }
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += (sender, args) =>
+            {
+                if (isDesign == false) 
+                    PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath)); 
+            };
+
+            worker.RunWorkerCompleted += (sender, args) =>
+            {
+                IsBusy = false;  
+            };
+
+            IsBusy = true;
+            BusyContent = "Update Stock Data";
+
+
+            worker.RunWorkerAsync();
         }
 
         private void InitAlgoStrategy()
