@@ -13,6 +13,7 @@ using GalaSoft.MvvmLight.Command;
 using InfraStructure;
 using StockPredictCore;
 using StockPredictCore.Filter;
+using StockPredictCore.Service;
 using StockPredictor.Class;
 using StockPredictor.Class.AlgoStategy;
 using StockPredictor.Class.FilterInfo;
@@ -418,29 +419,10 @@ namespace StockPredictor.ViewModel
             if (Directory.Exists(DataParser.FinancialStatementPath) == false)
                 Directory.CreateDirectory(DataParser.FinancialStatementPath);
 
-            using (var reader = new StreamReader(@"StockInfoList\\stockInfo.csv"))
-            {
-                bool isTitle = true;
-                while (!reader.EndOfStream)
-                {
-                    if (isTitle)
-                    {
-                        reader.ReadLine();
-                        isTitle = false;
-                    }
-
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-
-                    string code = values[1].ToString().Replace('"', ' ').Trim();
-                    string companyName = values[3].Replace('"', ' ').Trim();
-                    stockInfoDictionary.Add(code, companyName);
-                }
-            }
-
+            CSVParser csvParser = new CSVParser();
+            stockInfoDictionary = csvParser.GetStockInfo(@"StockInfoList\\stockInfo.csv"); 
         }
-
-
+         
     }
 
     public enum eSelectTabType
