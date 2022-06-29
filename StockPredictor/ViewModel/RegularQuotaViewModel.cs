@@ -148,6 +148,9 @@ namespace StockPredictor.ViewModel
           
         private void CaculateAction()
         {
+            if(_stockDataList == null)
+                return;
+
             Parallel.ForEach(_stockDataList, stockData =>
             {
                 for (int i = 0; i < stockData.Date.Length; i++)

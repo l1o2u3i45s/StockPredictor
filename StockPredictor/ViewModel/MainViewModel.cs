@@ -182,8 +182,7 @@ namespace StockPredictor.ViewModel
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData); 
             InitStockInfo();
             UpdateStockData();
-            InitAlgoStrategy();
-            RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
+            InitAlgoStrategy(); 
             RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
             AnalysisCommand = new RelayCommand(AnalysisAction);
             AddStrategyCommand = new RelayCommand(AddStrategyAction);
@@ -234,12 +233,14 @@ namespace StockPredictor.ViewModel
             worker.DoWork += (sender, args) =>
             {
                 if (isDesign == false) 
-                    PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath)); 
+                    PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
+
+                RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
             };
 
             worker.RunWorkerCompleted += (sender, args) =>
             {
-                IsBusy = false;  
+                IsBusy = false;   
             };
 
             IsBusy = true;
