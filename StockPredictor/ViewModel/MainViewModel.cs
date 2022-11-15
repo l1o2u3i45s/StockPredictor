@@ -330,7 +330,7 @@ namespace StockPredictor.ViewModel
         {
             GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath));
             GetPERatioTableData(Directory.GetFiles(DataParser.PERatioTablePath));
-            GetInvestInstitutionBuySellDataData(Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath));
+            //GetInvestInstitutionBuySellDataData(Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath));
 
             stockDataList = new ConcurrentBag<StockData>();
             //foreach (var _ in stockFiles)
@@ -347,7 +347,7 @@ namespace StockPredictor.ViewModel
                 if (stockInfoDictionary.ContainsKey(data.ID))
                     data.Name = stockInfoDictionary[data.ID];
                   
-                data.UpdateInstitutionBuySellData(investInstitutionBuySellDataDataList.Where(x => x.StockID == data.ID).ToList());
+                //data.UpdateInstitutionBuySellData(investInstitutionBuySellDataDataList.Where(x => x.StockID == data.ID).ToList());
                  
                 PreProcessor preProcessor = new PreProcessor();
                 preProcessor.Execute(data);
