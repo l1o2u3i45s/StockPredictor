@@ -102,6 +102,9 @@
     <Compile Include="UserControl\ucStockDetail.xaml.cs">
       <DependentUpon>ucStockDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\ucStockFilterTab.xaml.cs">
+      <DependentUpon>ucStockFilterTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\DataCenterViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RegularQuotaProfitCaculateViewModel.cs" />
@@ -141,6 +144,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControl\ucStockDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\ucStockFilterTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
