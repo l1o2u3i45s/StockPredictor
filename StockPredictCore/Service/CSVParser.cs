@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace StockPredictCore.Service
 {
-    public class CSVParser
+    public interface ICSVParser
+    {
+        Dictionary<string, string> GetStockInfo(string path);
+    }
+    public class CSVParser : ICSVParser
     {
 
         public Dictionary<string, string> GetStockInfo(string path)

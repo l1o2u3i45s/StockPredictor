@@ -3,11 +3,83 @@ using System;
 using System.Collections.Generic;
 using System.Linq; 
 using NetTrader.Indicator;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace StockPredictCore
 {
-    public class PreProcessor
+    public interface IPreProcessService
     {
+        ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary);
+
+        ConcurrentBag<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles);
+        ConcurrentBag<PERatioTableData> GetPERatioTableData(string[] stockFiles);
+        ConcurrentBag<FinancialStatementsData> GetFinancialStatementsData(string[] stockFiles);
+        void Execute(StockData data);
+    }
+
+    public class PreProcessService : IPreProcessService
+    {
+        public ConcurrentBag<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles)
+        {
+            var investInstitutionBuySellDataDataList = new ConcurrentBag<InvestInstitutionBuySellData>();
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                foreach (var data in DataParser.GetInvestInstitutionBuySellData(_))
+                {
+                    investInstitutionBuySellDataDataList.Add(data);
+                }
+            });
+            return investInstitutionBuySellDataDataList;
+        }
+
+        public ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary)
+        {
+            var stockDataList = new ConcurrentBag<StockData>();
+           
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                StockData data = DataParser.GetStockData(_);
+                if (stockInfoDictionary.ContainsKey(data.ID))
+                    data.Name = stockInfoDictionary[data.ID];
+
+                Execute(data);
+                stockDataList.Add(data);
+            });
+
+            return stockDataList;
+        }
+
+        public ConcurrentBag<PERatioTableData> GetPERatioTableData(string[] stockFiles)
+        {
+            var peRatioTableDataDataList = new ConcurrentBag<PERatioTableData>();
+
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                foreach (var data in DataParser.GetPERatioTableData(_))
+                {
+                    peRatioTableDataDataList.Add(data);
+                }
+            });
+
+            return peRatioTableDataDataList;
+        }
+
+        public ConcurrentBag<FinancialStatementsData> GetFinancialStatementsData(string[] stockFiles)
+        {
+            var financialStatementsDataList = new ConcurrentBag<FinancialStatementsData>();
+
+            Parallel.ForEach(stockFiles, _ =>
+            {
+                foreach (var data in DataParser.GetFinancialStatementsData(_))
+                {
+                    financialStatementsDataList.Add(data);
+                }
+            });
+
+
+            return financialStatementsDataList;
+        }
         public void Execute(StockData data)
         {
             CaculateRSVandKD(data);

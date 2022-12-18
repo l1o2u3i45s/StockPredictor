@@ -37,13 +37,17 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private const string _stockInfoPath = @"StockInfoList\\stockInfo.csv";
         private bool isDesign = false;
         private ConcurrentBag<StockData> stockDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
         private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
         private ConcurrentBag<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
-        
+
+        private readonly IPreProcessService _preProcessService = new PreProcessService();
+        private ICSVParser _csvParser = new CSVParser();
+
         private bool _isBusy;
 
         public bool IsBusy
@@ -147,7 +151,6 @@ namespace StockPredictor.ViewModel
             IsBusy = true;
             BusyContent = "Update Stock Data";
 
-
             worker.RunWorkerAsync();
         }
 
@@ -158,73 +161,14 @@ namespace StockPredictor.ViewModel
 
         private void PreProcessData(string[] stockFiles)
         {
-            GetFinancialStatementsData(Directory.GetFiles(DataParser.FinancialStatementPath));
-            GetPERatioTableData(Directory.GetFiles(DataParser.PERatioTablePath));
-            //GetInvestInstitutionBuySellDataData(Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath));
+            var FinancialStatementfileList = Directory.GetFiles(DataParser.FinancialStatementPath);
+            var peRatioTableFileList = Directory.GetFiles(DataParser.PERatioTablePath);
 
-            stockDataList = new ConcurrentBag<StockData>();
-            //foreach (var _ in stockFiles)
-            //{
-            //    StockData data = DataParser.GetStockData(_);
-            //    PreProcessor preProcessor = new PreProcessor();
-            //    preProcessor.Execute(data);
-            //    stockDataList.Add(data);
-            //}
-           
-            Parallel.ForEach(stockFiles, _ =>
-            {
-                StockData data = DataParser.GetStockData(_);
-                if (stockInfoDictionary.ContainsKey(data.ID))
-                    data.Name = stockInfoDictionary[data.ID];
-                  
-                //data.UpdateInstitutionBuySellData(investInstitutionBuySellDataDataList.Where(x => x.StockID == data.ID).ToList());
-                 
-                PreProcessor preProcessor = new PreProcessor();
-                preProcessor.Execute(data);
-                stockDataList.Add(data);
-            });
+            financialStatementsDataList = _preProcessService.GetFinancialStatementsData(FinancialStatementfileList);
+            peRatioTableDataDataList = _preProcessService.GetPERatioTableData(peRatioTableFileList);
+            stockDataList = _preProcessService.GetStockData(stockFiles, stockInfoDictionary);
         }
-
-        private void GetFinancialStatementsData(string[] stockFiles)
-        {
-            financialStatementsDataList = new ConcurrentBag<FinancialStatementsData>();
-
-            Parallel.ForEach(stockFiles, _ =>
-            {
-                foreach (var data in DataParser.GetFinancialStatementsData(_))
-                {
-                    financialStatementsDataList.Add(data);
-                }
-            });
-        }
-
-        private void GetPERatioTableData(string[] stockFiles)
-        {
-            peRatioTableDataDataList = new ConcurrentBag<PERatioTableData>();
-
-            Parallel.ForEach(stockFiles, _ =>
-            {
-                foreach (var data in DataParser.GetPERatioTableData(_))
-                {
-                    peRatioTableDataDataList.Add(data);
-                }
-            });
-        }
-
-        private void GetInvestInstitutionBuySellDataData(string[] stockFiles)
-        {
-            investInstitutionBuySellDataDataList = new ConcurrentBag<InvestInstitutionBuySellData>();
-            Parallel.ForEach(stockFiles, _ =>
-            {
-                foreach (var data in DataParser.GetInvestInstitutionBuySellData(_))
-                {
-                    investInstitutionBuySellDataDataList.Add(data);
-                }
-            });
-        }
-
         
-
         private void InitStockInfo()
         {
             if (Directory.Exists(DataParser.StockRawDataPath) == false)
@@ -236,10 +180,8 @@ namespace StockPredictor.ViewModel
             if (Directory.Exists(DataParser.FinancialStatementPath) == false)
                 Directory.CreateDirectory(DataParser.FinancialStatementPath);
 
-            CSVParser csvParser = new CSVParser();
-            stockInfoDictionary = csvParser.GetStockInfo(@"StockInfoList\\stockInfo.csv"); 
+            stockInfoDictionary = _csvParser.GetStockInfo(_stockInfoPath); 
         }
-         
     }
 
     public enum eSelectTabType
