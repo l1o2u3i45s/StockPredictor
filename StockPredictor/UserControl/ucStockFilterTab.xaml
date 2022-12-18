@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StockPredictor.UserControl"
-             mc:Ignorable="d" 
+             xmlns:viewModel="clr-namespace:StockPredictor.ViewModel"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type = viewModel:StockFilterViewModel}"
              d:DesignHeight="800" d:DesignWidth="1600">
     <Grid Background="{StaticResource AccordionBackgroundBrush}">
         <Grid.ColumnDefinitions>
@@ -213,7 +214,7 @@
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Source={StaticResource Locator},Path=Main.CreateStockDetailCommand}" CommandParameter="{Binding ElementName=MainTabControl}" />
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CreateStockDetailCommand}" CommandParameter="{Binding ElementName=MainTabControl}" />
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Foreground="Black" Width="80" FontSize="20" Header="股票代碼" Binding="{Binding ID}" />

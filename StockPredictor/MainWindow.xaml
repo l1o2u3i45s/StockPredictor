@@ -23,7 +23,7 @@
         <busyIndicatorEasy:BusyIndicator IsBusy="{Binding IsBusy}"  BusyContent="{Binding BusyContent}">
             <TabControl x:Name="MainTabControl" SelectedValue="{Binding SelectedTabItemType}" SelectedValuePath="Tag">
             <TabItem Header="股票篩選" Tag="{x:Static viewModel:eSelectTabType.StockFilter}" >
-                <userControl:ucStockFilterTab />
+                    <userControl:ucStockFilterTab DataContext="{Binding StockFilterViewModel}"/>
             </TabItem>
             <TabItem Header="資料中心" Tag="{x:Static viewModel:eSelectTabType.DataCenter}" DataContext="{Binding Source={StaticResource Locator} ,Path=Main.DataCenterViewModel}" >
                 <Grid> 

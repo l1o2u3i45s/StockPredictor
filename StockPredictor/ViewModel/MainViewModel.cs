@@ -39,11 +39,11 @@ namespace StockPredictor.ViewModel
     {
         private bool isDesign = false;
         private ConcurrentBag<StockData> stockDataList;
+        private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
         private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
         private ConcurrentBag<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
-        private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
-
+        
         private bool _isBusy;
 
         public bool IsBusy
@@ -58,31 +58,6 @@ namespace StockPredictor.ViewModel
         {
             get => _busyContent;
             set { Set(() => BusyContent, ref _busyContent, value); }
-        }
-
-        private DateTime startTime = DateTime.Today.AddDays(-7);
-         
-        public DateTime StartTime
-        {
-            get => startTime;
-            set { Set(() => StartTime, ref startTime, value); }
-        }
-
-        private DateTime endTime = DateTime.Today;
-
-        public DateTime EndTime
-        {
-            get => endTime;
-            set { Set(() => EndTime, ref endTime, value); }
-        }
-
-
-        private SumResult totalSumResult = new SumResult();
-
-        public SumResult TotalSumResult
-        {
-            get => totalSumResult;
-            set { Set(() => TotalSumResult, ref totalSumResult, value); }
         }
 
         private double totalDiffValue;
@@ -102,38 +77,6 @@ namespace StockPredictor.ViewModel
             {
                 Set(() => SelectedTabItemType, ref selectedTabItemType, value);
             }
-        }
-
-        private List<StockInfo> stockInfoCollection = new List<StockInfo>();
-
-        public List<StockInfo> StockInfoCollection
-        {
-            get => stockInfoCollection;
-            set { Set(() => StockInfoCollection, ref stockInfoCollection, value); }
-        }
-
-        private StockInfo selectedStockInfo;
-
-        public StockInfo SelectedStockInfo
-        {
-            get => selectedStockInfo;
-            set { Set(() => SelectedStockInfo, ref selectedStockInfo, value); }
-        }
-
-        private ObservableCollection<AlgoStrategy> algoStrategyCollection = new ObservableCollection<AlgoStrategy>();
-
-        public ObservableCollection<AlgoStrategy> AlgoStrategyCollection
-        {
-            get => algoStrategyCollection;
-            set { Set(() => AlgoStrategyCollection, ref algoStrategyCollection, value); }
-        }
-
-        private AlgoStrategy seletedAlgoStratrgy;
-
-        public AlgoStrategy SeletedAlgoStratrgy
-        {
-            get => seletedAlgoStratrgy;
-            set { Set(() => SeletedAlgoStratrgy, ref seletedAlgoStratrgy, value); }
         }
 
         private DataCenterViewModel dataCenterViewModel;
@@ -159,22 +102,17 @@ namespace StockPredictor.ViewModel
             get => regularQuotaProfitCaculateViewModel;
             set { Set(() => RegularQuotaProfitCaculateViewModel, ref regularQuotaProfitCaculateViewModel, value); }
         }
-        
 
-        private ObservableCollection<StockDetailViewModel> stockDetailViewModelList = new ObservableCollection<StockDetailViewModel>();
 
-        public ObservableCollection<StockDetailViewModel> StockDetailViewModelList
+        private StockFilterViewModel _stockFilterViewModel;
+
+        public StockFilterViewModel StockFilterViewModel
         {
-            get => stockDetailViewModelList;
-            set { Set(() => StockDetailViewModelList, ref stockDetailViewModelList, value); }
+            get => _stockFilterViewModel;
+            set { Set(() => StockFilterViewModel, ref _stockFilterViewModel, value); }
         }
 
-        public RelayCommand AddStrategyCommand { get; set; }
-        public RelayCommand RemoveStrategyCommand { get; set; }
-        public RelayCommand AnalysisCommand { get; set; }
         public RelayCommand CloseWindowCommand { get; set; }
-        public RelayCommand<TabControl> CreateStockDetailCommand { get; set; }
-
 
         public MainViewModel()
         {
@@ -182,48 +120,10 @@ namespace StockPredictor.ViewModel
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData); 
             InitStockInfo();
             UpdateStockData();
-            InitAlgoStrategy(); 
+           
             RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
-            AnalysisCommand = new RelayCommand(AnalysisAction);
-            AddStrategyCommand = new RelayCommand(AddStrategyAction);
-            RemoveStrategyCommand = new RelayCommand(RemoveStrategyAction);
+          
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
-            CreateStockDetailCommand = new RelayCommand<TabControl>(CreateStockDetailAction);
-        }
-
-        private void CreateStockDetailAction(TabControl tabControl)
-        {
-            if (SelectedStockInfo == null)
-                return;
-
-            if (StockDetailViewModelList.Any(_ => _.StockID == SelectedStockInfo.ID))
-            {
-                foreach (TabItem item in tabControl.Items)
-                {
-                    if (item.Header.ToString() == $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}")
-                    {
-                        tabControl.SelectedIndex = tabControl.Items.IndexOf(item);
-                        break;
-                    }
-                }
-                return;
-            }
-
-            var data = stockDataList.Single(_ => _.ID == SelectedStockInfo.ID);
-
-            StockDetailViewModel newTabVM = new StockDetailViewModel(data);
-            ucStockDetail ucStockDetail = new ucStockDetail(){DataContext = newTabVM};
-            TabItem newTabItem = new TabItem
-            {
-                Header = $"{SelectedStockInfo.ID} {SelectedStockInfo.Name}",
-                Content = ucStockDetail,
-                Tag = eSelectTabType.StockDetail
-            };
-             
-            StockDetailViewModelList.Add(newTabVM);
-            tabControl.Items.Add(newTabItem);
-
-            tabControl.SelectedIndex = tabControl.Items.Count - 1;
         }
 
         private void UpdateStockData()
@@ -236,6 +136,7 @@ namespace StockPredictor.ViewModel
                     PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
 
                 RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
+                StockFilterViewModel = new StockFilterViewModel(stockDataList, stockInfoDictionary);
             };
 
             worker.RunWorkerCompleted += (sender, args) =>
@@ -250,80 +151,9 @@ namespace StockPredictor.ViewModel
             worker.RunWorkerAsync();
         }
 
-        private void InitAlgoStrategy()
-        {
-            AlgoStrategyCollection = new ObservableCollection<AlgoStrategy>(AlgoStrategyService.Load());
-
-            if (AlgoStrategyCollection.Count == 0)
-            {
-                AlgoStrategyCollection.Add(new AlgoStrategy(true));
-                AlgoStrategyCollection.Add(new AlgoStrategy(true));
-            }
-
-            SeletedAlgoStratrgy = algoStrategyCollection.FirstOrDefault();
-        }
-
         private void CloseWindowAction()
         {
-            if (Directory.Exists(AlgoStrategyService.filePath) == false)
-                Directory.CreateDirectory(AlgoStrategyService.filePath);
-
-            foreach (var file in Directory.GetFiles(AlgoStrategyService.filePath))
-            {
-                File.Delete(file);
-            }
-            foreach (var algo in AlgoStrategyCollection)
-            {
-                algo.Save();
-            }
-        }
-
-
-        private void RemoveStrategyAction()
-        {
-            if (SeletedAlgoStratrgy == null)
-                return;
-             
-            AlgoStrategyCollection.Remove(SeletedAlgoStratrgy); 
-            SeletedAlgoStratrgy = AlgoStrategyCollection.LastOrDefault(); 
-        }
-
-        private void AddStrategyAction()
-        { 
-            AlgoStrategyCollection.Add(new AlgoStrategy(true));
-        }
-
-        private void AnalysisAction()
-        {
-            BackgroundWorker worker = new BackgroundWorker();
-
-            worker.DoWork += (sender, args) =>
-            {
-                ResetData(stockDataList);
-                IFilterService service = new FilterService();
-                foreach (var selectedFilter in SeletedAlgoStratrgy.FilterInfoList.Where(_ => _.IsSelected))
-                {
-                    service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, selectedFilter.Param, stockDataList));
-                }
-                service.Execute();
-
-
-                IStockInfoService stockInfoService = new StockInfoService(); 
-                var stockInfoList = stockInfoService.FilterData(stockDataList, stockInfoDictionary, startTime, endTime);
-                 
-                TotalSumResult = SumResultFactory.Create(stockInfoList); 
-                StockInfoCollection = new List<StockInfo>(stockInfoList.OrderByDescending(_ => _.Date).ToList());
-            };
-
-            worker.RunWorkerCompleted += (sender, args) =>
-            {
-                IsBusy = false;
-            };
-
-            IsBusy = true;
-            BusyContent = "Analysis Data....";
-
-            worker.RunWorkerAsync();
+            StockFilterViewModel.CloseWindowAction();
         }
 
         private void PreProcessData(string[] stockFiles)
@@ -393,16 +223,7 @@ namespace StockPredictor.ViewModel
             });
         }
 
-        private void ResetData(IEnumerable<StockData> stockDataList)
-        {
-            Parallel.ForEach(stockDataList, stockData =>
-            {
-                for (int i = 0; i < stockData.Date.Length; i++)
-                {
-                    stockData.IsFilter[i] = false;
-                }
-            });
-        }
+        
 
         private void InitStockInfo()
         {
