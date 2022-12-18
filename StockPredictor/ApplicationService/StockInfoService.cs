@@ -8,7 +8,12 @@ using InfraStructure;
 
 namespace StockPredictor.ApplicationService
 {
-    public class StockInfoService
+    public interface IStockInfoService
+    {
+        ConcurrentBag<StockInfo> FilterData(ConcurrentBag<StockData> stockDataList,
+            Dictionary<string, string> stockInfoDictionary, DateTime startTime, DateTime endTime);
+    }
+    public class StockInfoService: IStockInfoService
     {
         public ConcurrentBag<StockInfo> FilterData(ConcurrentBag<StockData> stockDataList, Dictionary<string, string> stockInfoDictionary, DateTime startTime, DateTime endTime)
         {

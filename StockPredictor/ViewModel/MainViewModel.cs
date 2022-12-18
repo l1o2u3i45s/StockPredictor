@@ -300,7 +300,7 @@ namespace StockPredictor.ViewModel
             worker.DoWork += (sender, args) =>
             {
                 ResetData(stockDataList);
-                FilterService service = new FilterService();
+                IFilterService service = new FilterService();
                 foreach (var selectedFilter in SeletedAlgoStratrgy.FilterInfoList.Where(_ => _.IsSelected))
                 {
                     service.AddFilter(FilterFactory.CreatFilterByFilterType(selectedFilter.Type, selectedFilter.Param, stockDataList));
@@ -308,7 +308,7 @@ namespace StockPredictor.ViewModel
                 service.Execute();
 
 
-                StockInfoService stockInfoService = new StockInfoService(); 
+                IStockInfoService stockInfoService = new StockInfoService(); 
                 var stockInfoList = stockInfoService.FilterData(stockDataList, stockInfoDictionary, startTime, endTime);
                  
                 TotalSumResult = SumResultFactory.Create(stockInfoList); 
