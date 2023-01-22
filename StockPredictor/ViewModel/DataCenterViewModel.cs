@@ -76,9 +76,9 @@ namespace StockPredictor.ViewModel
             MessageBox.Show("更新綜合損益表完成");
         }
 
-        private void UpdateHistorialStockDataAction()
+        private async void UpdateHistorialStockDataAction()
         { 
-            DataParser.CrawlStockPriceData(new DateTime(2000,1,1), GetStockIdList());
+            await DataParser.CrawlStockPriceData(new DateTime(2000,1,1), GetStockIdList());
 
             if(updateDataDoneCallback != null)
                 updateDataDoneCallback.Invoke();

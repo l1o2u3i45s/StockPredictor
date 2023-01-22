@@ -28,31 +28,31 @@ namespace StockPredictCore
         public readonly static string TaiwanStockInstitutionalInvestorsBuySellPath = "TaiwanStockInstitutionalInvestorsBuySell"; //法人買賣
         
         //取得股價資訊
-        public static void CrawlStockPriceData(DateTime startDate, List<string> stockCodeList)
+        public static async Task CrawlStockPriceData(DateTime startDate, List<string> stockCodeList)
         {   
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
-            DownloadFile(DatasetType.TaiwanStockPrice, stockCodeList, StockRawDataPath, startDateTime, DateTime.Today);
+            await DownloadFile(DatasetType.TaiwanStockPrice, stockCodeList, StockRawDataPath, startDateTime, DateTime.Today);
         }
 
         //取得綜合損益表
         public static void CrawlFinancialStatementsData(DateTime startDate, List<string> stockCodeList)
         { 
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
-            DownloadFile(DatasetType.TaiwanStockFinancialStatements, stockCodeList, FinancialStatementPath, startDateTime, DateTime.Today);
+            _ = DownloadFile(DatasetType.TaiwanStockFinancialStatements, stockCodeList, FinancialStatementPath, startDateTime, DateTime.Today);
         }
 
         //取得P/E ratio表
         public static void CrawlStockPERData(DateTime startDate, List<string> stockCodeList)
         {
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
-            DownloadFile(DatasetType.TaiwanStockPER, stockCodeList, PERatioTablePath, startDateTime, DateTime.Today);
+            _ = DownloadFile(DatasetType.TaiwanStockPER, stockCodeList, PERatioTablePath, startDateTime, DateTime.Today);
         }
 
         //取得法人買賣
         public static void CrawStockInstitutionalInvest(DateTime startDate, List<string> stockCodeList)
         {
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
-            DownloadFile(DatasetType.TaiwanStockInstitutionalInvestorsBuySell, stockCodeList, TaiwanStockInstitutionalInvestorsBuySellPath, startDateTime, DateTime.Today);
+            _ = DownloadFile(DatasetType.TaiwanStockInstitutionalInvestorsBuySell, stockCodeList, TaiwanStockInstitutionalInvestorsBuySellPath, startDateTime, DateTime.Today);
         }
 
         public static StockData GetStockData(string filepath)
@@ -141,7 +141,7 @@ namespace StockPredictCore
         }
 
 
-        private static void DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
+        private static async Task DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
         {
             if (Directory.Exists(downloadFolder) == false)
                 Directory.CreateDirectory(downloadFolder);
@@ -152,25 +152,22 @@ namespace StockPredictCore
                 string idpath = Path.Combine(downloadFolder, $"{stockCode}.txt");
                 
                 string queryString = GetQueryString(dataset.GetDescriptionText(), stockCode, startDate, endDate);
-                 
-                taskList.Add(Task.Factory.StartNew(() =>
-                {
-                    try
-                    {
-                        using (var client = new WebClient())
-                        {
-                            client.DownloadFile(queryString, idpath);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-                }));
 
+                try
+                {
+                    using (var client = new WebClient())
+                    {
+                        var downloadTask = client.DownloadFileTaskAsync(queryString, idpath);
+                        taskList.Add(downloadTask);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
-            Task.WaitAll(taskList.ToArray());
+            await Task.WhenAll(taskList);
         }
 
         private static string GetQueryString(string dataSet, string stockID, DateTime startDate, DateTime endDate)
