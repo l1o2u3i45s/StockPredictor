@@ -37,17 +37,14 @@ namespace StockPredictCore
         public ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary)
         {
             var stockDataList = new ConcurrentBag<StockData>();
-           
-            Parallel.ForEach(stockFiles, _ =>
+
+            foreach (var filepath in stockFiles)
             {
-                StockData data = DataParser.GetStockData(_, stockInfoDictionary);
-                if (stockInfoDictionary.ContainsKey(data.ID))
-                    data.Name = stockInfoDictionary[data.ID];
-
-                Execute(data);
+                StockData data = DataParser.GetStockData(filepath, stockInfoDictionary);
                 stockDataList.Add(data);
-            });
-
+                Execute(data);
+            }
+           
             return stockDataList;
         }
 
@@ -81,18 +78,24 @@ namespace StockPredictCore
 
             return financialStatementsDataList;
         }
-        public void Execute(StockData data)
+        public async void Execute(StockData data)
         {
             Stopwatch stopwatcher = new Stopwatch();
             stopwatcher.Start();
-            CaculateRSVandKD(data);
-            CaculateMA(data);
-            CaculateRSI(data);
-            CaculateBoolling(data);
+
+            var taskList = new List<Task>
+            {
+                Task.Factory.StartNew(() => CaculateRSVandKD(data)),
+                Task.Factory.StartNew(() => CaculateMA(data)),
+                Task.Factory.StartNew(() => CaculateRSI(data)),
+                Task.Factory.StartNew(() => CalculateBoolling(data))
+            };
+            await Task.WhenAll(taskList);
+
             Console.WriteLine(stopwatcher.ElapsedMilliseconds + " ms");
         }
 
-        void CaculateBoolling(StockData data)
+        private void CalculateBoolling(StockData data)
         {
             int dataCount = data.Date.Count();
             int day = 20;
@@ -117,7 +120,6 @@ namespace StockPredictCore
 
                 data.BoollingHighLimit[i] = avg + std * 2;
                 data.BoollingLowLimit[i] = avg - std * 2;
-                   
             }
         }
 
