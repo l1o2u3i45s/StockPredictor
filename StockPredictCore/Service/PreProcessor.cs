@@ -40,7 +40,7 @@ namespace StockPredictCore
            
             Parallel.ForEach(stockFiles, _ =>
             {
-                StockData data = DataParser.GetStockData(_);
+                StockData data = DataParser.GetStockData(_, stockInfoDictionary);
                 if (stockInfoDictionary.ContainsKey(data.ID))
                     data.Name = stockInfoDictionary[data.ID];
 

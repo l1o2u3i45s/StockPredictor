@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -121,12 +122,12 @@ namespace StockPredictor.ViewModel
         public MainViewModel()
         {
             DataCenterViewModel = new DataCenterViewModel();
-            DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData); 
+            DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
             InitStockInfo();
             UpdateStockData();
-           
+
             RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
-          
+
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
         }
 
@@ -136,7 +137,7 @@ namespace StockPredictor.ViewModel
 
             worker.DoWork += (sender, args) =>
             {
-                if (isDesign == false) 
+                if (isDesign == false)
                     PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
 
                 RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
@@ -145,7 +146,7 @@ namespace StockPredictor.ViewModel
 
             worker.RunWorkerCompleted += (sender, args) =>
             {
-                IsBusy = false;   
+                IsBusy = false;
             };
 
             IsBusy = true;
@@ -159,16 +160,21 @@ namespace StockPredictor.ViewModel
             StockFilterViewModel.CloseWindowAction();
         }
 
-        private void PreProcessData(string[] stockFiles)
+        private async void PreProcessData(string[] stockFiles)
         {
             var FinancialStatementfileList = Directory.GetFiles(DataParser.FinancialStatementPath);
             var peRatioTableFileList = Directory.GetFiles(DataParser.PERatioTablePath);
 
-            financialStatementsDataList = _preProcessService.GetFinancialStatementsData(FinancialStatementfileList);
-            peRatioTableDataDataList = _preProcessService.GetPERatioTableData(peRatioTableFileList);
-            stockDataList = _preProcessService.GetStockData(stockFiles, stockInfoDictionary);
+            var getFinanceTask = Task.Factory.StartNew(() => _preProcessService.GetFinancialStatementsData(FinancialStatementfileList));
+            var getPERTask = Task.Factory.StartNew(() => _preProcessService.GetPERatioTableData(peRatioTableFileList));
+            var getStockTask = Task.Factory.StartNew(() => _preProcessService.GetStockData(stockFiles, stockInfoDictionary));
+
+            await Task.WhenAll(getFinanceTask, getPERTask, getStockTask);
+            financialStatementsDataList = getFinanceTask.Result;
+            peRatioTableDataDataList = getPERTask.Result;
+            stockDataList = getStockTask.Result;
         }
-        
+
         private void InitStockInfo()
         {
             if (Directory.Exists(DataParser.StockRawDataPath) == false)
@@ -180,7 +186,7 @@ namespace StockPredictor.ViewModel
             if (Directory.Exists(DataParser.FinancialStatementPath) == false)
                 Directory.CreateDirectory(DataParser.FinancialStatementPath);
 
-            stockInfoDictionary = _csvParser.GetStockInfo(_stockInfoPath); 
+            stockInfoDictionary = _csvParser.GetStockInfo(_stockInfoPath);
         }
     }
 
