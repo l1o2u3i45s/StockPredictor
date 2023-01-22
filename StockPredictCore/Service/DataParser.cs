@@ -55,7 +55,7 @@ namespace StockPredictCore
             _ = DownloadFile(DatasetType.TaiwanStockInstitutionalInvestorsBuySell, stockCodeList, TaiwanStockInstitutionalInvestorsBuySellPath, startDateTime, DateTime.Today);
         }
 
-        public static StockData GetStockData(string filepath)
+        public static StockData GetStockData(string filepath, Dictionary<string, string> stockInfoDictionary)
         {
             string alltext = System.IO.File.ReadAllText(filepath);
             StockQueryJson dataList = JsonConvert.DeserializeObject<StockQueryJson>(alltext);
@@ -66,6 +66,9 @@ namespace StockPredictCore
             { 
                 result.UpdateData(dataList.data[i],i); 
             }
+
+            if (stockInfoDictionary.ContainsKey(result.ID))
+                result.Name = stockInfoDictionary[result.ID];
 
             return result;
         }

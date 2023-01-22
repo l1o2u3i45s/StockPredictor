@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq; 
 using NetTrader.Indicator;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace StockPredictCore
@@ -82,10 +83,13 @@ namespace StockPredictCore
         }
         public void Execute(StockData data)
         {
+            Stopwatch stopwatcher = new Stopwatch();
+            stopwatcher.Start();
             CaculateRSVandKD(data);
             CaculateMA(data);
             CaculateRSI(data);
             CaculateBoolling(data);
+            Console.WriteLine(stopwatcher.ElapsedMilliseconds + " ms");
         }
 
         void CaculateBoolling(StockData data)
@@ -117,7 +121,7 @@ namespace StockPredictCore
             }
         }
 
-        void CaculateRSI(StockData data)
+        private void CaculateRSI(StockData data)
         {
             int dataCount = data.Date.Count();  
             List<Ohlc> ohlcList = new List<Ohlc>();
