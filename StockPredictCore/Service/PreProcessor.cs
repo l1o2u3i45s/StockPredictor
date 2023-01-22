@@ -38,15 +38,16 @@ namespace StockPredictCore
         {
             var stockDataList = new ConcurrentBag<StockData>();
 
-            foreach (var filepath in stockFiles)
+            Parallel.ForEach(stockFiles, filepath =>
             {
                 StockData data = DataParser.GetStockData(filepath, stockInfoDictionary);
                 stockDataList.Add(data);
                 Execute(data);
-            }
-           
+            });
+                       
             return stockDataList;
         }
+
 
         public ConcurrentBag<PERatioTableData> GetPERatioTableData(string[] stockFiles)
         {
