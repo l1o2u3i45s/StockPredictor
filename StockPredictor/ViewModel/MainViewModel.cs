@@ -133,26 +133,19 @@ namespace StockPredictor.ViewModel
 
         private void UpdateStockData()
         {
-            BackgroundWorker worker = new BackgroundWorker();
-
-            worker.DoWork += (sender, args) =>
+            Task.Factory.StartNew(async () =>
             {
+
                 if (isDesign == false)
-                    PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
+                    await PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
 
                 RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
                 StockFilterViewModel = new StockFilterViewModel(stockDataList, stockInfoDictionary);
-            };
-
-            worker.RunWorkerCompleted += (sender, args) =>
-            {
                 IsBusy = false;
-            };
+            });
 
             IsBusy = true;
             BusyContent = "Update Stock Data";
-
-            worker.RunWorkerAsync();
         }
 
         private void CloseWindowAction()
@@ -160,7 +153,7 @@ namespace StockPredictor.ViewModel
             StockFilterViewModel.CloseWindowAction();
         }
 
-        private async void PreProcessData(string[] stockFiles)
+        private async Task PreProcessData(string[] stockFiles)
         {
             var FinancialStatementfileList = Directory.GetFiles(DataParser.FinancialStatementPath);
             var peRatioTableFileList = Directory.GetFiles(DataParser.PERatioTablePath);
