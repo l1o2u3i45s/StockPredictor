@@ -1,27 +1,14 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using InfraStructure;
 using StockPredictCore;
-using StockPredictCore.Filter;
 using StockPredictCore.Service;
-using StockPredictor.ApplicationService;
-using StockPredictor.Class;
-using StockPredictor.Class.AlgoStategy;
-using StockPredictor.Class.FilterInfo;
-using StockPredictor.Class.SumResult;
-using StockPredictor.UserControl;
-
 namespace StockPredictor.ViewModel
 {
     /// <summary>
@@ -48,6 +35,7 @@ namespace StockPredictor.ViewModel
 
         private readonly IPreProcessService _preProcessService = new PreProcessService();
         private ICSVParser _csvParser = new CSVParser();
+        private Stopwatch _stopwatch = new Stopwatch();
 
         private bool _isBusy;
 
@@ -124,9 +112,12 @@ namespace StockPredictor.ViewModel
             DataCenterViewModel = new DataCenterViewModel();
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
             InitStockInfo();
-            UpdateStockData();
 
-            RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
+           
+            UpdateStockData();
+          
+
+            
 
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
         }
@@ -135,13 +126,15 @@ namespace StockPredictor.ViewModel
         {
             Task.Factory.StartNew(async () =>
             {
-
+                _stopwatch.Restart();
                 if (isDesign == false)
                     await PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
 
                 RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
                 StockFilterViewModel = new StockFilterViewModel(stockDataList, stockInfoDictionary);
+                RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
                 IsBusy = false;
+                ConsoleWriteStopWatch(_stopwatch, "UpdateStockData");
             });
 
             IsBusy = true;
@@ -180,6 +173,11 @@ namespace StockPredictor.ViewModel
                 Directory.CreateDirectory(DataParser.FinancialStatementPath);
 
             stockInfoDictionary = _csvParser.GetStockInfo(_stockInfoPath);
+        }
+
+        private void ConsoleWriteStopWatch(Stopwatch stopwatch,string functionName)
+        {
+            Console.WriteLine($"{functionName}: {stopwatch.ElapsedMilliseconds} ms");
         }
     }
 

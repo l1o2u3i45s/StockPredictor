@@ -81,8 +81,6 @@ namespace StockPredictCore
         }
         public async void Execute(StockData data)
         {
-            Stopwatch stopwatcher = new Stopwatch();
-            stopwatcher.Start();
 
             var taskList = new List<Task>
             {
@@ -93,7 +91,6 @@ namespace StockPredictCore
             };
             await Task.WhenAll(taskList);
 
-            Console.WriteLine(stopwatcher.ElapsedMilliseconds + " ms");
         }
 
         private void CalculateBoolling(StockData data)
