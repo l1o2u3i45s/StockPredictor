@@ -64,6 +64,7 @@
     <Compile Include="FilterTest\FilterService_Test.cs" />
     <Compile Include="MathTool_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceTest\CalculateServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
