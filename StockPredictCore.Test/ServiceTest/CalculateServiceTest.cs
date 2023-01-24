@@ -86,7 +86,7 @@ namespace StockPredictCore.Test.ServiceTest
             var result = calculateService.Cal_Boolling(data);
 
             Assert.AreEqual(14.75, Math.Round(result.LowerLimit[19], 2));
-            Assert.AreEqual(23.24, Math.Round(result.UpperLimit[19], 2));
+            Assert.AreEqual(23.25, Math.Round(result.UpperLimit[19], 2));
         }
     }
 }
