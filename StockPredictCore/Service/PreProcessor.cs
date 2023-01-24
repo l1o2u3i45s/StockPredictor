@@ -101,29 +101,11 @@ namespace StockPredictCore
 
         private void CalculateBoolling(StockData data)
         {
-            int dataCount = data.Date.Count();
-            int day = 20;
-            for (int i = day * 2 - 1; i < dataCount; i++)
-            {
 
-                double masum = 0;
-                for (int j = i - day + 1; j <= i; j++)
-                {
-                    masum += data.MA20[j];
-                }
-                double avg = masum / day;
+            var boollingData = _calculateService.Cal_Boolling(data.ClosePrice);
+            data.BoollingHighLimit = boollingData.UpperLimit;
+            data.BoollingLowLimit = boollingData.LowerLimit;
 
-                double sigmasum = 0;
-                for (int j = i - day + 1; j < i; j++)
-                {
-                    sigmasum += (data.ClosePrice[j] - avg) * (data.ClosePrice[j] - avg);
-                }
-
-                double std = Math.Sqrt(sigmasum / day);
-
-                data.BoollingHighLimit[i] = avg + std * 2;
-                data.BoollingLowLimit[i] = avg - std * 2;
-            }
         }
 
         private void CaculateRSI(StockData data)
