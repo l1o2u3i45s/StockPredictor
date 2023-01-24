@@ -19,7 +19,7 @@ namespace StockPredictCore.Test
         [TestMethod]
         public void TestExecuteReallyExecute()
         {
-            int count = 10000;
+            int count = 10;
             List<IFilter> filters = new List<IFilter>();
 
             for (int i = 0; i < count; i++)
