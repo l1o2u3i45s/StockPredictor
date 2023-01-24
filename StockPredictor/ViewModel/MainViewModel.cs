@@ -33,7 +33,7 @@ namespace StockPredictor.ViewModel
         private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
         private ConcurrentBag<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
 
-        private readonly IPreProcessService _preProcessService = new PreProcessService();
+        private readonly IPreProcessService _preProcessService = new PreProcessService(new CalculateService());
         private ICSVParser _csvParser = new CSVParser();
         private Stopwatch _stopwatch = new Stopwatch();
 

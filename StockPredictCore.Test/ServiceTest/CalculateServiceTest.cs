@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using InfraStructure;
 using StockPredictCore.Service;
+using System.IO;
 
 namespace StockPredictCore.Test.ServiceTest
 {
@@ -36,13 +37,13 @@ namespace StockPredictCore.Test.ServiceTest
             }
         }
 
-       
+
         [TestMethod]
         public void Test_MA_0to5()
         {
-            double[] data = new double[5]{1,2,3,4,5};
+            double[] data = new double[5] { 1, 2, 3, 4, 5 };
             int avgDays = 5;
-            var result = calculateService.Cal_MA(data,avgDays);
+            var result = calculateService.Cal_MA(data, avgDays);
 
             Assert.AreEqual(0, result[0]);
             Assert.AreEqual(0, result[1]);
@@ -60,7 +61,7 @@ namespace StockPredictCore.Test.ServiceTest
             int avgDays = 10;
             double[] data = new double[100];
 
-            for (int i = 0;i < data.Length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 data[i] = i;
             }
@@ -69,6 +70,23 @@ namespace StockPredictCore.Test.ServiceTest
 
             Assert.AreEqual(5.5, result[10]);
 
+        }
+
+        [TestMethod]
+        public void Test_Boolling_Simple()
+        {
+            int avgDays = 20;
+            double[] data = new double[20];
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = i;
+            }
+
+            var result = calculateService.Cal_Boolling(data);
+
+            Assert.AreEqual(14.75, Math.Round(result.LowerLimit[19], 2));
+            Assert.AreEqual(23.24, Math.Round(result.UpperLimit[19], 2));
         }
     }
 }

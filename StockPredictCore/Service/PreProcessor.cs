@@ -88,11 +88,10 @@ namespace StockPredictCore
         }
         public async void Execute(StockData data)
         {
-
+            CaculateMA(data);
             var taskList = new List<Task>
             {
                 Task.Factory.StartNew(() => CaculateRSVandKD(data)),
-                Task.Factory.StartNew(() => CaculateMA(data)),
                 Task.Factory.StartNew(() => CaculateRSI(data)),
                 Task.Factory.StartNew(() => CalculateBoolling(data))
             };
@@ -107,13 +106,12 @@ namespace StockPredictCore
             for (int i = day * 2 - 1; i < dataCount; i++)
             {
 
-                double avg = 0;
                 double masum = 0;
                 for (int j = i - day + 1; j <= i; j++)
                 {
                     masum += data.MA20[j];
                 }
-                avg = masum / day;
+                double avg = masum / day;
 
                 double sigmasum = 0;
                 for (int j = i - day + 1; j < i; j++)
