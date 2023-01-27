@@ -237,10 +237,7 @@ namespace StockPredictor.ViewModel
         {
             Parallel.ForEach(stockDataList, stockData =>
             {
-                for (int i = 0; i < stockData.Date.Length; i++)
-                {
-                    stockData.IsFilter[i] = false;
-                }
+                stockData.IsFilter.SetValue(false,0);
             });
         }
     }

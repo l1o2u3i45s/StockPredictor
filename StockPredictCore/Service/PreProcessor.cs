@@ -17,7 +17,7 @@ namespace StockPredictCore
         ConcurrentBag<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles);
         ConcurrentBag<PERatioTableData> GetPERatioTableData(string[] stockFiles);
         ConcurrentBag<FinancialStatementsData> GetFinancialStatementsData(string[] stockFiles);
-        void Execute(StockData data);
+        Task Execute(StockData data);
     }
 
     public class PreProcessService : IPreProcessService
@@ -42,14 +42,14 @@ namespace StockPredictCore
         }
 
         public ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary)
-        {
+        { 
             var stockDataList = new ConcurrentBag<StockData>();
 
-            Parallel.ForEach(stockFiles, filepath =>
+            Parallel.ForEach(stockFiles, async filepath  => 
             {
                 StockData data = DataParser.GetStockData(filepath, stockInfoDictionary);
                 stockDataList.Add(data);
-                Execute(data);
+                await Execute(data);
             });
 
             return stockDataList;
@@ -86,7 +86,7 @@ namespace StockPredictCore
 
             return financialStatementsDataList;
         }
-        public async void Execute(StockData data)
+        public async Task Execute(StockData data)
         {
             CaculateMA(data);
             var taskList = new List<Task>
