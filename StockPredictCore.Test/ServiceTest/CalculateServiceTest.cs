@@ -88,5 +88,25 @@ namespace StockPredictCore.Test.ServiceTest
             Assert.AreEqual(14.75, Math.Round(result.LowerLimit[19], 2));
             Assert.AreEqual(23.25, Math.Round(result.UpperLimit[19], 2));
         }
+
+        [TestMethod]
+        public void Test_RSI_Simple()
+        {
+            double[] data = new double[10]
+            {
+                23.7,
+                27.9,
+                26.5,
+                29.6,
+                31.1,
+                29.4,
+                25.5,
+                28.9,
+                20.5,
+                23.2
+            };
+
+            calculateService.Cal_RSI(data,10);
+        }
     }
 }

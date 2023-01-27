@@ -1,30 +1,27 @@
-﻿using InfraStructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StockPredictCore.Filter.Value;
+﻿using System;
+using InfraStructure;
 
 namespace StockPredictCore.Service
 {
 
     public struct BoollingData
     {
-        public BoollingData(double[] lowerLimit,double[] upperLimit)
+        public BoollingData(double[] lowerLimit, double[] upperLimit)
         {
             LowerLimit = lowerLimit;
             UpperLimit = upperLimit;
         }
 
-        public double[] LowerLimit { get;}
-        public double[] UpperLimit { get;}
+        public double[] LowerLimit { get; }
+        public double[] UpperLimit { get; }
     }
     public interface ICalculateService
     {
         double[] Cal_MA(double[] data, int avgDays);
 
-        BoollingData Cal_Boolling(double[] closedPrice,int avgDays = 20,int std = 2);
+        BoollingData Cal_Boolling(double[] closedPrice, int avgDays = 20, int std = 2);
+
+        double[] Cal_RSI(double[] closedPrice, int calculateDays);
     }
     public class CalculateService : ICalculateService
     {
@@ -43,7 +40,7 @@ namespace StockPredictCore.Service
             {
                 sumresult += data[last];
 
-                
+
                 if (last - first >= avgDays - 1)
                 {
                     result[last] = sumresult / avgDays;
@@ -58,7 +55,7 @@ namespace StockPredictCore.Service
         public BoollingData Cal_Boolling(double[] closedPrice, int avgDays = 20, int stdThreshold = 2)
         {
             if (closedPrice is null || closedPrice.Length < avgDays)
-                return new BoollingData( Array.Empty<double>(),Array.Empty<double>());
+                return new BoollingData(Array.Empty<double>(), Array.Empty<double>());
 
             double[] lowerLimit = new double[closedPrice.Length];
             double[] upperLimit = new double[closedPrice.Length];
@@ -66,7 +63,7 @@ namespace StockPredictCore.Service
 
             for (int i = avgDays - 1; i < closedPrice.Length; i++)
             {
-                double stdValue = Math.Pow( Math.Pow(closedPrice[i] - maData[i],2) / avgDays ,0.5);
+                double stdValue = Math.Pow(Math.Pow(closedPrice[i] - maData[i], 2) / avgDays, 0.5);
 
                 lowerLimit[i] = closedPrice[i] - stdThreshold * stdValue;
                 upperLimit[i] = closedPrice[i] + stdThreshold * stdValue;
@@ -74,5 +71,46 @@ namespace StockPredictCore.Service
 
             return new BoollingData(lowerLimit, upperLimit);
         }
+
+        public double[] Cal_RSI(double[] closedPrice, int calculateDays)
+        {
+            int dataCount = closedPrice.Length;
+            double[] result = new double[dataCount];
+
+            int first = 1, last = 1;
+
+            double increaseSum = 0;
+            double decreaseSum = 0;
+
+            while (last < dataCount)
+            {
+                var value = closedPrice[last] - closedPrice[last - 1];
+                if (value > 0)
+                    increaseSum += value;
+                else
+                    decreaseSum += Math.Abs(value);
+
+                if (last - first >= dataCount - 2)
+                {
+                    double increaseAvg = increaseSum / calculateDays;
+                    double decreaseAvg = decreaseSum / calculateDays;
+
+                    double rsi = (increaseAvg / (increaseAvg + decreaseAvg)) * 100;
+                    result[last] = rsi;
+
+                    if (value > 0)
+                        increaseSum -= value;
+                    else
+                        decreaseSum -= value;
+
+                    first++;
+                }
+                last++;
+            }
+
+            return result;
+        }
+
+
     }
 }
