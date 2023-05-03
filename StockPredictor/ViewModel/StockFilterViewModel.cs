@@ -235,10 +235,13 @@ namespace StockPredictor.ViewModel
 
         private void ResetData(IEnumerable<StockData> stockDataList)
         {
-            Parallel.ForEach(stockDataList, stockData =>
+            foreach (var stockData in stockDataList)
             {
-                stockData.IsFilter.SetValue(false,0);
-            });
+                for (int i = 0; i < stockData.IsFilter.Length; i++)
+                {
+                    stockData.IsFilter[i] = false;
+                }
+            }
         }
     }
 }

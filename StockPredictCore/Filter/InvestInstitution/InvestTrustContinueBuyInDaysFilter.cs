@@ -32,8 +32,11 @@ namespace StockPredictCore.Filter.InvestInstitution
             for (int i = 0; i < stockDataList.Count; i++)
             {
                 var currentData = stockDataList[i];
-                var institutionData = currentData.InstitutionBuyAndSell.Single(_ => _.InstitutionType == eInstitution.投信);
+                var institutionData = currentData.InstitutionBuyAndSell.SingleOrDefault(_ => _.InstitutionType == eInstitution.投信);
                 
+                if(institutionData is null)
+                    continue;
+
                 int continueBuyDayCount = 0;
 
                 if (institutionData.Date.Length == 0)
