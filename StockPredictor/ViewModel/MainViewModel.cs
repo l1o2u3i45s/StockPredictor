@@ -130,7 +130,7 @@ namespace StockPredictor.ViewModel
             {
                 _stopwatch.Restart();
                 if (isDesign == false)
-                    await PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath));
+                    await PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath), Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath));
 
                 RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
                 StockFilterViewModel = new StockFilterViewModel(stockDataList, stockInfoDictionary);
@@ -148,7 +148,7 @@ namespace StockPredictor.ViewModel
             StockFilterViewModel.CloseWindowAction();
         }
 
-        private async Task PreProcessData(string[] stockFiles)
+        private async Task PreProcessData(string[] stockFiles,string[] buysellFiles)
         {
             var FinancialStatementfileList = Directory.GetFiles(DataParser.FinancialStatementPath);
             var peRatioTableFileList = Directory.GetFiles(DataParser.PERatioTablePath);
@@ -156,7 +156,7 @@ namespace StockPredictor.ViewModel
             var getFinanceTask = Task.Factory.StartNew(() => _preProcessService.GetFinancialStatementsData(FinancialStatementfileList));
             var getPERTask = Task.Factory.StartNew(() => _preProcessService.GetPERatioTableData(peRatioTableFileList));
             var getStockTask = Task.Factory.StartNew(() => _preProcessService.GetStockData(stockFiles, stockInfoDictionary));
-            var getBuySellTask = Task.Factory.StartNew(() => _preProcessService.GetInvestInstitutionBuySellDataData(stockFiles));
+            var getBuySellTask = Task.Factory.StartNew(() => _preProcessService.GetInvestInstitutionBuySellDataData(buysellFiles));
             await Task.WhenAll(getFinanceTask, getPERTask, getStockTask, getBuySellTask);
             financialStatementsDataList = getFinanceTask.Result;
             peRatioTableDataDataList = getPERTask.Result;

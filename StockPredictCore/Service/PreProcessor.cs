@@ -14,7 +14,7 @@ namespace StockPredictCore
     {
         ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary);
 
-        List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles);
+        List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] filePaths);
         ConcurrentBag<PERatioTableData> GetPERatioTableData(string[] stockFiles);
         ConcurrentBag<FinancialStatementsData> GetFinancialStatementsData(string[] stockFiles);
         Task Execute(StockData data);
@@ -28,11 +28,11 @@ namespace StockPredictCore
 
             _calculateService = calculateService;
         }
-        public List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles)
+        public List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] filePaths)
         {
             var investInstitutionBuySellDataDataList = new List<InvestInstitutionBuySellData>();
 
-            foreach (var file in stockFiles)
+            foreach (var file in filePaths)
             {
                 foreach (var data in DataParser.GetInvestInstitutionBuySellData(file))
                 {
