@@ -14,7 +14,7 @@ namespace StockPredictCore
     {
         ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary);
 
-        ConcurrentBag<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles);
+        List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles);
         ConcurrentBag<PERatioTableData> GetPERatioTableData(string[] stockFiles);
         ConcurrentBag<FinancialStatementsData> GetFinancialStatementsData(string[] stockFiles);
         Task Execute(StockData data);
@@ -28,24 +28,26 @@ namespace StockPredictCore
 
             _calculateService = calculateService;
         }
-        public ConcurrentBag<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles)
+        public List<InvestInstitutionBuySellData> GetInvestInstitutionBuySellDataData(string[] stockFiles)
         {
-            var investInstitutionBuySellDataDataList = new ConcurrentBag<InvestInstitutionBuySellData>();
-            Parallel.ForEach(stockFiles, _ =>
+            var investInstitutionBuySellDataDataList = new List<InvestInstitutionBuySellData>();
+
+            foreach (var file in stockFiles)
             {
-                foreach (var data in DataParser.GetInvestInstitutionBuySellData(_))
+                foreach (var data in DataParser.GetInvestInstitutionBuySellData(file))
                 {
                     investInstitutionBuySellDataDataList.Add(data);
                 }
-            });
+            }
+
             return investInstitutionBuySellDataDataList;
         }
 
         public ConcurrentBag<StockData> GetStockData(string[] stockFiles, Dictionary<string, string> stockInfoDictionary)
-        { 
+        {
             var stockDataList = new ConcurrentBag<StockData>();
 
-            Parallel.ForEach(stockFiles, async filepath  => 
+            Parallel.ForEach(stockFiles, async filepath =>
             {
                 StockData data = DataParser.GetStockData(filepath, stockInfoDictionary);
                 stockDataList.Add(data);

@@ -3,7 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Compilation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using InfraStructure;
@@ -31,7 +33,7 @@ namespace StockPredictor.ViewModel
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();
         private ConcurrentBag<FinancialStatementsData> financialStatementsDataList;
         private ConcurrentBag<PERatioTableData> peRatioTableDataDataList;
-        private ConcurrentBag<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
+        private List<InvestInstitutionBuySellData> investInstitutionBuySellDataDataList;
 
         private readonly IPreProcessService _preProcessService = new PreProcessService(new CalculateService());
         private ICSVParser _csvParser = new CSVParser();
@@ -113,11 +115,11 @@ namespace StockPredictor.ViewModel
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
             InitStockInfo();
 
-           
-            UpdateStockData();
-          
 
-            
+            UpdateStockData();
+
+
+
 
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
         }
@@ -154,11 +156,19 @@ namespace StockPredictor.ViewModel
             var getFinanceTask = Task.Factory.StartNew(() => _preProcessService.GetFinancialStatementsData(FinancialStatementfileList));
             var getPERTask = Task.Factory.StartNew(() => _preProcessService.GetPERatioTableData(peRatioTableFileList));
             var getStockTask = Task.Factory.StartNew(() => _preProcessService.GetStockData(stockFiles, stockInfoDictionary));
-
-            await Task.WhenAll(getFinanceTask, getPERTask, getStockTask);
+            var getBuySellTask = Task.Factory.StartNew(() => _preProcessService.GetInvestInstitutionBuySellDataData(stockFiles));
+            await Task.WhenAll(getFinanceTask, getPERTask, getStockTask, getBuySellTask);
             financialStatementsDataList = getFinanceTask.Result;
             peRatioTableDataDataList = getPERTask.Result;
             stockDataList = getStockTask.Result;
+            investInstitutionBuySellDataDataList = getBuySellTask.Result;
+
+            foreach (var stockData in stockDataList)
+            {
+                var buysellData = investInstitutionBuySellDataDataList.Where(_ => _.StockID == stockData.ID).ToList();
+                stockData.UpdateInstitutionBuySellData(buysellData);
+            }
+
         }
 
         private void InitStockInfo()
@@ -175,7 +185,7 @@ namespace StockPredictor.ViewModel
             stockInfoDictionary = _csvParser.GetStockInfo(_stockInfoPath);
         }
 
-        private void ConsoleWriteStopWatch(Stopwatch stopwatch,string functionName)
+        private void ConsoleWriteStopWatch(Stopwatch stopwatch, string functionName)
         {
             Console.WriteLine($"{functionName}: {stopwatch.ElapsedMilliseconds} ms");
         }
