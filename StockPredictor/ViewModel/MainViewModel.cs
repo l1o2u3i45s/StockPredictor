@@ -27,7 +27,7 @@ namespace StockPredictor.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private const string _stockInfoPath = @"StockInfoList\\stockInfo.csv";
+        public static string _stockInfoPath = @"StockInfoList\\stockInfo.csv";
         private bool isDesign = false;
         private ConcurrentBag<StockData> stockDataList;
         private Dictionary<string, string> stockInfoDictionary = new Dictionary<string, string>();

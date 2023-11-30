@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ExcelDataReader;
 using InfraStructure;
 using Newtonsoft.Json;
+using StockPredictCore.Service;
 
 namespace StockPredictCore
 {
@@ -26,17 +27,17 @@ namespace StockPredictCore
         public readonly static string FinancialStatementPath = "FinancialStatement"; //綜合損益表
         public readonly static string PERatioTablePath = "PERatioTable"; //P/E ratio表
         public readonly static string TaiwanStockInstitutionalInvestorsBuySellPath = "TaiwanStockInstitutionalInvestorsBuySell"; //法人買賣
-        
+
         //取得股價資訊
         public static async Task CrawlStockPriceData(DateTime startDate, List<string> stockCodeList)
-        {   
+        {
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
             await DownloadFile(DatasetType.TaiwanStockPrice, stockCodeList, StockRawDataPath, startDateTime, DateTime.Today);
         }
 
         //取得綜合損益表
         public static void CrawlFinancialStatementsData(DateTime startDate, List<string> stockCodeList)
-        { 
+        {
             DateTime startDateTime = new DateTime(startDate.Year, startDate.Month, 1);
             _ = DownloadFile(DatasetType.TaiwanStockFinancialStatements, stockCodeList, FinancialStatementPath, startDateTime, DateTime.Today);
         }
@@ -55,6 +56,13 @@ namespace StockPredictCore
             _ = DownloadFile(DatasetType.TaiwanStockInstitutionalInvestorsBuySell, stockCodeList, TaiwanStockInstitutionalInvestorsBuySellPath, startDateTime, DateTime.Today);
         }
 
+        public static async Task GetIntegrationStockData(List<string> stockCodeList)
+        {
+            CSVParser csvParser = new CSVParser();
+            var stockInfoDictionary = csvParser.GetStockInfo(@"StockInfoList\\stockInfo.csv");
+            var stockRawDataFilePath = Directory.GetFiles(StockRawDataPath);
+        }
+
         public static StockData GetStockData(string filepath, Dictionary<string, string> stockInfoDictionary)
         {
             string alltext = System.IO.File.ReadAllText(filepath);
@@ -63,8 +71,8 @@ namespace StockPredictCore
             StockData result = new StockData(dataList.data.Count, Path.GetFileNameWithoutExtension(filepath));
 
             for (int i = 1; i < dataList.data.Count; i++)
-            { 
-                result.UpdateData(dataList.data[i],i); 
+            {
+                result.UpdateData(dataList.data[i], i);
             }
 
             if (stockInfoDictionary.ContainsKey(result.ID))
@@ -82,7 +90,7 @@ namespace StockPredictCore
             {
                 result.Add(new FinancialStatementsData(item.stock_id, item.date, item.value));
             }
-             
+
             return result;
         }
 
@@ -96,7 +104,7 @@ namespace StockPredictCore
             {
                 result.Add(new PERatioTableData()
                 {
-                    Date = item.date ,
+                    Date = item.date,
                     StockID = item.stock_id,
                     PBRatio = item.PBR,
                     PERatio = item.PER,
@@ -144,16 +152,16 @@ namespace StockPredictCore
         }
 
 
-        private static async Task DownloadFile(DatasetType dataset,List<string> stockCodeList,string downloadFolder,DateTime startDate, DateTime endDate)
+        private static async Task DownloadFile(DatasetType dataset, List<string> stockCodeList, string downloadFolder, DateTime startDate, DateTime endDate)
         {
             if (Directory.Exists(downloadFolder) == false)
                 Directory.CreateDirectory(downloadFolder);
 
             List<Task> taskList = new List<Task>();
             foreach (var stockCode in stockCodeList)
-            { 
+            {
                 string idpath = Path.Combine(downloadFolder, $"{stockCode}.txt");
-                
+
                 string queryString = GetQueryString(dataset.GetDescriptionText(), stockCode, startDate, endDate);
 
                 try
@@ -177,7 +185,7 @@ namespace StockPredictCore
         {
             return $"{apiUrl}dataset={dataSet}&data_id={stockID}&start_date={startDate.ToString("yyyy-MM-dd")}&end_date={endDate.ToString("yyyy-MM-dd")}&token={apiToken}";
         }
-         
+
         enum DatasetType
         {
             [Description("TaiwanStockPrice")]

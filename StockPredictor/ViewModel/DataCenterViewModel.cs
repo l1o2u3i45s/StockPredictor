@@ -31,6 +31,8 @@ namespace StockPredictor.ViewModel
 
         public delegate void UpdateDataDoneCallback();
 
+        public RelayCommand GetInterationStockDataCommand { get; set; }
+
         public RelayCommand UpdateHistorialStockDataCommand { get; set; }
         public RelayCommand GetFinancialStatementCommand { get; set; }
         public RelayCommand GetPERDataCommand { get; set; } 
@@ -45,6 +47,7 @@ namespace StockPredictor.ViewModel
 
         public DataCenterViewModel()
         {
+            GetInterationStockDataCommand = new RelayCommand(GetInterationStockDataAction);
             UpdateHistorialStockDataCommand = new RelayCommand(UpdateHistorialStockDataAction);
             GetFinancialStatementCommand = new RelayCommand(GetFinancialStatementAction);
             GetPERDataCommand = new RelayCommand(GetPERDataAction);
@@ -53,6 +56,14 @@ namespace StockPredictor.ViewModel
             StockIDfileList = new List<string>();
             StockIDfileList.AddRange(Directory.GetFiles("StockInfofile"));
             SelectedStockIDFile = StockIDfileList[0];
+        }
+
+        private async void GetInterationStockDataAction()
+        {
+            await DataParser.GetIntegrationStockData( GetStockIdList());
+
+            
+            MessageBox.Show("匯出完成");
         }
 
         private void GetInstitutionalInvestAction()
