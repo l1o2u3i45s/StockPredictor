@@ -129,7 +129,11 @@ namespace StockPredictor.ViewModel
             if (isDesign == false)
             {
                 var rawDataFilePathList = Directory.GetFiles(DataParser.StockRawDataPath);
-                var buySellPathList = Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath);
+
+                var buySellPathList = new List<string>();
+                if (Directory.Exists(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath))
+                    buySellPathList = Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath).ToList();
+
                 PreProcessData(rawDataFilePathList , buySellPathList);
             }
                
@@ -146,7 +150,7 @@ namespace StockPredictor.ViewModel
             StockFilterViewModel.CloseWindowAction();
         }
 
-        private void PreProcessData(string[] stockFiles,string[] buysellFiles)
+        private void PreProcessData(string[] stockFiles,List<string> buysellFiles)
         {
             var FinancialStatementfileList = Directory.GetFiles(DataParser.FinancialStatementPath);
             var peRatioTableFileList = Directory.GetFiles(DataParser.PERatioTablePath);
