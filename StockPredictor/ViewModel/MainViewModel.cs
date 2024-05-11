@@ -115,32 +115,30 @@ namespace StockPredictor.ViewModel
             DataCenterViewModel.SetUpdateDataDoneCallback(UpdateStockData);
             InitStockInfo();
 
-
             UpdateStockData();
-
-
-
 
             CloseWindowCommand = new RelayCommand(CloseWindowAction);
         }
 
         private void UpdateStockData()
         {
-            Task.Factory.StartNew(async () =>
-            {
-                _stopwatch.Restart();
-                if (isDesign == false)
-                    await PreProcessData(Directory.GetFiles(DataParser.StockRawDataPath), Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath));
-
-                RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
-                StockFilterViewModel = new StockFilterViewModel(stockDataList, stockInfoDictionary);
-                RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
-                IsBusy = false;
-                ConsoleWriteStopWatch(_stopwatch, "UpdateStockData");
-            });
-
             IsBusy = true;
             BusyContent = "Update Stock Data";
+
+            _stopwatch.Restart();
+            if (isDesign == false)
+            {
+                var rawDataFilePathList = Directory.GetFiles(DataParser.StockRawDataPath);
+                var buySellPathList = Directory.GetFiles(DataParser.TaiwanStockInstitutionalInvestorsBuySellPath);
+                PreProcessData(rawDataFilePathList , buySellPathList);
+            }
+               
+
+            RegularQuotaViewModel = new RegularQuotaViewModel(stockDataList);
+            StockFilterViewModel = new StockFilterViewModel(stockDataList, stockInfoDictionary);
+            RegularQuotaProfitCaculateViewModel = new RegularQuotaProfitCaculateViewModel();
+            IsBusy = false;
+            ConsoleWriteStopWatch(_stopwatch, "UpdateStockData");
         }
 
         private void CloseWindowAction()
@@ -148,20 +146,15 @@ namespace StockPredictor.ViewModel
             StockFilterViewModel.CloseWindowAction();
         }
 
-        private async Task PreProcessData(string[] stockFiles,string[] buysellFiles)
+        private void PreProcessData(string[] stockFiles,string[] buysellFiles)
         {
             var FinancialStatementfileList = Directory.GetFiles(DataParser.FinancialStatementPath);
             var peRatioTableFileList = Directory.GetFiles(DataParser.PERatioTablePath);
 
-            var getFinanceTask = Task.Factory.StartNew(() => _preProcessService.GetFinancialStatementsData(FinancialStatementfileList));
-            var getPERTask = Task.Factory.StartNew(() => _preProcessService.GetPERatioTableData(peRatioTableFileList));
-            var getStockTask = Task.Factory.StartNew(() => _preProcessService.GetStockData(stockFiles, stockInfoDictionary));
-            var getBuySellTask = Task.Factory.StartNew(() => _preProcessService.GetInvestInstitutionBuySellDataData(buysellFiles));
-            await Task.WhenAll(getFinanceTask, getPERTask, getStockTask, getBuySellTask);
-            financialStatementsDataList = getFinanceTask.Result;
-            peRatioTableDataDataList = getPERTask.Result;
-            stockDataList = getStockTask.Result;
-            investInstitutionBuySellDataDataList = getBuySellTask.Result;
+            financialStatementsDataList = _preProcessService.GetFinancialStatementsData(FinancialStatementfileList);
+            peRatioTableDataDataList = _preProcessService.GetPERatioTableData(peRatioTableFileList);
+            stockDataList = _preProcessService.GetStockData(stockFiles, stockInfoDictionary);
+            investInstitutionBuySellDataDataList = _preProcessService.GetInvestInstitutionBuySellDataData(buysellFiles);
 
             foreach (var stockData in stockDataList)
             {
