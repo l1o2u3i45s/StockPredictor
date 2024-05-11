@@ -100,6 +100,9 @@ namespace StockPredictor.Class.FilterInfo
                 case FilterType.PriceMostLowinDaysFilter:
                     info.Param = new PriceMostLowinDaysFilter().GetParam();
                     break;
+                case FilterType.PriceLowerYearFilter:
+                    info.Param = new PriceLowerYearFilter().GetParam();
+                    break;
 
                 case FilterType.VolumnMoreThanFilter:
                     info.Param = new VolumnMoreThanFilter().GetParam();

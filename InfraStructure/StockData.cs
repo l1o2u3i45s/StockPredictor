@@ -25,6 +25,7 @@ namespace InfraStructure
             DValue = new double[size];
 
             MA120 = new double[size];
+            MA360 = new double[size];
             MA60 = new double[size];
             MA20 = new double[size];
             MA5 = new double[size];
@@ -105,6 +106,7 @@ namespace InfraStructure
         public double[] KValue { get; set; }
         public double[] DValue { get; set; }
 
+        public double[] MA360 { get; set; }
         public double[] MA120 { get; set; }
         public double[] MA60 { get; set; }
         public double[] MA20 { get; set; } 
@@ -158,6 +160,7 @@ namespace InfraStructure
             KValue = data.KValue[index];
             DValue = data.DValue[index];
 
+            MA360 = data.MA360[index];
             MA120 = data.MA120[index];
             MA60 = data.MA60[index];
             MA20 = data.MA20[index];
@@ -184,6 +187,7 @@ namespace InfraStructure
         public double KValue { get; set; }
         public double DValue { get; set; }
 
+        public double MA360 { get; set; }
         public double MA120 { get; set; }
         public double MA60 { get; set; }
         public double MA20 { get; set; }

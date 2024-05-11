@@ -42,6 +42,8 @@ namespace StockPredictCore.Filter
         PriceMostHighInDaysFilter,
         [Description("股價N日內最低")]
         PriceMostLowinDaysFilter,
+        [Description("股價低於年線")]
+        PriceLowerYearFilter,
 
         [Description("成交量大於幾張")]
         VolumnMoreThanFilter,

@@ -66,6 +66,7 @@
     <Compile Include="Filter\AverageLine\Ma60OverMa5Filter.cs" />
     <Compile Include="Filter\InvestInstitution\ForeignContinueBuyInDaysFilter.cs" />
     <Compile Include="Filter\InvestInstitution\InvestTrustContinueBuyInDaysFilter.cs" />
+    <Compile Include="Filter\Value\PriceLowerYearFilter.cs" />
     <Compile Include="Service\CalculateService.cs" />
     <Compile Include="Service\CSVParser.cs" />
     <Compile Include="Service\DataParser.cs" />
