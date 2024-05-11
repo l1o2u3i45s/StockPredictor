@@ -33,10 +33,13 @@ namespace StockPredictCore.Filter.Value
                     if (currentData.IsFilter[j])
                         continue;
 
-                    bool isCorrespond = currentData.ClosePrice[j] < currentData.MA360[j];
+                    var closedPrice = currentData.ClosePrice[j];
+                    var ma360 = currentData.MA360[j];
+                    bool isCorrespond = closedPrice < ma360;
 
                     if (isCorrespond == false)
                         currentData.IsFilter[j] = true;
+
                 }
 
             }

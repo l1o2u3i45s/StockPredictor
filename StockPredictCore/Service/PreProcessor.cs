@@ -180,7 +180,7 @@ namespace StockPredictCore
             data.MA20 = _calculateService.Cal_MA(data.ClosePrice, 20);
             data.MA60 = _calculateService.Cal_MA(data.ClosePrice, 60);
             data.MA120 = _calculateService.Cal_MA(data.ClosePrice, 120);
-            data.MA120 = _calculateService.Cal_MA(data.ClosePrice, 360);
+            data.MA360 = _calculateService.Cal_MA(data.ClosePrice, 360);
         }
 
     }

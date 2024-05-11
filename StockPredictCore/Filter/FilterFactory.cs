@@ -54,6 +54,8 @@ namespace StockPredictor.Class
                     return new PriceMostHighInDaysFilter(datas, param);
                 case FilterType.PriceMostLowinDaysFilter:
                     return new PriceMostLowinDaysFilter(datas, param);
+                case FilterType.PriceLowerYearFilter:
+                    return new PriceLowerYearFilter(datas, param);
 
                 case FilterType.VolumnMoreThanFilter:
                     return new VolumnMoreThanFilter(datas, param);  
